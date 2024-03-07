@@ -16,7 +16,6 @@ namespace ObjectManager {
 	void Draw();
 	void Release();
 	void ChangeScene();
-//	std::list<GameObject*> GetAllObject();
 
 	/// <summary>
 	/// Objectを追加する
@@ -145,4 +144,18 @@ namespace ObjectManager {
 	void DeleteAllGameObject();
 
 	void DontDestroy(GameObject* obj, bool dont = true);
+
+	/// <summary>
+	/// Updateを実行するか設定する
+	/// </summary>
+	/// <param name="obj">GameObjectのインスタンス</param>
+	/// <param name="active">実行する場合はtrue</param>
+	void SetActive(GameObject* obj, bool active = true);
+
+	/// <summary>
+	/// Drawを実行するか設定する
+	/// </summary>
+	/// <param name="obj">GameObjectのインスタンス</param>
+	/// <param name="visible">Drawする場合はtrue</param>
+	void SetVisible(GameObject* obj, bool visible = true);
 };

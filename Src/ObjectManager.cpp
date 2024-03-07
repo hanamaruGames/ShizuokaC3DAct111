@@ -10,12 +10,14 @@ namespace {
 		bool destroyMe;
 		bool dontDestroy;
 		int priority;
-		UpdateObject() : object(nullptr), initialized(false), destroyMe(false), dontDestroy(false), priority(0) {}
+		bool active;
+		UpdateObject() : object(nullptr), initialized(false), destroyMe(false), dontDestroy(false), priority(0), active(true) {}
 	};
 	struct DrawObject {
 		GameObject* object;
 		int order;
-		DrawObject() : object(nullptr), order(0) {}
+		bool visible;
+		DrawObject() : object(nullptr), order(0), visible(true) {}
 	};
 	std::list<UpdateObject> updateObjects;
 	std::list<DrawObject> drawObjects;
@@ -54,7 +56,9 @@ void ObjectManager::Update()
 			obj->Start();
 			node.initialized = true;
 		}
-		obj->Update();
+		if (node.active) {
+			obj->Update();
+		}
 		if (node.destroyMe) {
 			deleteDrawObject(obj);
 			delete obj;
@@ -72,7 +76,9 @@ void ObjectManager::Draw()
 		needSortDraw = false;
 	}
 	for (DrawObject node : drawObjects) {
-		node.object->Draw();
+		if (node.visible) {
+			node.object->Draw();
+		}
 	}
 }
 
@@ -127,10 +133,12 @@ void ObjectManager::Destroy(GameObject* obj)
 	}
 }
 
-void ObjectManager::SetDrawOrder(GameObject* _obj, int _order)
+void ObjectManager::SetDrawOrder(GameObject* obj, int _order)
 {
 	for (DrawObject& od : drawObjects) {
-		od.order = _order;
+		if (od.object == obj) {
+			od.order = _order;
+		}
 	}
 	needSortDraw = true;
 }
@@ -178,6 +186,25 @@ void ObjectManager::DontDestroy(GameObject* obj, bool dont)
 		UpdateObject& node = *it;
 		if (node.object == obj) {
 			node.dontDestroy = dont;
+		}
+	}
+}
+
+void ObjectManager::SetActive(GameObject* obj, bool active)
+{
+	for (auto it = updateObjects.begin(); it != updateObjects.end(); it++) {
+		UpdateObject& node = *it;
+		if (node.object == obj) {
+			node.active = active;
+		}
+	}
+}
+
+void ObjectManager::SetVisible(GameObject* obj, bool visible)
+{
+	for (DrawObject& od : drawObjects) {
+		if (od.object == obj) {
+			od.visible = visible;
 		}
 	}
 }
