@@ -26,7 +26,7 @@ protected:
 	DWORD                    m_dwOwner;			// 武器を発射したキャラ区分（PC:PC　ENM:敵）
 
 public:
-	BOOL Start(MATRIX4X4, DWORD dwOwner) override;
+	bool Start(MATRIX4X4, DWORD dwOwner) override;
 	void Update() override;
 	void Render();
 
@@ -44,8 +44,8 @@ protected:
 	static const int WEAPON_MAX = 20;    // MAX :武器オブジェクトの数。（同時発生数）
 
 public:
-	BOOL Start(MATRIX4X4, DWORD dwOwner);  //武器　レーザーの発射
-	BOOL Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWorld, DWORD dwOwner);
+	bool Start(MATRIX4X4, DWORD dwOwner);  //武器　レーザーの発射
+	bool Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWorld, DWORD dwOwner);
 
 	CWeaponLaserProc(CGameMain* pGMain);	// コンストラクタ
 	virtual	~CWeaponLaserProc();

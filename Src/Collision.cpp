@@ -47,7 +47,7 @@ void CCollision::ClearAll(void)
 	m_nNum = 0;
 
 	// コリジョン移動用
-	m_bMoveFlag = FALSE;				// 移動するかどうか 移動の時 真
+	m_bMoveFlag = false;				// 移動するかどうか 移動の時 真
 	m_mWorldBase = XMMatrixIdentity();	// 移動マトリックス初期位置    // -- 2022.11.14
 	m_mWorldOld  = XMMatrixIdentity();	// 移動マトリックス一つ前
 	m_mWorld     = XMMatrixIdentity();	// 移動マトリックス
@@ -105,19 +105,19 @@ void CCollision::DeleteAll(void)
 //
 //	const TCHAR* pFileName			メッシュファイルのファイル名　
 //  
-//  戻り値　　　BOOL  TRUE　正常  FALSE  メッシュが見つからない
+//  戻り値　　　bool  true　正常  false  メッシュが見つからない
 //  
 //------------------------------------------------------------------------
-BOOL CCollision::AddFbxLoad(const TCHAR* pFileName)
+bool CCollision::AddFbxLoad(const TCHAR* pFileName)
 {
-	BOOL bRet;
+	bool bRet;
 
 	CFbxMesh* pFbxMesh;
 	pFbxMesh = new CFbxMesh(m_pFbxMeshCtrl);					// -- 2021.2.4
-	if (pFbxMesh->Load(pFileName) == FALSE)  // Fbxファイルを読み込む
+	if (pFbxMesh->Load(pFileName) == false)  // Fbxファイルを読み込む
 	{
 		SAFE_DELETE(pFbxMesh);
-		return FALSE;
+		return false;
 	}
 
 	// メッシュオブジェクトから接触判定配列の作成
@@ -140,19 +140,19 @@ BOOL CCollision::AddFbxLoad(const TCHAR* pFileName)
 //	const TCHAR* pFileName			メッシュファイルのファイル名　
 //  const VECTOR3& vOffset			配置位置の座標
 //  
-//  戻り値　　　BOOL  TRUE　正常  FALSE  メッシュが見つからない
+//  戻り値　　　bool  true　正常  false  メッシュが見つからない
 //  
 //------------------------------------------------------------------------
-BOOL CCollision::AddFbxLoad(const TCHAR* pFileName, const VECTOR3& vOffset)
+bool CCollision::AddFbxLoad(const TCHAR* pFileName, const VECTOR3& vOffset)
 {
-	BOOL bRet;
+	bool bRet;
 
 	CFbxMesh* pFbxMesh;
 	pFbxMesh = new CFbxMesh(m_pFbxMeshCtrl);					// -- 2021.2.4
-	if (pFbxMesh->Load(pFileName) == FALSE)  // Fbxファイルを読み込む
+	if (pFbxMesh->Load(pFileName) == false)  // Fbxファイルを読み込む
 	{
 		SAFE_DELETE(pFbxMesh);
-		return FALSE;
+		return false;
 	}
 
 	// メッシュオブジェクトから接触判定配列の作成
@@ -176,19 +176,19 @@ BOOL CCollision::AddFbxLoad(const TCHAR* pFileName, const VECTOR3& vOffset)
 //	const TCHAR* pFileName			メッシュファイルのファイル名　
 //  const MATRIX4X4& mOffset		配置位置のワールドマトリックス
 //  
-//  戻り値　　　BOOL  TRUE　正常  FALSE  メッシュが見つからない
+//  戻り値　　　bool  true　正常  false  メッシュが見つからない
 //  
 //------------------------------------------------------------------------
-BOOL CCollision::AddFbxLoad(const TCHAR* pFileName, const MATRIX4X4& mOffset)
+bool CCollision::AddFbxLoad(const TCHAR* pFileName, const MATRIX4X4& mOffset)
 {
-	BOOL bRet;
+	bool bRet;
 
 	CFbxMesh* pFbxMesh;
 	pFbxMesh = new CFbxMesh(m_pFbxMeshCtrl);					// -- 2021.2.4
-	if (pFbxMesh->Load(pFileName) == FALSE)  // Fbxファイルを読み込む
+	if (pFbxMesh->Load(pFileName) == false)  // Fbxファイルを読み込む
 	{
 		SAFE_DELETE(pFbxMesh);
-		return FALSE;
+		return false;
 	}
 
 	// メッシュオブジェクトから接触判定配列の作成
@@ -212,9 +212,9 @@ BOOL CCollision::AddFbxLoad(const TCHAR* pFileName, const MATRIX4X4& mOffset)
 //
 //  const CFbxMesh* pFbxMesh		メッシュオブジェクト
 //
-//  戻り値　BOOL  TRUE　正常   FALSE  エラー
+//  戻り値　bool  true　正常   false  エラー
 //  -------------------------------------------------------------------
-BOOL CCollision::AddFbxLoad(const CFbxMesh* pFbxMesh)
+bool CCollision::AddFbxLoad(const CFbxMesh* pFbxMesh)
 {
 	return AddFbxLoad(pFbxMesh, XMMatrixIdentity());    // -- 2022.11.14
 }
@@ -231,9 +231,9 @@ BOOL CCollision::AddFbxLoad(const CFbxMesh* pFbxMesh)
 //  const CFbxMesh* pFbxMesh		メッシュオブジェクト
 //  const VECTOR3& vOffset			配置位置の座標
 //
-//  戻り値　BOOL  TRUE　正常   FALSE  エラー
+//  戻り値　bool  true　正常   false  エラー
 //  -------------------------------------------------------------------
-BOOL CCollision::AddFbxLoad(const CFbxMesh* pFbxMesh, const VECTOR3& vOffset)
+bool CCollision::AddFbxLoad(const CFbxMesh* pFbxMesh, const VECTOR3& vOffset)
 {
 	return AddFbxLoad(pFbxMesh, XMMatrixTranslationFromVector(vOffset));    // -- 2022.11.14
 }
@@ -250,14 +250,14 @@ BOOL CCollision::AddFbxLoad(const CFbxMesh* pFbxMesh, const VECTOR3& vOffset)
 //  const CFbxMesh* pFbxMesh		メッシュオブジェクト
 //  const MATRIX4X4& mOffset		配置位置のワールドマトリックス
 //
-//  戻り値　BOOL  TRUE　正常   FALSE  エラー
+//  戻り値　bool  true　正常   false  エラー
 //  -------------------------------------------------------------------
-BOOL CCollision::AddFbxLoad(const CFbxMesh* pFbxMesh, const MATRIX4X4& mOffset)
+bool CCollision::AddFbxLoad(const CFbxMesh* pFbxMesh, const MATRIX4X4& mOffset)
 {
 	if (m_nNum >= MCKTBL_MAX)
 	{
 		MessageBox(0, _T("Collision.cpp : AddFbxLoad() : メッシュ接触判定用配列 MCKTBL_MAXをオーバーしました"), nullptr, MB_OK);
-		return  FALSE;
+		return  false;
 	}
 
 	DWORD  i, j, nNumvert = 0, nNumidx = 0, nVertoffset = 0, f0, f1, f2;
@@ -328,7 +328,7 @@ BOOL CCollision::AddFbxLoad(const CFbxMesh* pFbxMesh, const MATRIX4X4& mOffset)
 
 	m_nNum++;	// メッシュ接触判定配列添字を１増やす
 
-	return TRUE;
+	return true;
 }
 
 //  -------------------------------------------------------------------
@@ -1282,7 +1282,7 @@ int CCollision::CheckWallMove(MATRIX4X4& mWorld, const MATRIX4X4& mWorldOld, VEC
 
 	// ジャンプで上昇中かどうか判定する。(現在高さより上昇しているか)	// -- 2019.9.3
 	// （誤差を考慮して0.0001fを調整する）
-	BOOL bJumpUp = (vNow.y - 0.0001f > vOld.y);
+	bool bJumpUp = (vNow.y - 0.0001f > vOld.y);
 
 	// レイとメッシュ（壁）との衝突判定を行う
 	for (n = 0; n<m_nNum; n++)
@@ -1436,13 +1436,13 @@ void CCollision::InitHeightCheck()
 //  const MATRIX4X4&  mWorldOld  オブジェクトの一つ前のマトリックス		
 //	const float& fObjheight      オブジェクトの中心の高さUNDERFOOTLIMIT
 //
-//	戻り値 BOOL bRet
-//		TRUE  = より高い面を発見した
-//		FALSE = 発見してない
+//	戻り値 bool bRet
+//		true  = より高い面を発見した
+//		false = 発見してない
 //----------------------------------------------------------------------------
-BOOL CCollision::CheckHeight(MATRIX4X4& mWorld, const MATRIX4X4&  mWorldOld, const float fObjheight)
+bool CCollision::CheckHeight(MATRIX4X4& mWorld, const MATRIX4X4&  mWorldOld, const float fObjheight)
 {
-	BOOL     bRet = FALSE;
+	bool     bRet = false;
 	int      n, i;
 	int      x, y, z, m;
 	int      nStartX, nEndX, nStartY, nEndY, nStartZ, nEndZ;
@@ -1550,7 +1550,7 @@ BOOL CCollision::CheckHeight(MATRIX4X4& mWorld, const MATRIX4X4&  mWorldOld, con
 		//m_fHeight = (wkHeight == m_fHeight) ? m_fHeight : wkHeight;  // 最大高さを記憶する
 		m_fHeight = wkHeight;  // 最大高さを記憶する  // -- 2019.9.3
 
-		bRet = TRUE;	// 最大高さが見つかった
+		bRet = true;	// 最大高さが見つかった
 	}
 
 	return  bRet;
@@ -1580,7 +1580,7 @@ int CCollision::CheckFloorMove(MATRIX4X4& mWorld, const MATRIX4X4&  mWorldOld)
 
 	// ジャンプで上昇中かどうか判定する。(現在高さより上昇しているか)
 	// （誤差を考慮して0.0001fを調整する）
-	BOOL bJumpUp = (vNow.y - 0.0001f > vOld.y);	
+	bool bJumpUp = (vNow.y - 0.0001f > vOld.y);	
 
 	FLOAT MaxY = max(vOld.y, vNow.y);
 	FLOAT MinY = min(vOld.y, vNow.y);
@@ -1759,7 +1759,7 @@ void CCollision::InitWorldMatrix(const MATRIX4X4& mWorld)
 	m_mWorldOld  = mWorld;
 	m_mWorld     = mWorld;
 	m_mWorldInv  = XMMatrixInverse(nullptr, m_mWorld);
-	m_bMoveFlag  = TRUE;
+	m_bMoveFlag  = true;
 }
 
 //------------------------------------------------------------------------
@@ -1774,7 +1774,7 @@ void CCollision::SetWorldMatrix(const MATRIX4X4& mWorld)
 {
 	m_mWorld = mWorld;
 	m_mWorldInv = XMMatrixInverse(nullptr, m_mWorld);
-	m_bMoveFlag = TRUE;
+	m_bMoveFlag = true;
 }
 
 
@@ -1934,19 +1934,19 @@ void CAABB::MakeAABB(const VECTOR3& v1, const VECTOR3& v2, const FLOAT& r)
 //    AABB other
 //
 // 戻り値
-//    TRUE:接触している    FALSE:接触していない 
+//    true:接触している    false:接触していない 
 //
 //------------------------------------------------------------------------
-BOOL CAABB::Hitcheck(const CAABB& other)
+bool CAABB::Hitcheck(const CAABB& other)
 {
-	if (m_vMax.x < other.m_vMin.x) return FALSE;
-	if (m_vMax.y < other.m_vMin.y) return FALSE;
-	if (m_vMax.z < other.m_vMin.z) return FALSE;
-	if (m_vMin.x > other.m_vMax.x) return FALSE;
-	if (m_vMin.y > other.m_vMax.y) return FALSE;
-	if (m_vMin.z > other.m_vMax.z) return FALSE;
+	if (m_vMax.x < other.m_vMin.x) return false;
+	if (m_vMax.y < other.m_vMin.y) return false;
+	if (m_vMax.z < other.m_vMin.z) return false;
+	if (m_vMin.x > other.m_vMax.x) return false;
+	if (m_vMin.y > other.m_vMax.y) return false;
+	if (m_vMin.z > other.m_vMax.z) return false;
 
-	return TRUE;
+	return true;
 }
 //------------------------------------------------------------------------
 //
@@ -1956,17 +1956,17 @@ BOOL CAABB::Hitcheck(const CAABB& other)
 //    AABB other
 //
 // 戻り値
-//    TRUE:接触している    FALSE:接触していない 
+//    true:接触している    false:接触していない 
 //
 //------------------------------------------------------------------------
-BOOL CAABB::HitcheckXZ(const CAABB& other)
+bool CAABB::HitcheckXZ(const CAABB& other)
 {
-	if (m_vMax.x < other.m_vMin.x) return FALSE;
-	if (m_vMax.z < other.m_vMin.z) return FALSE;
-	if (m_vMin.x > other.m_vMax.x) return FALSE;
-	if (m_vMin.z > other.m_vMax.z) return FALSE;
+	if (m_vMax.x < other.m_vMin.x) return false;
+	if (m_vMax.z < other.m_vMin.z) return false;
+	if (m_vMin.x > other.m_vMax.x) return false;
+	if (m_vMin.z > other.m_vMax.z) return false;
 
-	return TRUE;
+	return true;
 }
 //------------------------------------------------------------------------
 //

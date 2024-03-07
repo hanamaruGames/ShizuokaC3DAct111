@@ -45,11 +45,11 @@ struct STAGEMAP
 // --------------------------------------------------------------------
 struct MOVEMAP
 {
-	BOOL					m_bActive;			// 表示の可否
+	bool					m_bActive;			// 表示の可否
 	CFbxMesh*				m_pMesh;			// スタティックメッシュへのポインタ
 	int						m_nMaterialFlag;	// マテリアルフラグ　0:通常　1:透明色　2:ディスプレイスメントマッピング
 	CCollision*				m_pColMesh;			// 移動コリジョンメッシュへのポインタ
-	BOOL					m_bMoveOn;			// 移動ON      FALSE:移動停止　TRUE:移動実行          // -- 2022.11.14
+	bool					m_bMoveOn;			// 移動ON      false:移動停止　true:移動実行          // -- 2022.11.14
 	int						m_nMoveFlag;		// 移動区分    1:平行移動　2:回転　3:拡大縮小         // -- 2022.11.14
 	VECTOR3					m_vUp;				// 移動増分
 	VECTOR3					m_vMinOffset;		// 移動増分最小値                                     // -- 2022.11.14
@@ -67,11 +67,11 @@ struct MOVEMAP
 	}
 	void Init()
 	{
-		m_bActive = FALSE;
+		m_bActive = false;
 		m_pMesh = nullptr;
 		m_nMaterialFlag = 0;
 		m_pColMesh = nullptr;
-		m_bMoveOn = TRUE;    // 初期設定は移動実行
+		m_bMoveOn = true;    // 初期設定は移動実行
 		m_nMoveFlag = 1;       // 初期設定は平行移動
 		m_vUp = VECTOR3(0, 0, 0);
 		m_vMinOffset = VECTOR3(-9999, -9999, -9999);
@@ -168,7 +168,7 @@ protected:
 	CGameMain* m_pGMain;
 
 	DWORD								m_dwMapNo;
-	BOOL								m_bActive;
+	bool								m_bActive;
 
 	std::vector<STAGEMAP>				m_SkyMap;			// 空のマップ
 	std::vector<STAGEMAP>				m_StageMap;			// ステージのマップ
@@ -189,16 +189,16 @@ public:
 	void Update();
 	void Render();
 	void DestroyAll();
-	BOOL LoadMap(int mapbo);
+	bool LoadMap(int mapbo);
 
 	void UpdateMoveMap();
 	int  SetEvent(VECTOR3 vMin, VECTOR3 vMax, MATRIX4X4 mWorld, EVENTKIND nEvtKind, int nEvtNo, int nEvtOpe1 = 0, int nEvtOpe2 = 0, int nEvtKeyPush = 0);    // -- 2021.2.4
 	void UpdateEvent();                                                                           // -- 2021.2.4
 	void RunEvent(EVENTMAP& EventMap);                                                             // -- 2021.2.4
 
-	BOOL Hitcheck(CBaseObj* pObj, VECTOR3* pHit, VECTOR3* pNormal);
-	BOOL Hitcheck(VECTOR3 vNow, VECTOR3 vOld, VECTOR3* pHit, VECTOR3* pNormal);
-	BOOL Hitcheck(VECTOR3 vNow, VECTOR3 vOld, float fRadius, VECTOR3* pHit, VECTOR3* pNormal);    // -- 2020.12.11
+	bool Hitcheck(CBaseObj* pObj, VECTOR3* pHit, VECTOR3* pNormal);
+	bool Hitcheck(VECTOR3 vNow, VECTOR3 vOld, VECTOR3* pHit, VECTOR3* pNormal);
+	bool Hitcheck(VECTOR3 vNow, VECTOR3 vOld, float fRadius, VECTOR3* pHit, VECTOR3* pNormal);    // -- 2020.12.11
 
 	int  isCollisionMoveGravity(MATRIX4X4* pWorld, MATRIX4X4 mWorldOld, float fRadius = 0.2f);
 	int  isCollisionMoveGravity(MATRIX4X4* pWorld, MATRIX4X4 mWorldOld, VECTOR3& vHit, VECTOR3& vNormal, float fRadius = 0.2f);  // -- 2022.11.14

@@ -37,7 +37,7 @@ public:
 
 	void Init();
 
-	BOOL Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal);
+	bool Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal);
 	void Update() override;
 	void Render();
 	void RenderParticle(MATRIX4X4 W, MATRIX4X4 V, MATRIX4X4 P);
@@ -62,8 +62,8 @@ protected:
 	std::vector<PARTICLEBASE> m_ParticleArray;
 
 public:
-	BOOL Start(VECTOR3 vEmitPos, VECTOR3 vNormal = VECTOR3(0.0f, 0.0f, 0.0f));
-	BOOL Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal = VECTOR3(0.0f, 0.0f, 0.0f));
+	bool Start(VECTOR3 vEmitPos, VECTOR3 vNormal = VECTOR3(0.0f, 0.0f, 0.0f));
+	bool Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal = VECTOR3(0.0f, 0.0f, 0.0f));
 
 	HRESULT Load(TCHAR* szFName, PARTICLEBASE* pPartBase);
 	HRESULT SetSrc(PARTICLEBASE* pPartBase);

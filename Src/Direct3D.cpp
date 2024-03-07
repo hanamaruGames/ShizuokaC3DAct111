@@ -69,7 +69,7 @@ HRESULT CDirect3D::InitD3D(HWND hWnd, DWORD dwWidth, DWORD dwHeight)
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	sd.BufferCount = 1;
 	sd.OutputWindow = m_hWnd;
-	sd.Windowed = TRUE;
+	sd.Windowed = true;
 	//sd.Flags = DXGI_SWAP_CHAIN_FLAG_GDI_COMPATIBLE;  //  -- 2017.1.28  GetDC対策 エラーになる？
 
 	D3D_FEATURE_LEVEL pFeatureLevels = D3D_FEATURE_LEVEL_11_0;
@@ -91,7 +91,7 @@ HRESULT CDirect3D::InitD3D(HWND hWnd, DWORD dwWidth, DWORD dwHeight)
 
 	if( hr == E_FAIL){
 		MessageBox(0, _T("Direct3D.cpp D3Dデバイスとスワップチェーンの作成に失敗しました"), nullptr, MB_OK);
-		return FALSE;
+		return false;
 	}
 
 	//各種テクスチャーと、それに付帯する各種ビューを作成
@@ -141,7 +141,7 @@ HRESULT CDirect3D::InitD3D(HWND hWnd, DWORD dwWidth, DWORD dwHeight)
 	//rdc.CullMode = D3D11_CULL_NONE;	// 常にすべての三角形を描画
 	rdc.CullMode = D3D11_CULL_BACK;		// 後ろ向きの三角形を描画しません
 
-	rdc.FrontCounterClockwise = TRUE;		// 三角形の頂点がレンダーターゲット上で左回りならば三角形は前向きと見なされる
+	rdc.FrontCounterClockwise = true;		// 三角形の頂点がレンダーターゲット上で左回りならば三角形は前向きと見なされる
 
 	rdc.FillMode = D3D11_FILL_SOLID;
 	m_pDevice->CreateRasterizerState(&rdc, &m_pRStateL);	// ソリッド表示
@@ -166,14 +166,14 @@ HRESULT CDirect3D::InitD3D(HWND hWnd, DWORD dwWidth, DWORD dwHeight)
 	);
 	if (hr == E_FAIL) {
 		MessageBox(0, _T("Direct3D.cpp  COM オブジェクト(CLSID_WICImagingFactory)の作成に失敗しました"), nullptr, MB_OK);
-		return FALSE;
+		return false;
 	}
 
 	// DirectXMathライブラリが使えるかどうかチェックする
-	if (XMVerifyCPUSupport() != TRUE)
+	if (XMVerifyCPUSupport() != true)
 	{
 		MessageBox(0, _T("Direct3D.cpp  DirectXMathライブラリのＳＳＥが使えません。処理を終了いたします"), nullptr, MB_OK);
-		return FALSE;
+		return false;
 	}
 
 	return S_OK;
@@ -269,10 +269,10 @@ HRESULT CDirect3D::InitBlendState()
 	//pngファイル内にアルファ情報がある。アルファにより透過するよう指定している
 	D3D11_BLEND_DESC bd;
 	ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
-	bd.IndependentBlendEnable = FALSE;
-	bd.AlphaToCoverageEnable = FALSE;
+	bd.IndependentBlendEnable = false;
+	bd.AlphaToCoverageEnable = false;
 
-	bd.RenderTarget[0].BlendEnable = TRUE;
+	bd.RenderTarget[0].BlendEnable = true;
 	bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
 	bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 	//bd.RenderTarget[0].DestBlend = D3D11_BLEND_DEST_COLOR;  // 半透明?
@@ -290,10 +290,10 @@ HRESULT CDirect3D::InitBlendState()
 
 	// 加算合成用ブレンドステート作成
 	ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
-	bd.IndependentBlendEnable = FALSE;
-	bd.AlphaToCoverageEnable = FALSE;
+	bd.IndependentBlendEnable = false;
+	bd.AlphaToCoverageEnable = false;
 
-	bd.RenderTarget[0].BlendEnable = TRUE;
+	bd.RenderTarget[0].BlendEnable = true;
 	bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
 	bd.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
 	bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
@@ -370,12 +370,12 @@ void   CDirect3D::ClearRenderTarget(float ClearColor[])
 //	(設定したレンダーターゲットテクスチャ情報でＺバッファをＯＮ／ＯＦＦする)
 //
 //	引数
-//		BOOL bZbuf;    TRUE:ＺバッファＯＮ  FALSE:ＺバッファＯＦＦ
+//		bool bZbuf;    true:ＺバッファＯＮ  false:ＺバッファＯＦＦ
 //
 //	戻り値
 //		なし
 //------------------------------------------------------------------------
-void   CDirect3D::SetZBuffer(BOOL bZBuf)
+void   CDirect3D::SetZBuffer(bool bZBuf)
 {
 	// レンダーターゲットのＺバッファ　ＯＮ／ＯＦＦ
 	if (bZBuf)

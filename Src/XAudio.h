@@ -48,7 +48,7 @@ class CXAudioSource
 {
 public:
 	CXAudio*				m_pXAudio;			// XAudio マスタークラスアドレス	
-	BOOL					m_bWav;				// ソースがＷａｖｅファイルか　TRUE:XAudio(WAV)　FALSE:MCI(MP3やMID) 
+	bool					m_bWav;				// ソースがＷａｖｅファイルか　true:XAudio(WAV)　false:MCI(MP3やMID) 
 	TCHAR                   m_szAliasName[256]; // Mciの別名が入る
 
 	DWORD                   m_dwSourceIndex;					//	オーディオソースインデックス

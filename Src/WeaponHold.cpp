@@ -97,12 +97,12 @@ CBBox* CWeaponHoldProc::GetBBox(MATRIX4X4 mHold, BASEHOLDITEM HoldItem)
 //
 //     戻り値　　なし
 // ---------------------------------------------------------------------------
-BOOL CWeaponHoldProc::Disp(MATRIX4X4 mHold, BASEHOLDITEM HoldItem)
+bool CWeaponHoldProc::Disp(MATRIX4X4 mHold, BASEHOLDITEM HoldItem)
 {
 
 	((CWeaponHoldObj*)m_pObjArray[HoldItem.m_nHoldObjNo])->Disp(mHold, HoldItem);	// 武器・剣オブジェクト
 
-	return TRUE;
+	return true;
 }
 
 // ---------------------------------------------------------------------------   // -- 2023.1.31
@@ -205,7 +205,7 @@ void CWeaponHoldObj::Init()
 		break;
 	}
 
-	m_bActive = FALSE;
+	m_bActive = false;
 	m_dwStatus = NORMAL;
 
 }
@@ -334,9 +334,9 @@ CBBox* CWeaponHoldObj::GetBBox(MATRIX4X4 mHold, BASEHOLDITEM HoldItem)
 //
 //     戻り値　　なし
 // ---------------------------------------------------------------------------
-BOOL CWeaponHoldObj::Disp(MATRIX4X4 mHold, BASEHOLDITEM HoldItem)
+bool CWeaponHoldObj::Disp(MATRIX4X4 mHold, BASEHOLDITEM HoldItem)
 {
-	m_bActive = TRUE;  // スタート時に表示開始
+	m_bActive = true;  // スタート時に表示開始
 
 	// オフセットマトリックスの計算
 	MATRIX4X4 mPos = XMMatrixTranslation(HoldItem.m_nOffsetPos.x, HoldItem.m_nOffsetPos.y, HoldItem.m_nOffsetPos.z);
@@ -355,9 +355,9 @@ BOOL CWeaponHoldObj::Disp(MATRIX4X4 mHold, BASEHOLDITEM HoldItem)
 	// レンダリング
 	Render();
 
-	m_bActive = FALSE;  // １回処理したら、消す
+	m_bActive = false;  // １回処理したら、消す
 
-	return TRUE;
+	return true;
 }
 
 // ---------------------------------------------------------------------------

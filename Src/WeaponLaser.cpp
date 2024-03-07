@@ -47,7 +47,7 @@ CWeaponLaserProc::~CWeaponLaserProc()
 //  DWORD       dwOwner      ：武器を発射したキャラ区分（PC:PC(省略値)　ENM:敵）
 //
 // ---------------------------------------------------------------------------
-BOOL CWeaponLaserProc::Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWorld, DWORD dwOwner)
+bool CWeaponLaserProc::Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWorld, DWORD dwOwner)
 {
 	// レーザーの発射
 	MATRIX4X4 mLay, mOwnerRot, mOffset;
@@ -63,11 +63,11 @@ BOOL CWeaponLaserProc::Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWo
 		if (!m_pObjArray[i]->GetActive())
 		{
 			m_pObjArray[i]->Start(mLay, dwOwner);	       // 武器・レーザーオブジェクトの発射
-			return TRUE;
+			return true;
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 // ---------------------------------------------------------------------------
@@ -78,17 +78,17 @@ BOOL CWeaponLaserProc::Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWo
 //  DWORD       dwOwner      ：武器を発射したキャラ区分（PC:PC(省略値)　ENM:敵）
 //
 // ---------------------------------------------------------------------------
-BOOL CWeaponLaserProc::Start(MATRIX4X4 mWorld, DWORD dwOwner)
+bool CWeaponLaserProc::Start(MATRIX4X4 mWorld, DWORD dwOwner)
 {
 	for (int i = 0; i < m_pObjArray.size(); i++)
 	{
 		if (!m_pObjArray[i]->GetActive())
 		{
 			m_pObjArray[i]->Start(mWorld, dwOwner);	       // 武器・レーザーオブジェクトの発射
-			return TRUE;
+			return true;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 // ---------------------------------------------------------------------------
@@ -102,7 +102,7 @@ CWeaponLaserObj::CWeaponLaserObj(CBaseProc* pProc) : CBaseObj(pProc)
 	m_vStart = VECTOR3(0, 0, 0);		// 発射位置
 	m_vEnd = VECTOR3(0, 0, 0);			// 最終到達点
 
-	m_bActive = FALSE;
+	m_bActive = false;
 	m_dwStatus = NORMAL;
 
 	m_nAtc = WEAPON_ATC;
@@ -130,12 +130,12 @@ CWeaponLaserObj::~CWeaponLaserObj()
 //
 //     戻り値　　なし
 // ---------------------------------------------------------------------------
-BOOL CWeaponLaserObj::Start(MATRIX4X4 mStartWorld, DWORD dwOwner)
+bool CWeaponLaserObj::Start(MATRIX4X4 mStartWorld, DWORD dwOwner)
 {
 
-	if (m_bActive) return FALSE;
+	if (m_bActive) return false;
 
-	m_bActive = TRUE;
+	m_bActive = true;
 	m_mWorldOld = mStartWorld;  // レーザーの発射位置のマトリックスを保存しておく
 
 	MATRIX4X4 mScale;
@@ -151,7 +151,7 @@ BOOL CWeaponLaserObj::Start(MATRIX4X4 mStartWorld, DWORD dwOwner)
 
 	m_dwOwner = dwOwner;
 
-	return TRUE;
+	return true;
 }
 
 // ---------------------------------------------------------------------------
@@ -190,7 +190,7 @@ void CWeaponLaserObj::Update()
 
 	}
 
-	m_bActive = FALSE;	// １回ですぐ消す
+	m_bActive = false;	// １回ですぐ消す
 
 }
 

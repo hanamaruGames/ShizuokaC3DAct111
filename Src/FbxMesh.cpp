@@ -97,11 +97,11 @@ void CFbxMesh::DestroyD3D()
 // 引数
 //  const TCHAR*         FName          Fbxファイル名
 //
-//	戻り値 BOOL
-//         TRUE:正常   FALSE:異常
+//	戻り値 bool
+//         true:正常   false:異常
 //
 //------------------------------------------------------------------------
-BOOL CFbxMesh::Load(const TCHAR* FName)
+bool CFbxMesh::Load(const TCHAR* FName)
 {
 	timeBeginPeriod(1);
 	DWORD startTime = timeGetTime();
@@ -151,7 +151,7 @@ BOOL CFbxMesh::Load(const TCHAR* FName)
 		}
 		else {
 			MessageBox(nullptr, FName, _T("■□■ メッシュファイル('MESH')ではありません ■□■"), MB_OK);
-			return FALSE;
+			return false;
 		}
 		// バージョンのチェックは行わない
 		if (Head[4] == L'1')
@@ -173,7 +173,7 @@ BOOL CFbxMesh::Load(const TCHAR* FName)
 		else {
 			m_nMeshType = 0;
 			MessageBox(nullptr, FName, _T("■□■ メッシュタイプが異なります（1,2以外不可） ■□■"), MB_OK);
-			return FALSE;
+			return false;
 		}
 		p += sizeof(Head);
 
@@ -375,14 +375,14 @@ BOOL CFbxMesh::Load(const TCHAR* FName)
 		m_dwLoadTime = timeGetTime() - startTime;
 		timeEndPeriod(1);
 
-		return TRUE;
+		return true;
 
 	}
 	else {
 		MessageBox(nullptr, FName, _T("■□■ メッシュファイル(.mesh)がありません ■□■"), MB_OK);
 	}
 
-	return FALSE;
+	return false;
 }
 
 //------------------------------------------------------------------------
@@ -431,10 +431,10 @@ VECTOR3 CFbxMesh::GetStaticCenterPos(const StaticVertex* vertex, const DWORD& Nu
 //   StaticVertexNormal*       verticesNormal(OUT)  ノーマルマップ用頂点配列（出力）
 // 
 // 戻り値
-//   BOOL  TRUE
+//   bool  true
 // 
 //------------------------------------------------------------------------
-BOOL CFbxMesh::ChangeStaticVertexLayout(const StaticVertex* vertices, const DWORD* indices, const DWORD& IndicesNum, StaticVertexNormal* verticesNormal)
+bool CFbxMesh::ChangeStaticVertexLayout(const StaticVertex* vertices, const DWORD* indices, const DWORD& IndicesNum, StaticVertexNormal* verticesNormal)
 {
 
 	// ３角形ポリゴン毎に、全てのポリゴンの処理を行う
@@ -462,7 +462,7 @@ BOOL CFbxMesh::ChangeStaticVertexLayout(const StaticVertex* vertices, const DWOR
 		verticesNormal[indices[i * 3 + 2]].Binormal = verticesNormal[indices[i * 3]].Binormal;
 	}
 
-	return TRUE;
+	return true;
 }
 
 //------------------------------------------------------------------------
@@ -477,7 +477,7 @@ BOOL CFbxMesh::ChangeStaticVertexLayout(const StaticVertex* vertices, const DWOR
 //	戻り値 
 //
 //------------------------------------------------------------------------
-BOOL  CFbxMesh::SetStaticVIBuffer(const DWORD& mi, const StaticVertexNormal* vertices, const DWORD* indices)
+HRESULT CFbxMesh::SetStaticVIBuffer(const DWORD& mi, const StaticVertexNormal* vertices, const DWORD* indices)
 {
 	D3D11_BUFFER_DESC bd;
 	D3D11_SUBRESOURCE_DATA InitData;
@@ -558,10 +558,10 @@ VECTOR3 CFbxMesh::GetSkinCenterPos(const SkinVertex* vertex, const DWORD& Num)
 //   SkinVertexNormal*    verticesNormal(OUT)  ノーマルマップ用頂点配列（出力）
 // 
 // 戻り値
-//   BOOL  TRUE
+//   bool  true
 // 
 //------------------------------------------------------------------------
-BOOL CFbxMesh::ChangeSkinVertexLayout(const SkinVertex* vertices, const DWORD* indices, const DWORD& IndicesNum, SkinVertexNormal* verticesNormal)
+bool CFbxMesh::ChangeSkinVertexLayout(const SkinVertex* vertices, const DWORD* indices, const DWORD& IndicesNum, SkinVertexNormal* verticesNormal)
 {
 
 	// ３角形ポリゴン毎に、全てのポリゴンの処理を行う
@@ -604,7 +604,7 @@ BOOL CFbxMesh::ChangeSkinVertexLayout(const SkinVertex* vertices, const DWORD* i
 		verticesNormal[indices[i * 3 + 2]].Binormal = verticesNormal[indices[i * 3]].Binormal;
 	}
 
-	return TRUE;
+	return true;
 }
 
 //------------------------------------------------------------------------
@@ -619,7 +619,7 @@ BOOL CFbxMesh::ChangeSkinVertexLayout(const SkinVertex* vertices, const DWORD* i
 //	戻り値 
 //
 //------------------------------------------------------------------------
-BOOL  CFbxMesh::SetSkinVIBuffer(const DWORD& mi, const SkinVertexNormal* vertices, const DWORD* indices)
+HRESULT CFbxMesh::SetSkinVIBuffer(const DWORD& mi, const SkinVertexNormal* vertices, const DWORD* indices)
 {
 	D3D11_BUFFER_DESC bd;
 	D3D11_SUBRESOURCE_DATA InitData;
@@ -722,10 +722,10 @@ void CFbxMesh::SetRenderIdxArray(const MATRIX4X4& mWorld, const VECTOR3& vEye)
 //	VECTOR3 &Tangent           接線(OUT)
 //	VECTOR3 &Binormal          従法線(OUT)
 //
-//	戻り値 BOOL
+//	戻り値 bool
 //
 //------------------------------------------------------------------------
-BOOL CFbxMesh::CalcTangentSub(const VECTOR3& v1, const VECTOR3& v2, const VECTOR3& v3,
+bool CFbxMesh::CalcTangentSub(const VECTOR3& v1, const VECTOR3& v2, const VECTOR3& v3,
 	const VECTOR2& uv1, const VECTOR2& uv2, const VECTOR2& uv3, VECTOR3 &Tangent, VECTOR3 &Binormal)
 {
 	//
@@ -760,7 +760,7 @@ BOOL CFbxMesh::CalcTangentSub(const VECTOR3& v1, const VECTOR3& v2, const VECTOR
 			//MessageBox(0, _T("CalcTangentSub() : 座標、UVが同一の重複頂点を検出しました"), _T("エラー"), MB_OK);
 			Tangent = VECTOR3(1, 0, 0);   // エラーのため０にする
 			Binormal = VECTOR3(0, 1, 0);
-			return FALSE;
+			return false;
 		}
 		U[i] = -abc.y / abc.x;
 		V[i] = -abc.z / abc.x;
@@ -774,7 +774,7 @@ BOOL CFbxMesh::CalcTangentSub(const VECTOR3& v1, const VECTOR3& v2, const VECTOR
 	Binormal = VECTOR3(V[0], V[1], V[2]);
 	Binormal = normalize(Binormal);
 
-	return TRUE;
+	return true;
 }
 
 
@@ -789,7 +789,7 @@ BOOL CFbxMesh::CalcTangentSub(const VECTOR3& v1, const VECTOR3& v2, const VECTOR
 //	戻り値 
 //
 //------------------------------------------------------------------------
-BOOL  CFbxMesh::SetTexture(const DWORD& ti, const TCHAR* TexName)
+bool  CFbxMesh::SetTexture(const DWORD& ti, const TCHAR* TexName)
 {
 
 	// マテリアルカラーのクリヤー
@@ -855,7 +855,7 @@ BOOL  CFbxMesh::SetTexture(const DWORD& ti, const TCHAR* TexName)
 //	戻り値 
 //
 //------------------------------------------------------------------------
-BOOL  CFbxMesh::SetMaterial(const DWORD& ti, const TCHAR* Color)
+bool  CFbxMesh::SetMaterial(const DWORD& ti, const TCHAR* Color)
 {
 
 	VECTOR4 vDiffuse, vSpecular;
@@ -870,7 +870,7 @@ BOOL  CFbxMesh::SetMaterial(const DWORD& ti, const TCHAR* Color)
 	m_pTextureHeightArray[ti] = nullptr;
 	m_pTextureSpecularArray[ti] = nullptr;
 
-	return TRUE;
+	return true;
 }
 
 //------------------------------------------------------------------------
@@ -881,23 +881,23 @@ BOOL  CFbxMesh::SetMaterial(const DWORD& ti, const TCHAR* Color)
 //  const TCHAR*         FName          アニメファイル名
 //  const ROOTANIMTYPE&  RAType         ルートボーンアニメタイプ（省略値:eRootAnimNone）
 //
-//	戻り値 BOOL
-//         TRUE:正常   FALSE:異常
+//	戻り値 bool
+//         true:正常   false:異常
 //
 //------------------------------------------------------------------------
-BOOL CFbxMesh::LoadAnimation(const TCHAR* FName, const ROOTANIMTYPE& RAType)
+bool CFbxMesh::LoadAnimation(const TCHAR* FName, const ROOTANIMTYPE& RAType)
 {
 	// メッシュファイルが読み込まれていないとエラー
 	if (m_pMeshArray == nullptr)
 	{
 		MessageBox(nullptr, FName, _T("■□■ 対応するスキンメッシュファイル(.mesh)が読み込まれていません ■□■"), MB_OK);
-		return FALSE;
+		return false;
 	}
 	// スタティックメッシュファイルのときはエラー
 	if (m_nMeshType != 2 )
 	{
 		MessageBox(nullptr, FName, _T("■□■ スタティックメッシュにはアニメーションは設定できません ■□■"), MB_OK);
-		return FALSE;
+		return false;
 	}
 
 	timeBeginPeriod(1);
@@ -933,7 +933,7 @@ BOOL CFbxMesh::LoadAnimation(const TCHAR* FName, const ROOTANIMTYPE& RAType)
 		}
 		else {
 			MessageBox(nullptr, FName, _T("■□■ アニメーションファイル('ANMX')ではありません ■□■"), MB_OK);
-			return FALSE;
+			return false;
 		}
 		// バージョンのチェックは行わない
 		if (Head[4] == L'1')
@@ -1000,14 +1000,14 @@ BOOL CFbxMesh::LoadAnimation(const TCHAR* FName, const ROOTANIMTYPE& RAType)
 		m_dwLoadTime = timeGetTime() - startTime;
 		timeEndPeriod(1);
 
-		return TRUE;
+		return true;
 
 	}
 	else {
 		MessageBox(nullptr, FName, _T("■□■ アニメーションファイル(.anmx)がありません ■□■"), MB_OK);
 	}
 
-	return FALSE;
+	return false;
 }
 
 //==========================================================================================================================================================

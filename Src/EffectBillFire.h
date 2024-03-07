@@ -23,7 +23,7 @@ public:
 	CDirect3D* m_pD3D;
 	CShader* m_pShader;
 	// 
-	BOOL           m_bAuto;
+	bool           m_bAuto;
 	int            m_nBillIdx;
 	VECTOR3        m_vPos;
 	VECTOR2        m_vUVOffset;
@@ -36,9 +36,9 @@ public:
 
 	void Init();
 
-	BOOL Start(int BillIdx, VECTOR3 vPos);
+	bool Start(int BillIdx, VECTOR3 vPos);
 	void Update() override;
-	BOOL Render();
+	bool Render();
 
 	BILLBOARDBASE* GetBillArrayPtr();
 
@@ -62,8 +62,8 @@ protected:
 public:
 	HRESULT Load(TCHAR* szFName, BILLBOARDBASE* pBillBase);
 	HRESULT SetSrc(BILLBOARDBASE* pBillBase);
-	BOOL Start(VECTOR3 vPos);
-	BOOL Start(int nBillIdx, VECTOR3 vPos);
+	bool Start(VECTOR3 vPos);
+	bool Start(int nBillIdx, VECTOR3 vPos);
 	CEffectBillFireObj* Start(int nBillIdx = 0);
 
 	BILLBOARDBASE* GetBillArrayPtr(int i);

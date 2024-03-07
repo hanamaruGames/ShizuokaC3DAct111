@@ -19,7 +19,7 @@ protected:
 	VECTOR3                  m_vOffset;			// 銃口までのオフセット（銃のみ）
 public:
 	void Init();
-	BOOL Disp(MATRIX4X4 mHold, BASEHOLDITEM HoldItem);
+	bool Disp(MATRIX4X4 mHold, BASEHOLDITEM HoldItem);
 	void GetInfo(MATRIX4X4 mHold, BASEHOLDITEM HoldItem, MATRIX4X4& mMat, VECTOR3& vOffset);
 	void GetInfo(MATRIX4X4 mHold, BASEHOLDITEM HoldItem, MATRIX4X4& mMat, VECTOR3& vMin, VECTOR3& vMax);
 	CBBox* GetBBox(MATRIX4X4 mHold, BASEHOLDITEM HoldItem);
@@ -42,7 +42,7 @@ protected:
 	static const int WEAPON_MAX = 15;    // MAX :武器オブジェクトの数。（同時発生数）
 
 public:
-	BOOL Disp(MATRIX4X4 mHold, BASEHOLDITEM HoldItem); // 武器　の表示
+	bool Disp(MATRIX4X4 mHold, BASEHOLDITEM HoldItem); // 武器　の表示
 	void GetInfo(MATRIX4X4 mHold, BASEHOLDITEM HoldItem, MATRIX4X4& mMat, VECTOR3& vOffset);
 	void GetInfo(MATRIX4X4 mHold, BASEHOLDITEM HoldItem, MATRIX4X4& mMat, VECTOR3& vMin, VECTOR3& vMax);
 	CBBox* GetBBox(MATRIX4X4 mHold, BASEHOLDITEM HoldItem);

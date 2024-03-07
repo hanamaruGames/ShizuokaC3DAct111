@@ -49,8 +49,8 @@ struct VECTOR4 : public XMFLOAT4
 	}
 
 	// ‰‰ŽZ
-	inline BOOL operator == (const VECTOR4& r) const { return x == r.x && y == r.y && z == r.z && w == r.w; }
-	inline BOOL operator != (const VECTOR4& r) const { return x != r.x || y != r.y || z != r.z || w != r.w; }
+	inline bool operator == (const VECTOR4& r) const { return x == r.x && y == r.y && z == r.z && w == r.w; }
+	inline bool operator != (const VECTOR4& r) const { return x != r.x || y != r.y || z != r.z || w != r.w; }
 	inline VECTOR4 operator +(const VECTOR4& r) const { return VECTOR4(x + r.x, y + r.y, z + r.z, w + r.w); }
 	inline VECTOR4 operator -(const VECTOR4& r) const { return VECTOR4(x - r.x, y - r.y, z - r.z, w - r.w); }
 	inline VECTOR4 operator +=(const VECTOR4& r) {
@@ -119,8 +119,8 @@ struct VECTOR3 : public XMFLOAT3
 	}
 
 	// ‰‰ŽZ
-	inline BOOL operator == (const VECTOR3& r) const { return x == r.x && y == r.y && z == r.z; }
-	inline BOOL operator != (const VECTOR3& r) const { return x != r.x || y != r.y || z != r.z; }
+	inline bool operator == (const VECTOR3& r) const { return x == r.x && y == r.y && z == r.z; }
+	inline bool operator != (const VECTOR3& r) const { return x != r.x || y != r.y || z != r.z; }
 	inline VECTOR3 operator +(const VECTOR3& r) const { return VECTOR3(x + r.x, y + r.y, z + r.z); }
 	inline VECTOR3 operator -(const VECTOR3& r) const { return VECTOR3(x - r.x, y - r.y, z - r.z); }
 	inline VECTOR3 operator +=(const VECTOR3& r) {
@@ -189,8 +189,8 @@ struct VECTOR2 : public XMFLOAT2
 	}
 
 	// ‰‰ŽZ
-	inline BOOL operator == (const VECTOR2& r) const { return x == r.x && y == r.y; }
-	inline BOOL operator != (const VECTOR2& r) const { return x != r.x || y != r.y; }
+	inline bool operator == (const VECTOR2& r) const { return x == r.x && y == r.y; }
+	inline bool operator != (const VECTOR2& r) const { return x != r.x || y != r.y; }
 	inline VECTOR2 operator +(const VECTOR2& r) const { return VECTOR2(x + r.x, y + r.y); }
 	inline VECTOR2 operator -(const VECTOR2& r) const { return VECTOR2(x - r.x, y - r.y); }
 	inline VECTOR2 operator +=(const VECTOR2& r) {

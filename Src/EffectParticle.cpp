@@ -166,12 +166,12 @@ HRESULT CEffectParticleProc::SetSrc(PARTICLEBASE* pPartBase)
 //  VECTOR3 vEmitPos          パーティクルの発生位置
 //  VECTOR3 vNormal           パーティクルの発生面の法線（省略可）
 //
-//	戻り値 BOOL
-//		TRUE	= 正常
-//		FALSE	= 異常
+//	戻り値 bool
+//		true	= 正常
+//		false	= 異常
 //
 //------------------------------------------------------------------------
-BOOL CEffectParticleProc::Start(VECTOR3 vEmitPos, VECTOR3 vNormal)
+bool CEffectParticleProc::Start(VECTOR3 vEmitPos, VECTOR3 vNormal)
 {
 	return Start(0, vEmitPos, vNormal);
 }
@@ -185,12 +185,12 @@ BOOL CEffectParticleProc::Start(VECTOR3 vEmitPos, VECTOR3 vNormal)
 //  VECTOR3 vEmitPos          パーティクルの発生位置
 //  VECTOR3 vNormal           パーティクルの発生面の法線（省略可）
 //
-//	戻り値 BOOL
-//		TRUE	= 正常
-//		FALSE	= 異常
+//	戻り値 bool
+//		true	= 正常
+//		false	= 異常
 //
 //------------------------------------------------------------------------
-BOOL CEffectParticleProc::Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal)
+bool CEffectParticleProc::Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal)
 {
 
 	for (DWORD i = 0; i < m_pObjArray.size(); i++)
@@ -198,10 +198,10 @@ BOOL CEffectParticleProc::Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal)
 		if (!m_pObjArray[i]->GetActive())
 		{
 			((CEffectParticleObj*)m_pObjArray[i])->Start(nPartIdx, vEmitPos, vNormal);
-			return TRUE;
+			return true;
 		}
 	}
-	return FALSE;
+	return false;
 };
 
 
@@ -256,7 +256,7 @@ CEffectParticleObj::~CEffectParticleObj()
 //------------------------------------------------------------------------
 void CEffectParticleObj::Init()
 {
-	m_bActive = FALSE;
+	m_bActive = false;
 	m_MaxParticle = EFFECT_NUM_MAX;           // 初期値としてパーティクル配列要素数を入れて置く
 	m_pPtArray = new PART[EFFECT_NUM_MAX];    // 一つのオブジェクトの中のパーティクル配列の生成
 }
@@ -283,22 +283,22 @@ PARTICLEBASE* CEffectParticleObj::GetPartArrayPtr()
 //  VECTOR3 vEmitPos          パーティクルの発生位置
 //  VECTOR3 vNormal           パーティクルの発生面の法線（省略可）
 //
-//	戻り値 BOOL
-//		TRUE	= 正常
-//		FALSE	= 異常
+//	戻り値 bool
+//		true	= 正常
+//		false	= 異常
 //
 //------------------------------------------------------------------------
-BOOL CEffectParticleObj::Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal)
+bool CEffectParticleObj::Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal)
 {
 	if (m_bActive)
 	{
 		// すでに表示中のとき
-		return FALSE;
+		return false;
 
 	}
 	else {
 		// 開始処理
-		m_bActive = TRUE;
+		m_bActive = true;
 		m_nPartIdx = nPartIdx;
 		m_MaxParticle = GetPartArrayPtr()->m_nNum;  // パーティクル構造体のパーティクル数を設定する
 		if (m_MaxParticle > EFFECT_NUM_MAX) m_MaxParticle = EFFECT_NUM_MAX; // もしも要素数をオーバーしていたら要素数に訂正する
@@ -350,7 +350,7 @@ BOOL CEffectParticleObj::Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal)
 			m_pPtArray[i].Speed = (5 + ((float)rand() / (float)RAND_MAX)) * GetPartArrayPtr()->m_fSpeed;      // 移動スピード。ランダム
 			m_pPtArray[i].BirthFrame = (int)(((float)rand() / RAND_MAX) * GetPartArrayPtr()->m_iBarthFrame);  // 開始までの待ち時間。ランダム
 		}
-		return TRUE;
+		return true;
 	}
 }
 
@@ -394,7 +394,7 @@ void CEffectParticleObj::Update()
 
 		if (m_Frame >= GetPartArrayPtr()->m_FrameEnd) // 表示時間終了か
 		{
-			m_bActive = FALSE;
+			m_bActive = false;
 		}
 
 	}

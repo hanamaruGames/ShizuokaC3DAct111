@@ -132,7 +132,7 @@ protected:
 	BYTE           m_diKeyState[256];		// DirectInput keyboard state
 	DIMOUSESTATE   m_dims;				    // DirectInput mouse state
 	DIJOYSTATE2    m_js[JOYSTICK_COUNT];	// DirectInput joystick state  2005.11.30
-	BOOL           m_bInputActive;
+	bool           m_bInputActive;
 	//-----------------------------------------------------------------------------
 	// Keyboard
 	//-----------------------------------------------------------------------------
@@ -155,7 +155,7 @@ protected:
 	// Joystick
 	//-----------------------------------------------------------------------------
 	LPDIRECTINPUTDEVICE8 m_pJoy[JOYSTICK_COUNT];
-	BOOL m_bJoyFF[JOYSTICK_COUNT];
+	bool m_bJoyFF[JOYSTICK_COUNT];
 	DWORD m_BufferRestJoy;
 	DWORD m_BufferRestBackupJoy[JOYSTICK_COUNT];
 	DIDEVICEOBJECTDATA* m_pBufferJoy[JOYSTICK_COUNT];
@@ -174,49 +174,49 @@ public:
 	CDirectInput(void);
 	~CDirectInput();
 
-	BOOL StartDirectInput(HINSTANCE, HWND, int, DWORD, DWORD);
-	BOOL EndDirectInput(void);
+	bool StartDirectInput(HINSTANCE, HWND, int, DWORD, DWORD);
+	bool EndDirectInput(void);
 	void SetAcquire(void);
-	BOOL GetInput(void);
+	bool GetInput(void);
 	//-----------------------------------------------------------------------------
 	// Keyboard
 	//-----------------------------------------------------------------------------
-	BOOL GetKey(void);
-	BOOL CheckKey(const int&, const DWORD&);
-	BOOL InitKey(HWND);
-	BOOL SetPropertyKey(void);
+	bool GetKey(void);
+	bool CheckKey(const int&, const DWORD&);
+	bool InitKey(HWND);
+	bool SetPropertyKey(void);
 	//-----------------------------------------------------------------------------
 	// Mouse
 	//-----------------------------------------------------------------------------
-	BOOL GetMouse(void);
-	BOOL CheckMouse(const int&, const DWORD&);
+	bool GetMouse(void);
+	bool CheckMouse(const int&, const DWORD&);
 	DIMOUSESTATE GetMouseState( void );
 	POINT GetMousePos(); //マウスの現在の座標を取得する
-	void ShowMouseCursor(BOOL bFlag);
-	BOOL InitMouse(HWND);
-	BOOL SetPropertyMouse(void);
+	void ShowMouseCursor(bool bFlag);
+	bool InitMouse(HWND);
+	bool SetPropertyMouse(void);
 	//-----------------------------------------------------------------------------
 	// Joystick
 	//-----------------------------------------------------------------------------
-	BOOL GetJoy(void);
-	BOOL IfJoyFF(int nSum=JOY_PLAYER1);
+	bool GetJoy(void);
+	bool IfJoyFF(int nSum=JOY_PLAYER1);
 	DIJOYSTATE2 GetJoyState(int nSum=JOY_PLAYER1);
 	int  GetJoyNum(void);                                // -- 2018.8.27
-	BOOL CheckJoy(const int&, const DWORD&, int nSum=JOY_PLAYER1);
-	BOOL CheckUpDownLeftRight(int, DWORD, int nSum=JOY_PLAYER1);
-	BOOL InitJoy(HWND);
-	BOOL InitJoyNormal(HWND);
-	BOOL InitJoyFF(HWND);
-	BOOL SetPropertyJoy(void);
-	BOOL CheckJoyImm(DWORD, int nSum=JOY_PLAYER1);
-	BOOL PlayJoyEffect(int, int nNum=1, int nSum=JOY_PLAYER1);
-	BOOL CreateJoyEffectStandard(void);
-	BOOL ReadJoyEffect(TCHAR* szFName, int &nEffectNo, int &nNum);
+	bool CheckJoy(const int&, const DWORD&, int nSum=JOY_PLAYER1);
+	bool CheckUpDownLeftRight(int, DWORD, int nSum=JOY_PLAYER1);
+	bool InitJoy(HWND);
+	bool InitJoyNormal(HWND);
+	bool InitJoyFF(HWND);
+	bool SetPropertyJoy(void);
+	bool CheckJoyImm(DWORD, int nSum=JOY_PLAYER1);
+	bool PlayJoyEffect(int, int nNum=1, int nSum=JOY_PLAYER1);
+	bool CreateJoyEffectStandard(void);
+	bool ReadJoyEffect(TCHAR* szFName, int &nEffectNo, int &nNum);
 	//-----------------------------------------------------------------------------
 	// CALLBACK
 	//-----------------------------------------------------------------------------
-	BOOL EnumJoysticksCb(LPCDIDEVICEINSTANCE pInst, LPVOID lpvContext);
-	BOOL EnumEffectsInFileCb(LPCDIFILEEFFECT lpdife, LPVOID pvRef );
+	bool EnumJoysticksCb(LPCDIDEVICEINSTANCE pInst, LPVOID lpvContext);
+	bool EnumEffectsInFileCb(LPCDIFILEEFFECT lpdife, LPVOID pvRef );
 
 };
 

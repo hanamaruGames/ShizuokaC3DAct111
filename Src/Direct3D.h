@@ -111,7 +111,7 @@ public:
 
 	void SetRenderTarget(ID3D11RenderTargetView* pTexRTV, ID3D11DepthStencilView* pDSTexDSV);  // -- 2019.4.19
 	void ClearRenderTarget(float ClearColor[]);                                                // -- 2019.4.19
-	void SetZBuffer(BOOL bZBuf);                                                               // -- 2019.4.19
+	void SetZBuffer(bool bZBuf);                                                               // -- 2019.4.19
 
 	// --------------------------------------------------
 	void DestroyD3D();

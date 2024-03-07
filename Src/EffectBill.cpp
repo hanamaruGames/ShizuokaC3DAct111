@@ -185,12 +185,12 @@ HRESULT CEffectBillProc::SetSrc(BILLBOARDBASE* pBillBase)
 // 
 //  VECTOR3 vPos          ビルボードの発生位置(表示中心位置)
 //
-//	戻り値 BOOL
-//		TRUE	= 正常
-//		FALSE	= 異常
+//	戻り値 bool
+//		true	= 正常
+//		false	= 異常
 //
 //------------------------------------------------------------------------
-BOOL CEffectBillProc::Start(VECTOR3 vPos)
+bool CEffectBillProc::Start(VECTOR3 vPos)
 {
 	return Start(0, vPos);     //  ビルボードの要素番号０を開始する
 }
@@ -203,22 +203,22 @@ BOOL CEffectBillProc::Start(VECTOR3 vPos)
 //  int     nBillIdx      ビルボードの要素番号
 //  VECTOR3 vPos          ビルボードの発生位置(表示中心位置)
 //
-//	戻り値 BOOL
-//		TRUE	= 正常
-//		FALSE	= 異常
+//	戻り値 bool
+//		true	= 正常
+//		false	= 異常
 //
 //------------------------------------------------------------------------
-BOOL CEffectBillProc::Start(int nBillIdx, VECTOR3 vPos)
+bool CEffectBillProc::Start(int nBillIdx, VECTOR3 vPos)
 {
 	for (DWORD i = 0; i < m_pObjArray.size(); i++)
 	{
 		if (!m_pObjArray[i]->GetActive())
 		{
 			((CEffectBillObj*)m_pObjArray[i])->Start(nBillIdx, vPos);
-			return TRUE;
+			return true;
 		}
 	}
-	return FALSE;
+	return false;
 };
 
 
@@ -266,7 +266,7 @@ CEffectBillObj::~CEffectBillObj()
 //------------------------------------------------------------------------
 void CEffectBillObj::Init()
 {
-	m_bActive = FALSE;
+	m_bActive = false;
 }
 
 //------------------------------------------------------------------------
@@ -288,21 +288,21 @@ BILLBOARDBASE* CEffectBillObj::GetBillArrayPtr()
 //  int       nBillIdx ビルボードの要素番号。
 //  VECTOR3   vPos     表示位置（ビルボードの表示中心位置を指定）
 //
-//	戻り値 BOOL
-//		TRUE      表示継続
-//		FALSE     表示終了
+//	戻り値 bool
+//		true      表示継続
+//		false     表示終了
 //
 //------------------------------------------------------------------------
-BOOL CEffectBillObj::Start(int nBillIdx, VECTOR3 vPos)
+bool CEffectBillObj::Start(int nBillIdx, VECTOR3 vPos)
 {
-	if (m_bActive) return FALSE;  // すでに開始中
+	if (m_bActive) return false;  // すでに開始中
 
-	m_bActive = TRUE;
+	m_bActive = true;
 	m_nBillIdx = nBillIdx;   // ビルボード構造体配列の要素番号
 	m_dwFrame = 0;
 	m_vPos = vPos;
 
-	return TRUE;
+	return true;
 }
 
 //------------------------------------------------------------------------
@@ -323,7 +323,7 @@ void CEffectBillObj::Update()
 
 	if (dwIdx >= GetBillArrayPtr()->m_dwNumX * GetBillArrayPtr()->m_dwNumY)	// パターンの最後に達したとき
 	{
-		m_bActive = FALSE;
+		m_bActive = false;
 		return;
 	}
 
@@ -346,15 +346,15 @@ void CEffectBillObj::Update()
 //
 //	ビルボードオブジェクトを画面にレンダリング	
 //
-//	戻り値 BOOL
-//		TRUE      表示継続
-//		FALSE     表示終了
+//	戻り値 bool
+//		true      表示継続
+//		false     表示終了
 //
 //------------------------------------------------------------------------
-BOOL CEffectBillObj::Render()
+bool CEffectBillObj::Render()
 {
 
-	if (!m_bActive) return FALSE;
+	if (!m_bActive) return false;
 
 	//ビルボードの、視点を向くワールドトランスフォームを求める
 	MATRIX4X4 mWorld = GetLookatMatrix(m_vPos, m_pGMain->m_vEyePt);
@@ -418,7 +418,7 @@ BOOL CEffectBillObj::Render()
 		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 	}
 
-	return TRUE;
+	return true;
 }
 
 //------------------------------------------------------------------------  // -- 2019.7.17

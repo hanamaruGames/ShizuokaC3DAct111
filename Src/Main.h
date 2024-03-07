@@ -44,7 +44,7 @@ public:
 	CGameMain*	   m_pGMain;		  // ゲームメインクラス
 	HINSTANCE      m_hInstance;
 	HWND           m_hWnd;
-	BOOL           m_bLoopFlag;       // ループフラグ　TRUE:ループ　FALSE:ループ終了
+	bool           m_bLoopFlag;       // ループフラグ　true:ループ　false:ループ終了
 	double         m_MainLoopTime;    // ループスピード　1/60Sec
 
 public:
@@ -53,7 +53,7 @@ public:
 	LRESULT MsgProc(HWND,UINT,WPARAM,LPARAM);
 	HRESULT Init();
 	void    MessageLoop();
-	BOOL    MessageProcess(MSG* msg);
+	bool    MessageProcess(MSG* msg);
 	void    Loop();
 	void    DispFps();
 	void    Quit();

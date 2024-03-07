@@ -22,7 +22,7 @@ CMapProc::CMapProc(CGameMain*	pGMain)
 	// (vectorクラスは初期化不要)
 	m_pGMain = pGMain;
 	m_dwMapNo = 0;
-	m_bActive = FALSE;
+	m_bActive = false;
 	m_pColMesh   = nullptr;					// コリジョンメッシュへのポインタ
 	m_nEvtIdx = 0;							// -- 2021.2.4
 
@@ -46,7 +46,7 @@ CMapProc::~CMapProc()
 void CMapProc::DestroyAll()
 {
 	m_dwMapNo = 0;
-	m_bActive = FALSE;
+	m_bActive = false;
 	m_nEvtIdx = 0;							// -- 2021.2.4
 
 	// メッシュのデリート
@@ -95,11 +95,11 @@ void CMapProc::DestroyAll()
 //   VECTOR3* pNormal	接触点の法線ベクトル（出力）wwwwwwwwwwwwwwwwwwwww
 
 //
-//   戻り値　BOOL
-//           TRUE:ヒットしたとき       FALSE：ヒットしていないとき
+//   戻り値　bool
+//           true:ヒットしたとき       false：ヒットしていないとき
 //
 //-----------------------------------------------------------------------------
-BOOL   CMapProc::Hitcheck(CBaseObj* pObj, VECTOR3* pHit, VECTOR3* pNormal)
+bool   CMapProc::Hitcheck(CBaseObj* pObj, VECTOR3* pHit, VECTOR3* pNormal)
 {
 	return  Hitcheck(GetPositionVector(pObj->GetWorld()), GetPositionVector(pObj->GetWorldOld()), pHit, pNormal);
 }
@@ -113,13 +113,13 @@ BOOL   CMapProc::Hitcheck(CBaseObj* pObj, VECTOR3* pHit, VECTOR3* pNormal)
 //   VECTOR3* vHit		接触点の座標（出力）
 //   VECTOR3* vNormal	接触点の法線ベクトル（出力）
 //
-//   戻り値　BOOL
-//           TRUE:ヒットしたとき       FALSE：ヒットしていないとき
+//   戻り値　bool
+//           true:ヒットしたとき       false：ヒットしていないとき
 //
 //-----------------------------------------------------------------------------
-BOOL   CMapProc::Hitcheck(VECTOR3 vNow, VECTOR3 vOld, VECTOR3* pHit, VECTOR3* pNormal)
+bool   CMapProc::Hitcheck(VECTOR3 vNow, VECTOR3 vOld, VECTOR3* pHit, VECTOR3* pNormal)
 {
-	BOOL  bRet;
+	bool  bRet;
 	for (int i = 0; i < m_MoveMap.size(); i++)
 	{
 		if (m_MoveMap[i].m_pColMesh && m_MoveMap[i].m_bActive)
@@ -131,10 +131,10 @@ BOOL   CMapProc::Hitcheck(VECTOR3 vNow, VECTOR3 vOld, VECTOR3* pHit, VECTOR3* pN
 
 	if (m_pColMesh && m_pColMesh->isCollisionLay(vNow, vOld, *pHit, *pNormal))
 	{
-		return TRUE;
+		return true;
 	}
 	else {
-		return FALSE;
+		return false;
 	}
 
 }
@@ -149,13 +149,13 @@ BOOL   CMapProc::Hitcheck(VECTOR3 vNow, VECTOR3 vOld, VECTOR3* pHit, VECTOR3* pN
 //   VECTOR3 &vHit      接触時のオブジェクト中心位置の座標（出力）
 //   VECTOR3 &vNormal   接触点の法線ベクトル（出力）
 //
-//   戻り値　BOOL
-//           TRUE:ヒットしたとき       FALSE：ヒットしていないとき
+//   戻り値　bool
+//           true:ヒットしたとき       false：ヒットしていないとき
 //
 //-----------------------------------------------------------------------------
-BOOL   CMapProc::Hitcheck(VECTOR3 vNow, VECTOR3 vOld, float fRadius, VECTOR3* pHit, VECTOR3* pNormal)
+bool   CMapProc::Hitcheck(VECTOR3 vNow, VECTOR3 vOld, float fRadius, VECTOR3* pHit, VECTOR3* pNormal)
 {
-	BOOL  bRet;
+	bool  bRet;
 	for (int i = 0; i < m_MoveMap.size(); i++)
 	{
 		if (m_MoveMap[i].m_pColMesh && m_MoveMap[i].m_bActive)
@@ -167,10 +167,10 @@ BOOL   CMapProc::Hitcheck(VECTOR3 vNow, VECTOR3 vOld, float fRadius, VECTOR3* pH
 
 	if (m_pColMesh && m_pColMesh->isCollisionSphere(vNow, vOld, fRadius, *pHit, *pNormal))
 	{
-		return TRUE;
+		return true;
 	}
 	else {
-		return FALSE;
+		return false;
 	}
 
 }
@@ -555,7 +555,7 @@ void CMapProc::UpdateMoveMap()
 			// ループをしないときの停止判断。反転のタイミングで停止する
 			if (m_MoveMap[i].m_nLoop == 0 && m_MoveMap[i].m_nChangeFlag == 1)
 			{
-				m_MoveMap[i].m_bMoveOn = FALSE;    // 移動しない    // -- 2022.11.14
+				m_MoveMap[i].m_bMoveOn = false;    // 移動しない    // -- 2022.11.14
 			}
 		}
 	}
@@ -577,10 +577,10 @@ void  CMapProc::Render(void)
 		{
 			// 空のレンダリング   陰影をつけないレンダリング 
 			// Zバッファを無効化
-			m_pGMain->m_pD3D->SetZBuffer(FALSE);
+			m_pGMain->m_pD3D->SetZBuffer(false);
 			m_SkyMap[0].m_pMesh->Render(m_SkyMap[0].m_mWorld, m_pGMain->m_mView, m_pGMain->m_mProj, VECTOR3(0, 0, 0), m_pGMain->m_vEyePt);  // 陰影をつけないレンダリング 
 			// Zバッファを有効化
-			m_pGMain->m_pD3D->SetZBuffer(TRUE);
+			m_pGMain->m_pD3D->SetZBuffer(true);
 		}
 
 		// マップレンダリング

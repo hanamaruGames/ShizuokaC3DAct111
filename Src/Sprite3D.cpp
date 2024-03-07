@@ -768,7 +768,7 @@ void CSprite::SetShader()
 	}
 
 	//Zバッファを無効化
-	m_pD3D->SetZBuffer(FALSE);              // -- 2019.4.19
+	m_pD3D->SetZBuffer(false);              // -- 2019.4.19
 
 }
 //------------------------------------------------------------------------
@@ -784,7 +784,7 @@ void CSprite::ResetShader()
 {
 
 	//Zバッファを有効化
-	m_pD3D->SetZBuffer(TRUE);              // -- 2019.4.19
+	m_pD3D->SetZBuffer(true);              // -- 2019.4.19
 
 
 	// 通常のブレンディングに戻す
@@ -906,12 +906,12 @@ HRESULT CSprite::SetSrc3D(const float& fDestWidth, const float& fDestHeight, con
 //		const VECTOR2& vSrcSize   パターンの大きさ
 //		const float& fAlpha           透明度（省略可）
 //
-//	戻り値 BOOL
-//		TRUE      表示継続
-//		FALSE     表示終了
+//	戻り値 bool
+//		true      表示継続
+//		false     表示終了
 //
 //------------------------------------------------------------------------
-BOOL CSprite::Draw3D(CSpriteImage* pImage, const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const VECTOR2& vSize, const VECTOR2& vSrcPos, const VECTOR2& vSrcSize, const float& fAlpha)
+bool CSprite::Draw3D(CSpriteImage* pImage, const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const VECTOR2& vSize, const VECTOR2& vSrcPos, const VECTOR2& vSrcSize, const float& fAlpha)
 {
 	m_pImage = pImage;
 
@@ -934,15 +934,15 @@ BOOL CSprite::Draw3D(CSpriteImage* pImage, const VECTOR3& vPos, const MATRIX4X4&
 //		const VECTOR2& vSrcSize   パターンの大きさ
 //		const float& fAlpha       透明度（省略可）
 //
-//	戻り値 BOOL
-//		TRUE      表示継続
-//		FALSE     表示終了
+//	戻り値 bool
+//		true      表示継続
+//		false     表示終了
 //
 //------------------------------------------------------------------------
-BOOL CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const VECTOR2& vSize, const VECTOR2& vSrcPos, const VECTOR2& vSrcSize, const float& fAlpha)
+bool CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const VECTOR2& vSize, const VECTOR2& vSrcPos, const VECTOR2& vSrcSize, const float& fAlpha)
 {
 	// イメージがないときは描画しない
-	if (m_pImage == nullptr ) return FALSE;
+	if (m_pImage == nullptr ) return false;
 
 	// 表示ビルボードの大きさのバーテックスバッファを作成する
 	SetSrc3D( vSize.x, vSize.y, (DWORD)vSrcPos.x, (DWORD)vSrcPos.y, (DWORD)vSrcSize.x, (DWORD)vSrcSize.y);
@@ -964,15 +964,15 @@ BOOL CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X
 //		const MATRIX4X4& mProj      プロジェクションマトリックス
 //		const VECTOR3&   vEye       視点位置
 //
-//	戻り値 BOOL
-//		TRUE      表示継続
-//		FALSE     表示終了
+//	戻り値 bool
+//		true      表示継続
+//		false     表示終了
 //
 //------------------------------------------------------------------------
-BOOL CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye)
+bool CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye)
 {
 	// イメージがなかったりバーテックスバッファが作成されていないときは描画しない
-	if (m_pImage == nullptr || m_pVertexBufferBillSprite == nullptr) return FALSE;
+	if (m_pImage == nullptr || m_pVertexBufferBillSprite == nullptr) return false;
 
 	//ビルボードの、視点を向くワールドトランスフォームを求める
 	MATRIX4X4 mWorld = GetLookatMatrix(vPos, vEye);
@@ -1033,7 +1033,7 @@ BOOL CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X
 	// 通常のブレンディングに戻す
 	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 
-	return TRUE;
+	return true;
 
 }
 
@@ -1054,12 +1054,12 @@ BOOL CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X
 //		const DWORD& colorABGR    線色　colorABGRは、ABGRの指定。例：白色は(0x00ffffff)  引数はRGB(255,255,255)
 //		const float& fAlpha       透明度(省略値１)
 //
-//	戻り値 BOOL
-//		TRUE      表示継続
-//		FALSE     表示終了
+//	戻り値 bool
+//		true      表示継続
+//		false     表示終了
 //
 //------------------------------------------------------------------------
-BOOL CSprite::DrawLine3D(const VECTOR3& vStart, const VECTOR3& vEnd, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const DWORD& colorABGR, const float& fAlpha)
+bool CSprite::DrawLine3D(const VECTOR3& vStart, const VECTOR3& vEnd, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const DWORD& colorABGR, const float& fAlpha)
 {
 
 	//使用するシェーダーのセット
@@ -1091,7 +1091,7 @@ BOOL CSprite::DrawLine3D(const VECTOR3& vStart, const VECTOR3& vEnd, const MATRI
 		if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_pVertexBufferLine)))
 		{
 			MessageBox(0, _T("Sprite3D.cpp バーテックスバッファーLINE 作成失敗"), nullptr, MB_OK);
-			return FALSE;
+			return false;
 		}
 	}
 	else {
@@ -1155,7 +1155,7 @@ BOOL CSprite::DrawLine3D(const VECTOR3& vStart, const VECTOR3& vEnd, const MATRI
 	//プリミティブをレンダリング
 	m_pD3D->m_pDeviceContext->Draw(2, 0);
 
-	return TRUE;
+	return true;
 }
 
 // ========================================================================================
@@ -1454,7 +1454,7 @@ void CFontTexture::SetShader()
 	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 
 	//Zバッファを無効化
-	m_pD3D->SetZBuffer(FALSE);              // -- 2019.4.19
+	m_pD3D->SetZBuffer(false);              // -- 2019.4.19
 
 }
 //------------------------------------------------------------------------
@@ -1470,7 +1470,7 @@ void CFontTexture::ResetShader()
 {
 
 	//Zバッファを有効化
-	m_pD3D->SetZBuffer(TRUE);              // -- 2019.4.19
+	m_pD3D->SetZBuffer(true);              // -- 2019.4.19
 
 
 	// 通常のブレンディングに戻す
@@ -1798,15 +1798,15 @@ HRESULT CFontTexture::CreateVB3D(const float& fDestWidth, const float& fDestHeig
 //		const float& fAlpha      透明度（省略可）
 //		const TCHAR* szFontNam  フォント名（省略可）
 //
-//	戻り値 BOOL
-//		TRUE      表示継続
-//		FALSE     表示終了
+//	戻り値 bool
+//		true      表示継続
+//		false     表示終了
 //
 //------------------------------------------------------------------------
-BOOL CFontTexture::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const TCHAR* szText, const VECTOR2& vSize, const DWORD& colorABGR, const float& fAlpha, const TCHAR* szFontName)
+bool CFontTexture::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const TCHAR* szText, const VECTOR2& vSize, const DWORD& colorABGR, const float& fAlpha, const TCHAR* szFontName)
 {
 
-	if (szText[0] == _T('\0')) return FALSE;  // 文字列がないときは描画しない
+	if (szText[0] == _T('\0')) return false;  // 文字列がないときは描画しない
 
 	//
 	// 前回までの「文字列や色、サイズ」が１画面分・発生順にm_TextData配列に入っているので
@@ -1895,6 +1895,6 @@ BOOL CFontTexture::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MAT
 		m_Idx--;
 	}
 
-	return TRUE;
+	return true;
 }
 

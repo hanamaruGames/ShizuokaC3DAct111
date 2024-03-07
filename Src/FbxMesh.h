@@ -219,23 +219,23 @@ public:
 	void    SetShaderMatColor(TCHAR ProfileName[], int SlotNo, int i);      // -- 2020.12.15
 
 	void    DestroyD3D();
-	BOOL    Load(const TCHAR* FName);
-	BOOL    LoadAnimation(const TCHAR* FName, const ROOTANIMTYPE& RAType = eRootAnimNone);
+	bool    Load(const TCHAR* FName);
+	bool    LoadAnimation(const TCHAR* FName, const ROOTANIMTYPE& RAType = eRootAnimNone);
 
 
 	VECTOR3 GetStaticCenterPos(const StaticVertex* vertex, const DWORD& Num);
-	BOOL    ChangeStaticVertexLayout(const StaticVertex* vertices, const DWORD* indices, const DWORD& IndicesNum, StaticVertexNormal* verticesNormal);
-	BOOL    SetStaticVIBuffer(const DWORD& mi, const StaticVertexNormal* vertices, const DWORD* indices);
+	bool    ChangeStaticVertexLayout(const StaticVertex* vertices, const DWORD* indices, const DWORD& IndicesNum, StaticVertexNormal* verticesNormal);
+	HRESULT SetStaticVIBuffer(const DWORD& mi, const StaticVertexNormal* vertices, const DWORD* indices);
 
 	VECTOR3 GetSkinCenterPos(const SkinVertex* vertex, const DWORD& Num);
-	BOOL    ChangeSkinVertexLayout(const SkinVertex* vertices, const DWORD* indices, const DWORD& IndicesNum, SkinVertexNormal* verticesNormal);
-	BOOL    SetSkinVIBuffer(const DWORD& mi, const SkinVertexNormal* vertices, const DWORD* indices);
+	bool    ChangeSkinVertexLayout(const SkinVertex* vertices, const DWORD* indices, const DWORD& IndicesNum, SkinVertexNormal* verticesNormal);
+	HRESULT SetSkinVIBuffer(const DWORD& mi, const SkinVertexNormal* vertices, const DWORD* indices);
 
 	void    SetRenderIdxArray(const MATRIX4X4& mWorld, const VECTOR3& vEye);
-	BOOL    CalcTangentSub(const VECTOR3& v1, const VECTOR3& v2, const VECTOR3& v3,
+	bool    CalcTangentSub(const VECTOR3& v1, const VECTOR3& v2, const VECTOR3& v3,
 							const VECTOR2& uv1, const VECTOR2& uv2, const VECTOR2& uv3, VECTOR3 &tangent, VECTOR3 &Binormal);
-	BOOL    SetTexture(const DWORD& ti, const TCHAR* TexName);
-	BOOL    SetMaterial(const DWORD& ti, const TCHAR* TexName);               // -- 2020.12.15
+	bool    SetTexture(const DWORD& ti, const TCHAR* TexName);
+	bool    SetMaterial(const DWORD& ti, const TCHAR* TexName);               // -- 2020.12.15
 
 	int GetEndFrame(const int& animNum);  // endFrame-startFrame‚ðŽæ“¾ 
 

@@ -37,7 +37,7 @@ protected:
 
 	// -------------------------------------------------
 	float				m_fLocalRotY;		// ローカル軸(Y軸)
-	BOOL				m_bSide;			// 横移動モード
+	bool				m_bSide;			// 横移動モード
 	int					m_nMoveFwdPower;	// 前進移動速度倍率
 
 public:

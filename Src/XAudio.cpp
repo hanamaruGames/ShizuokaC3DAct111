@@ -146,11 +146,11 @@ HRESULT CXAudioSource::Load(TCHAR* szFileName, DWORD dwNum)
 
 	if ( m_pXAudio->m_pXAudio2 && ( _tcscmp(ext, _T(".wav")) == 0 || _tcscmp(ext, _T(".WAV")) == 0 ) ) // -- 2018.7.8 XAudioが初期化されていて、ＷＡＶ形式のとき
 	{
-		m_bWav = TRUE;				// WAVファイルのときはXAudio2を使用する
+		m_bWav = true;				// WAVファイルのときはXAudio2を使用する
 		LoadAudio(szFileName, dwNum);
 	}
 	else {
-		m_bWav = FALSE;				// WAVファイル以外のときはMciを使用する
+		m_bWav = false;				// WAVファイル以外のときはMciを使用する
 		LoadMci(szFileName);
 	}
 	return S_OK;

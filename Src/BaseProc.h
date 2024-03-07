@@ -49,7 +49,7 @@ protected:
 	DWORD			m_dwStatus;			// ステータス
 	DWORD			m_dwStatusSub;		// ステータスサブ
 	DWORD			m_dwStatusPhase;	// ステータスフェーズ
-	BOOL			m_bActive;			// TRUE:表示  FALSE:非表示
+	bool			m_bActive;			// true:表示  false:非表示
 	DWORD			m_dwObjID;			// オブジェクトＩＤ
 	DWORD			m_dwObjNo;			// オブジェクトＮＯ
 	int				m_nMeshIdx;			// メッシュ配列の添字                   // -- 2022.12.20
@@ -73,24 +73,24 @@ protected:
 
 public:
 	// オブジェクトの発生処理
-	virtual BOOL	Start() { return TRUE; }
-	virtual BOOL	Start(VECTOR3 vPos) { return TRUE; }
-	virtual BOOL	Start(VECTOR3 vPos, VECTOR3 vNormal) { return TRUE; }
-	virtual BOOL	Start(MATRIX4X4 mGun, DWORD dwOwner) { return TRUE; }
-	virtual BOOL	Start(VECTOR3 vStart, VECTOR3 vTarget, DWORD dwOwner) { return TRUE; }
-	virtual BOOL	Start(MATRIX4X4 mMat, VECTOR3 vMin, VECTOR3 vMax, DWORD dwOwner) { return TRUE; }
-	virtual BOOL	Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWorld, DWORD dwOwner) { return TRUE; }
+	virtual bool	Start() { return true; }
+	virtual bool	Start(VECTOR3 vPos) { return true; }
+	virtual bool	Start(VECTOR3 vPos, VECTOR3 vNormal) { return true; }
+	virtual bool	Start(MATRIX4X4 mGun, DWORD dwOwner) { return true; }
+	virtual bool	Start(VECTOR3 vStart, VECTOR3 vTarget, DWORD dwOwner) { return true; }
+	virtual bool	Start(MATRIX4X4 mMat, VECTOR3 vMin, VECTOR3 vMax, DWORD dwOwner) { return true; }
+	virtual bool	Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWorld, DWORD dwOwner) { return true; }
 
 	// あたり判定処理
-	virtual BOOL    Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld);
-	virtual BOOL    Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack);
+	virtual bool    Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld);
+	virtual bool    Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack);
 
 	// 更新処理
 	virtual	void    Update() { ; }
 
 	// 目的地（vTargetX,Z）への移動処理               // -- 2023.1.14
 	// (なお、回転スピードの省略値は3.0f度、近接リミットの省略値は0.1fとする)
-	virtual	BOOL    TargetMove(VECTOR3 vTarget, float fSpeedIn, float fRotSpeed = 3.0f, float fNearLimit = 0.1f);
+	virtual	bool    TargetMove(VECTOR3 vTarget, float fSpeedIn, float fRotSpeed = 3.0f, float fNearLimit = 0.1f);
 
 	// オブジェクト同士が重ならないようにするメンバ関数
 	virtual	CBaseObj*	SetKeepOffset(CBaseProc* pProj);
@@ -100,8 +100,8 @@ public:
 	virtual	void    ResetStatus();      // -- 2019.6.8
 
 	// アクセス関数
-	virtual BOOL	GetActive() { return m_bActive; }
-	virtual void	SetActive(BOOL bActive) { m_bActive = bActive; }
+	virtual bool	GetActive() { return m_bActive; }
+	virtual void	SetActive(bool bActive) { m_bActive = bActive; }
 	virtual CFbxMesh* GetMesh();											// メッシュアドレス    // -- 2022.2.16
 	virtual BASEHOLDITEM GetHoldItem();										// 手に持つアイテム    // -- 2022.2.16
 	virtual DWORD	GetObjID() { return m_dwObjID; }						// オブジェクトＩＤ    // -- 2022.2.16
@@ -164,8 +164,8 @@ public:
 	virtual void    Update() { ; }
 
 	// あたり判定（全てのプロシージャやオブジェクトを読み下して処理をする）
-	virtual BOOL    Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld) final;
-	virtual BOOL    Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack) final;
+	virtual bool    Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld) final;
+	virtual bool    Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack) final;
 
 	//	プロシージャとオブジェクトを探索し全てのオブジェクトをノンアクティブにする
 	virtual void	SetNonActive();

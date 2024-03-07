@@ -81,8 +81,8 @@ public:
 	}
 	void MakeAABB(const VECTOR3& v1, const VECTOR3& v2, const VECTOR3& v3);
 	void MakeAABB(const VECTOR3& v1, const VECTOR3& v2, const FLOAT& r = 0.0f);
-	BOOL Hitcheck(const CAABB& other);
-	BOOL HitcheckXZ(const CAABB& other);
+	bool Hitcheck(const CAABB& other);
+	bool HitcheckXZ(const CAABB& other);
 	VECTOR3 GetVecPos(const int& nIdx);
 };
 
@@ -188,7 +188,7 @@ public:
 	ChkColMesh			m_ChkColMesh[MCKTBL_MAX];
 
 	// コリジョン移動用
-	BOOL				m_bMoveFlag;	// 移動するかどうか 移動の時 真
+	bool				m_bMoveFlag;	// 移動するかどうか 移動の時 真
 	MATRIX4X4			m_mWorldBase;	// 移動マトリックスの初期位置	// -- 2022.11.14
 	MATRIX4X4			m_mWorldOld;	// 移動マトリックス（現在位置の一つ前）
 	MATRIX4X4			m_mWorld;		// 移動マトリックスの現在位置
@@ -198,12 +198,12 @@ public:
 	CCollision(CFbxMeshCtrl* pFbxMeshCtrl);   // -- 2021.2.4
 	~CCollision();
 
-	BOOL	AddFbxLoad( const TCHAR*);										// -- 2022.11.14
-	BOOL	AddFbxLoad( const TCHAR*, const VECTOR3& vOffset);
-	BOOL	AddFbxLoad( const TCHAR*, const MATRIX4X4& mOffset);			// -- 2022.11.14
-	BOOL	AddFbxLoad(const CFbxMesh* pFbxMesh);							// -- 2022.11.14
-	BOOL	AddFbxLoad(const CFbxMesh* pFbxMesh, const VECTOR3& vOffset);
-	BOOL	AddFbxLoad(const CFbxMesh* pFbxMesh, const MATRIX4X4& mOffset);	// -- 2022.11.14
+	bool	AddFbxLoad( const TCHAR*);										// -- 2022.11.14
+	bool	AddFbxLoad( const TCHAR*, const VECTOR3& vOffset);
+	bool	AddFbxLoad( const TCHAR*, const MATRIX4X4& mOffset);			// -- 2022.11.14
+	bool	AddFbxLoad(const CFbxMesh* pFbxMesh);							// -- 2022.11.14
+	bool	AddFbxLoad(const CFbxMesh* pFbxMesh, const VECTOR3& vOffset);
+	bool	AddFbxLoad(const CFbxMesh* pFbxMesh, const MATRIX4X4& mOffset);	// -- 2022.11.14
 	void	MakeChkColMesh(const int& nNum, const VECTOR3& vMin, const VECTOR3& vMax);
 	void	GetChkArrayIdx(const int& nNum, const int& nNo, CAABB AABB, int nIdx[], int& nIMax);
 	void	SetChkArray(const int& nNum, const int& nNo, const int& nIdx, ColFace* pFace);
@@ -223,7 +223,7 @@ public:
 
 	int     CheckWallMove(MATRIX4X4& mWorld, const MATRIX4X4& mWorldOld, VECTOR3& vHit, VECTOR3& vNormal, float fRadius);    // -- 2022.11.14
 	void    InitHeightCheck();
-	BOOL    CheckHeight(MATRIX4X4& mWorld, const MATRIX4X4&  mWorldOld, const float fObjheight);
+	bool    CheckHeight(MATRIX4X4& mWorld, const MATRIX4X4&  mWorldOld, const float fObjheight);
 	int     CheckFloorMove(MATRIX4X4& mWorld, const MATRIX4X4&  mWorldOld);
 	int     CheckCollisionMove(MATRIX4X4& mWorld, const MATRIX4X4& mWorldOld, VECTOR3& vHit, VECTOR3& vNormal, float fRadius);    // -- 2022.11.14
 	void    GetDistNormal(const VECTOR3 vVec[], const VECTOR3& vNow, const VECTOR3& vOld, const VECTOR3& vFaceNorm, float& fNowDist, float& fOldDist, float& fLayDist);

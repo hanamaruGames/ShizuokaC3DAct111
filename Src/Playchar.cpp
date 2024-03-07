@@ -168,7 +168,7 @@ CPcProc::~CPcProc()
 CPcObj::CPcObj(CBaseProc* pProc) : CBaseObj(pProc)
 {
 	m_fLocalRotY = 0.0f;                   // -- 2018.8.4
-	m_bSide = TRUE;                        // -- 2018.8.4
+	m_bSide = true;                        // -- 2018.8.4
 
 	// バウンディングボックスの設定
 	m_pBBox = new CBBox(m_pGMain->m_pShader, VECTOR3(-0.25f, -0.05f, -0.25f), VECTOR3(0.25f, 2.0f, 0.25f));
@@ -179,7 +179,7 @@ CPcObj::CPcObj(CBaseProc* pProc) : CBaseObj(pProc)
 
 	// -----------------------------------------------------------------------  // -- 2022.2.16
 	// ＰＣオブジェクトの初期化処理
-	m_bActive = TRUE;
+	m_bActive = true;
 	ResetStatus();
 
 	m_AnimStatus.playAnim = true;
@@ -332,13 +332,13 @@ void	CPcObj::UpdateNormalMove()
 
 	MATRIX4X4 mYaw;  // ＰＣＹ軸回転マトリックス
 	MATRIX4X4 mPos;  // ＰＣ移動マトリックス
-	BOOL	  bKeyPush = FALSE;// キーを押したかどうかのチェック
+	bool	  bKeyPush = false;// キーを押したかどうかのチェック
 
 	// キーボード、マウス、ジョイスティック操作
 
 	// ジャンプ   ------------------------------------------------
 	if ((pDI->CheckKey(KD_TRG, DIK_J) || pDI->CheckJoy(KD_TRG, DIJ_Z)) && m_fJumpY == 0.0f) {
-		bKeyPush = TRUE;
+		bKeyPush = true;
 		m_fJumpY = PC_JUMP_SPEED;
 		m_fJumpTime = 1.0f;
 	}
@@ -351,10 +351,10 @@ void	CPcObj::UpdateNormalMove()
 	{
 		if (m_bSide)
 		{
-			m_bSide = FALSE;   // 左右移動の時、方向を変える
+			m_bSide = false;   // 左右移動の時、方向を変える
 		}
 		else {
-			m_bSide = TRUE;    // 左右移動の時、方向を変えない
+			m_bSide = true;    // 左右移動の時、方向を変えない
 		}
 	}
 
@@ -375,25 +375,25 @@ void	CPcObj::UpdateNormalMove()
 	// 前進処理
 	if (pDI->CheckKey(KD_DAT, DIK_W) || pDI->CheckKey(KD_DAT, DIK_UP) || pDI->CheckJoy(KD_DAT, DIJ_UP)) //	↑キー
 	{
-		bKeyPush = TRUE;
+		bKeyPush = true;
 		mPos = UpdateNormalMoveKeystate(DIK_W);
 	}
 	// 後退処理
 	if (pDI->CheckKey(KD_DAT, DIK_S) || pDI->CheckKey(KD_DAT, DIK_DOWN) || pDI->CheckJoy(KD_DAT, DIJ_DOWN)) //↓キー
 	{
-		bKeyPush = TRUE;
+		bKeyPush = true;
 		mPos = UpdateNormalMoveKeystate(DIK_S);
 	}
 	// 右移動処理
 	if (pDI->CheckKey(KD_DAT, DIK_D) || pDI->CheckJoy(KD_DAT, DIJ_RIGHT))//→キー
 	{
-		bKeyPush = TRUE;
+		bKeyPush = true;
 		mPos = UpdateNormalMoveKeystate(DIK_D);
 	}
 	// 左移動処理
 	if (pDI->CheckKey(KD_DAT, DIK_A) || pDI->CheckJoy(KD_DAT, DIJ_LEFT))//←キー
 	{
-		bKeyPush = TRUE;
+		bKeyPush = true;
 		mPos = UpdateNormalMoveKeystate(DIK_A);
 	}
 
