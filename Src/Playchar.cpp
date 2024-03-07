@@ -332,7 +332,7 @@ void	CPcObj::UpdateNormalMove()
 
 	MATRIX4X4 mYaw;  // ＰＣＹ軸回転マトリックス
 	MATRIX4X4 mPos;  // ＰＣ移動マトリックス
-	bool	  bKeyPush = false;// キーを押したかどうかのチェック
+	bool	  bKeyPush = FALSE;// キーを押したかどうかのチェック
 
 	// キーボード、マウス、ジョイスティック操作
 
@@ -351,7 +351,7 @@ void	CPcObj::UpdateNormalMove()
 	{
 		if (m_bSide)
 		{
-			m_bSide = false;   // 左右移動の時、方向を変える
+			m_bSide = FALSE;   // 左右移動の時、方向を変える
 		}
 		else {
 			m_bSide = true;    // 左右移動の時、方向を変えない

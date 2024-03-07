@@ -125,7 +125,8 @@ public:
 	~CGameMain();
 
 	HRESULT Init();
-	void    Loop();
+	void    Update();
+	void	Draw();
 	void    Quit();
 
 	void    GameMain();

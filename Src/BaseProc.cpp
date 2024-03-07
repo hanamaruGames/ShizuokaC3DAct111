@@ -108,7 +108,7 @@ BASEHOLDITEM  CBaseProc::GetHoldItem(int idx)
 //   VECTOR3 vOld       相手の一つ前の位置
 //
 //   戻り値　bool
-//           true:ヒットしたとき       false：ヒットしていないとき
+//           true:ヒットしたとき       FALSE：ヒットしていないとき
 //
 //   判定結果　　
 //           ヒットしたときは　　　　相手と自分のオブジェクトのm_pHitObjとm_vHitPosとm_vHitNormalに値をセット
@@ -118,7 +118,7 @@ BASEHOLDITEM  CBaseProc::GetHoldItem(int idx)
 //-----------------------------------------------------------------------------
 bool   CBaseProc::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 {
-	bool  bRet = false;
+	bool  bRet = FALSE;
 
 	// 全ての相手とのあたり判定
 	for (DWORD i = 0; i < m_pObjArray.size(); i++)  // 全ての相手オブジェクト
@@ -146,7 +146,7 @@ bool   CBaseProc::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 //   CBBox*    pAttackBBox    対象となるバウンディングボックス
 //
 //   戻り値　bool
-//           true:ヒットしたとき       false：ヒットしていないとき
+//           true:ヒットしたとき       FALSE：ヒットしていないとき
 //
 //   判定結果　　
 //           ヒットしたときは　　　　相手と自分のオブジェクトのm_pHitObjとm_vHitPosとm_vHitNormalに値をセット
@@ -156,7 +156,7 @@ bool   CBaseProc::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 //-----------------------------------------------------------------------------
 bool   CBaseProc::Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack)
 {
-	bool  bRet = false;
+	bool  bRet = FALSE;
 
 	// 全ての相手とのあたり判定
 	for (DWORD i = 0; i < m_pObjArray.size(); i++)  // 全ての相手オブジェクト
@@ -188,7 +188,7 @@ void  CBaseProc::SetNonActive()
 	// 敵のオブジェクトポインタ配列の探索
 	for (DWORD i = 0; i < m_pObjArray.size(); i++)
 	{
-		m_pObjArray[i]->SetActive(false);   // アクティブフラグをfalseに
+		m_pObjArray[i]->SetActive(FALSE);   // アクティブフラグをFALSEに
 		m_pObjArray[i]->ResetStatus();      // 各種ステータスをリセット
 	}
 
@@ -213,9 +213,9 @@ CBaseObj::CBaseObj(CBaseProc* pProc)
 	m_pGMain = pProc->GetGMain();		// ゲームメインクラス
 	m_pProc  = pProc;					// 親のプロシージャ
 	ResetStatus();						// 各種ステータスをリセット
-	m_bActive = false;					// true:表示  false:非表示
+	m_bActive = FALSE;					// true:表示  FALSE:非表示
 	m_dwObjID = pProc->GetProcID();		// オブジェクトＩＤ
-	m_dwObjNo = (DWORD)pProc->GetObjArrayPtr().size();	// オブジェクトＮＯ  プッシュバック前の配列サイズがオブジェクトＮＯとなる
+	m_dwObjNo = pProc->GetObjArrayPtr().size();	// オブジェクトＮＯ  プッシュバック前の配列サイズがオブジェクトＮＯとなる
 	m_nMeshIdx = 0;						// メッシュ配列の添字           // -- 2022.12.20
 	m_pBBox = nullptr;						// バウンディングボックスクラス
 	m_mWorld = XMMatrixIdentity();		// ワールドマトリクス
@@ -284,7 +284,7 @@ BASEHOLDITEM CBaseObj::GetHoldItem()
 //   VECTOR3 vOld     相手の一つ前の位置
 //
 //   戻り値　bool
-//           true:ヒットしたとき       false：ヒットしていないとき
+//           true:ヒットしたとき       FALSE：ヒットしていないとき
 //
 //   判定結果　　
 //           ヒットしたときは　　　　相手と敵のオブジェクトのm_pHitObjとm_vHitPosとm_vHitNormalに値をセット
@@ -294,7 +294,7 @@ BASEHOLDITEM CBaseObj::GetHoldItem()
 //-----------------------------------------------------------------------------
 bool   CBaseObj::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 {
-	bool bRet = false;
+	bool bRet = FALSE;
 	VECTOR3 vHit = VECTOR3(0.0f, 0.0f, 0.0f), vNrm = VECTOR3(0.0f, 1.0f, 0.0f);
 
 	// バウンディングボックスと移動直線（Lay）による判定
@@ -323,7 +323,7 @@ bool   CBaseObj::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 //   CBBox*      pBBoxAtack   バウンディングボックスの判定をするとき
 //
 //   戻り値　bool
-//           true:ヒットしたとき       false：ヒットしていないとき
+//           true:ヒットしたとき       FALSE：ヒットしていないとき
 //
 //   判定結果　　
 //           ヒットしたときは　　　　相手と敵のオブジェクトのm_pHitObjとm_vHitPosとm_vHitNormalに値をセット
@@ -333,7 +333,7 @@ bool   CBaseObj::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 //-----------------------------------------------------------------------------
 bool   CBaseObj::Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack)
 {
-	bool bRet = false;
+	bool bRet = FALSE;
 	VECTOR3 vHit = VECTOR3(0.0f, 0.0f, 0.0f), vNrm = VECTOR3(0.0f, 1.0f, 0.0f);
 
 	// バウンディングボックス同士による判定
@@ -362,12 +362,12 @@ bool   CBaseObj::Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack)
 //               float fRotSpeed   :一回の回転スピード。大きいほど鋭角で曲がる(省略値は3.0f)
 //               float fNearLimit  :目的地との近接リミット。この半径範囲内に入ったとき到着とする(省略値は0.1f)
 //
-//   戻り値　：　true：目的地に達した　　false:まだ目的地に達していない
+//   戻り値　：　true：目的地に達した　　FALSE:まだ目的地に達していない
 //               処理後、m_vPosUp, m_vRotUpに移動量が設定される
 //-----------------------------------------------------------------------------
 bool CBaseObj::TargetMove(VECTOR3 vTarget, float fSpeedIn, float fRotSpeed, float fNearLimit)
 {
-	bool ret = false;
+	bool ret = FALSE;
 	VECTOR3 vMove, vObjPos, vObjPosOld;
 	float fLen, fSpeed;
 
@@ -409,7 +409,7 @@ bool CBaseObj::TargetMove(VECTOR3 vTarget, float fSpeedIn, float fRotSpeed, floa
 		m_vPosUp.y = 0;
 		m_vPosUp.z = fSpeed;
 
-		ret = false;    // まだ目的地に達していない
+		ret = FALSE;    // まだ目的地に達していない
 	}
 
 	return ret;

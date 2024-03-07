@@ -47,12 +47,12 @@ public:
 	DWORD                     m_dwNumIndex;
 	VECTOR4                   m_vWaveMove;
 	VECTOR2                   m_vWaveSpeed;
-	float                     m_fWaveHeight;
+	FLOAT                     m_fWaveHeight;
 	VECTOR4                   m_vDiffuse;
 	VECTOR4                   m_vSpecular;
 
-	float                     m_fMinDistance; //Å¬‹——£
-	float                     m_fMaxDistance; //Å‘å‹——£
+	FLOAT                     m_fMinDistance; //Å¬‹——£
+	FLOAT                     m_fMaxDistance; //Å‘å‹——£
 	int                       m_iMaxDevide;   //Å‘å•ªŠ„”
 
 public:

@@ -12,6 +12,8 @@
 #include "Weapon.h"
 #include "Effect.h"
 #include "BackFore.h"
+#include "SceneManager.h"
+#include "ObjectManager.h"
 
 // ============================================================================================
 //
@@ -60,6 +62,8 @@ CGameMain::CGameMain(CMain*	pMain)
 	m_pSeFire = nullptr;
 	m_pBgm1 = nullptr;
 
+	SceneManager::Start();
+	ObjectManager::Start();
 }
 //------------------------------------------------------------------------
 //
@@ -68,6 +72,9 @@ CGameMain::CGameMain(CMain*	pMain)
 //------------------------------------------------------------------------
 CGameMain::~CGameMain()
 {
+	ObjectManager::Release();
+	SceneManager::Release();
+
 	MyImgui::ImguiQuit();          // -- 2020.11.15    // MyImguiの終了処理
 
 	SAFE_DELETE(m_pSeLazer);
@@ -108,7 +115,7 @@ HRESULT CGameMain::Init()
 {
 	// ＣＯＭの初期化
 	//CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-	CoInitialize( nullptr );
+	CoInitialize( NULL );
 
 	// Direct3Dの初期化
 	m_pD3D = new CDirect3D;
@@ -154,8 +161,8 @@ HRESULT CGameMain::Init()
 	m_vLightDir = normalize( VECTOR3(0.8f, 1, -1) );  // 光源座標の初期値。正規化する
 
 	// プロジェクショントランスフォーム（射影変換）の初期値
-	//m_mProj = XMMatrixPerspectiveFovLH((float)(XM_PI / 4), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 1000.0);
-	m_mProj = XMMatrixPerspectiveFovLH(XMConvertToRadians(38.0f), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 1000.0);
+	//m_mProj = XMMatrixPerspectiveFovLH((FLOAT)(XM_PI / 4), (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 1000.0);
+	m_mProj = XMMatrixPerspectiveFovLH(XMConvertToRadians(38.0f), (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 1000.0);
 
 	// ビュートランスフォーム（視点座標変換）の初期値
 	VECTOR3 vUpVec(0.0f, 1.0f, 0.0f);//上方位置
@@ -204,7 +211,7 @@ HRESULT CGameMain::Init()
 //	戻り値 なし
 //
 //------------------------------------------------------------------------
-void CGameMain::Loop()
+void CGameMain::Update()
 {
 
 	m_pDI->GetInput();			// 入力情報の取得
@@ -232,8 +239,8 @@ void CGameMain::Loop()
 	//m_pD3D->m_pSwapChain->Present(1, 0);                   // 60fps Vsync
 	m_pD3D->m_pSwapChain->Present(0, 0);                   // Vsyncなし
 
-
-
+	SceneManager::Update();
+	ObjectManager::Update();
 }
 
 //------------------------------------------------------------------------
@@ -270,6 +277,12 @@ void CGameMain::GameMain()
 	// カメラの更新
 	m_pCameraProc->UpdateAll();
 
+}
+
+void CGameMain::Draw()
+{
+	ObjectManager::Draw();
+	SceneManager::Draw();
 }
 
 //------------------------------------------------------------------------

@@ -49,7 +49,7 @@ protected:
 	DWORD			m_dwStatus;			// ステータス
 	DWORD			m_dwStatusSub;		// ステータスサブ
 	DWORD			m_dwStatusPhase;	// ステータスフェーズ
-	bool			m_bActive;			// true:表示  false:非表示
+	bool			m_bActive;			// true:表示  FALSE:非表示
 	DWORD			m_dwObjID;			// オブジェクトＩＤ
 	DWORD			m_dwObjNo;			// オブジェクトＮＯ
 	int				m_nMeshIdx;			// メッシュ配列の添字                   // -- 2022.12.20

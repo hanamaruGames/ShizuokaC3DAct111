@@ -98,7 +98,7 @@ void CFbxMesh::DestroyD3D()
 //  const TCHAR*         FName          Fbxファイル名
 //
 //	戻り値 bool
-//         true:正常   false:異常
+//         true:正常   FALSE:異常
 //
 //------------------------------------------------------------------------
 bool CFbxMesh::Load(const TCHAR* FName)
@@ -151,7 +151,7 @@ bool CFbxMesh::Load(const TCHAR* FName)
 		}
 		else {
 			MessageBox(nullptr, FName, _T("■□■ メッシュファイル('MESH')ではありません ■□■"), MB_OK);
-			return false;
+			return FALSE;
 		}
 		// バージョンのチェックは行わない
 		if (Head[4] == L'1')
@@ -173,7 +173,7 @@ bool CFbxMesh::Load(const TCHAR* FName)
 		else {
 			m_nMeshType = 0;
 			MessageBox(nullptr, FName, _T("■□■ メッシュタイプが異なります（1,2以外不可） ■□■"), MB_OK);
-			return false;
+			return FALSE;
 		}
 		p += sizeof(Head);
 
@@ -382,7 +382,7 @@ bool CFbxMesh::Load(const TCHAR* FName)
 		MessageBox(nullptr, FName, _T("■□■ メッシュファイル(.mesh)がありません ■□■"), MB_OK);
 	}
 
-	return false;
+	return FALSE;
 }
 
 //------------------------------------------------------------------------
@@ -477,7 +477,7 @@ bool CFbxMesh::ChangeStaticVertexLayout(const StaticVertex* vertices, const DWOR
 //	戻り値 
 //
 //------------------------------------------------------------------------
-HRESULT CFbxMesh::SetStaticVIBuffer(const DWORD& mi, const StaticVertexNormal* vertices, const DWORD* indices)
+HRESULT  CFbxMesh::SetStaticVIBuffer(const DWORD& mi, const StaticVertexNormal* vertices, const DWORD* indices)
 {
 	D3D11_BUFFER_DESC bd;
 	D3D11_SUBRESOURCE_DATA InitData;
@@ -760,7 +760,7 @@ bool CFbxMesh::CalcTangentSub(const VECTOR3& v1, const VECTOR3& v2, const VECTOR
 			//MessageBox(0, _T("CalcTangentSub() : 座標、UVが同一の重複頂点を検出しました"), _T("エラー"), MB_OK);
 			Tangent = VECTOR3(1, 0, 0);   // エラーのため０にする
 			Binormal = VECTOR3(0, 1, 0);
-			return false;
+			return FALSE;
 		}
 		U[i] = -abc.y / abc.x;
 		V[i] = -abc.z / abc.x;
@@ -882,7 +882,7 @@ bool  CFbxMesh::SetMaterial(const DWORD& ti, const TCHAR* Color)
 //  const ROOTANIMTYPE&  RAType         ルートボーンアニメタイプ（省略値:eRootAnimNone）
 //
 //	戻り値 bool
-//         true:正常   false:異常
+//         true:正常   FALSE:異常
 //
 //------------------------------------------------------------------------
 bool CFbxMesh::LoadAnimation(const TCHAR* FName, const ROOTANIMTYPE& RAType)
@@ -891,13 +891,13 @@ bool CFbxMesh::LoadAnimation(const TCHAR* FName, const ROOTANIMTYPE& RAType)
 	if (m_pMeshArray == nullptr)
 	{
 		MessageBox(nullptr, FName, _T("■□■ 対応するスキンメッシュファイル(.mesh)が読み込まれていません ■□■"), MB_OK);
-		return false;
+		return FALSE;
 	}
 	// スタティックメッシュファイルのときはエラー
 	if (m_nMeshType != 2 )
 	{
 		MessageBox(nullptr, FName, _T("■□■ スタティックメッシュにはアニメーションは設定できません ■□■"), MB_OK);
-		return false;
+		return FALSE;
 	}
 
 	timeBeginPeriod(1);
@@ -933,7 +933,7 @@ bool CFbxMesh::LoadAnimation(const TCHAR* FName, const ROOTANIMTYPE& RAType)
 		}
 		else {
 			MessageBox(nullptr, FName, _T("■□■ アニメーションファイル('ANMX')ではありません ■□■"), MB_OK);
-			return false;
+			return FALSE;
 		}
 		// バージョンのチェックは行わない
 		if (Head[4] == L'1')
@@ -1007,7 +1007,7 @@ bool CFbxMesh::LoadAnimation(const TCHAR* FName, const ROOTANIMTYPE& RAType)
 		MessageBox(nullptr, FName, _T("■□■ アニメーションファイル(.anmx)がありません ■□■"), MB_OK);
 	}
 
-	return false;
+	return FALSE;
 }
 
 //==========================================================================================================================================================

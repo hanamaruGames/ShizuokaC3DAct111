@@ -205,7 +205,7 @@ void CWeaponHoldObj::Init()
 		break;
 	}
 
-	m_bActive = false;
+	m_bActive = FALSE;
 	m_dwStatus = NORMAL;
 
 }
@@ -355,7 +355,7 @@ bool CWeaponHoldObj::Disp(MATRIX4X4 mHold, BASEHOLDITEM HoldItem)
 	// レンダリング
 	Render();
 
-	m_bActive = false;  // １回処理したら、消す
+	m_bActive = FALSE;  // １回処理したら、消す
 
 	return true;
 }

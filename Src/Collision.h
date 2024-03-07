@@ -75,12 +75,12 @@ public:
 	{
 		MakeAABB(v1, v2, v3);
 	}
-	CAABB(const VECTOR3& v1, const VECTOR3& v2, const float& r = 0.0f)
+	CAABB(const VECTOR3& v1, const VECTOR3& v2, const FLOAT& r = 0.0f)
 	{
 		MakeAABB(v1, v2, r);
 	}
 	void MakeAABB(const VECTOR3& v1, const VECTOR3& v2, const VECTOR3& v3);
-	void MakeAABB(const VECTOR3& v1, const VECTOR3& v2, const float& r = 0.0f);
+	void MakeAABB(const VECTOR3& v1, const VECTOR3& v2, const FLOAT& r = 0.0f);
 	bool Hitcheck(const CAABB& other);
 	bool HitcheckXZ(const CAABB& other);
 	VECTOR3 GetVecPos(const int& nIdx);

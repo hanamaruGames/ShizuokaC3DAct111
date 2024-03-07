@@ -3896,7 +3896,7 @@ void ImGui::Initialize(ImGuiContext* context)
 // This function is merely here to free heap allocations.
 void ImGui::Shutdown(ImGuiContext* context)
 {
-    // The fonts atlas can be used prior to calling NewFrame(), so we clear it even if g.Initialized is false (which would happen if we never called NewFrame)
+    // The fonts atlas can be used prior to calling NewFrame(), so we clear it even if g.Initialized is FALSE (which would happen if we never called NewFrame)
     ImGuiContext& g = *context;
     if (g.IO.Fonts && g.FontAtlasOwnedByContext)
     {

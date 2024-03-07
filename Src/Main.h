@@ -8,6 +8,13 @@
 
 #pragma once
 
+//警告非表示
+#pragma warning(disable : 4005)
+#pragma warning(disable : 4244)
+#pragma warning(disable : 4018)
+#pragma warning(disable : 4267)
+
+
 //ヘッダーファイルのインクルード
 #include <stdio.h>
 #include <windows.h>
@@ -37,7 +44,7 @@ public:
 	CGameMain*	   m_pGMain;		  // ゲームメインクラス
 	HINSTANCE      m_hInstance;
 	HWND           m_hWnd;
-	bool           m_bLoopFlag;       // ループフラグ　true:ループ　false:ループ終了
+	bool           m_bLoopFlag;       // ループフラグ　true:ループ　FALSE:ループ終了
 	double         m_MainLoopTime;    // ループスピード　1/60Sec
 
 public:

@@ -214,8 +214,8 @@ public:
 	//-----------------------------------------------------------------------------
 	// CALLBACK
 	//-----------------------------------------------------------------------------
-	bool EnumJoysticksCb(LPCDIDEVICEINSTANCE pInst, LPVOID lpvContext);
-	bool EnumEffectsInFileCb(LPCDIFILEEFFECT lpdife, LPVOID pvRef );
+	BOOL EnumJoysticksCb(LPCDIDEVICEINSTANCE pInst, LPVOID lpvContext);
+	BOOL EnumEffectsInFileCb(LPCDIFILEEFFECT lpdife, LPVOID pvRef );
 
 };
 

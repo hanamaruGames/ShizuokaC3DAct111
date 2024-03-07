@@ -397,11 +397,11 @@ bool CBBox::OBBCollisionDetection( CBBox* pOtherBBox, VECTOR3* vHit, VECTOR3* vN
 bool CBBox::CompareLength(const CBBox* pBBoxA, const CBBox* pBBoxB, const VECTOR3* pvSeparate, const VECTOR3* pvDistance)
 {
 	//”分離軸上での”ボックスＡの中心からボックスＢの中心までの距離
-	float fDistance = fabsf(dot(*pvDistance, *pvSeparate));
+	FLOAT fDistance = fabsf(dot(*pvDistance, *pvSeparate));
 	//分離軸上でボックスAの中心から最も遠いボックスAの頂点までの距離
-	float fShadowA = 0;
+	FLOAT fShadowA = 0;
 	//分離軸上でボックスBの中心から最も遠いボックスBの頂点までの距離
-	float fShadowB = 0;
+	FLOAT fShadowB = 0;
 	//それぞれのボックスの”影”を算出
 	fShadowA = fabsf(dot(pBBoxA->m_vAxisX, *pvSeparate) * pBBoxA->m_fLengthX) +
 				fabsf(dot(pBBoxA->m_vAxisY, *pvSeparate) * pBBoxA->m_fLengthY) +

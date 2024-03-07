@@ -187,7 +187,7 @@ HRESULT CEffectBillProc::SetSrc(BILLBOARDBASE* pBillBase)
 //
 //	戻り値 bool
 //		true	= 正常
-//		false	= 異常
+//		FALSE	= 異常
 //
 //------------------------------------------------------------------------
 bool CEffectBillProc::Start(VECTOR3 vPos)
@@ -205,7 +205,7 @@ bool CEffectBillProc::Start(VECTOR3 vPos)
 //
 //	戻り値 bool
 //		true	= 正常
-//		false	= 異常
+//		FALSE	= 異常
 //
 //------------------------------------------------------------------------
 bool CEffectBillProc::Start(int nBillIdx, VECTOR3 vPos)
@@ -218,7 +218,7 @@ bool CEffectBillProc::Start(int nBillIdx, VECTOR3 vPos)
 			return true;
 		}
 	}
-	return false;
+	return FALSE;
 };
 
 
@@ -266,7 +266,7 @@ CEffectBillObj::~CEffectBillObj()
 //------------------------------------------------------------------------
 void CEffectBillObj::Init()
 {
-	m_bActive = false;
+	m_bActive = FALSE;
 }
 
 //------------------------------------------------------------------------
@@ -290,12 +290,12 @@ BILLBOARDBASE* CEffectBillObj::GetBillArrayPtr()
 //
 //	戻り値 bool
 //		true      表示継続
-//		false     表示終了
+//		FALSE     表示終了
 //
 //------------------------------------------------------------------------
 bool CEffectBillObj::Start(int nBillIdx, VECTOR3 vPos)
 {
-	if (m_bActive) return false;  // すでに開始中
+	if (m_bActive) return FALSE;  // すでに開始中
 
 	m_bActive = true;
 	m_nBillIdx = nBillIdx;   // ビルボード構造体配列の要素番号
@@ -323,7 +323,7 @@ void CEffectBillObj::Update()
 
 	if (dwIdx >= GetBillArrayPtr()->m_dwNumX * GetBillArrayPtr()->m_dwNumY)	// パターンの最後に達したとき
 	{
-		m_bActive = false;
+		m_bActive = FALSE;
 		return;
 	}
 
@@ -348,13 +348,13 @@ void CEffectBillObj::Update()
 //
 //	戻り値 bool
 //		true      表示継続
-//		false     表示終了
+//		FALSE     表示終了
 //
 //------------------------------------------------------------------------
 bool CEffectBillObj::Render()
 {
 
-	if (!m_bActive) return false;
+	if (!m_bActive) return FALSE;
 
 	//ビルボードの、視点を向くワールドトランスフォームを求める
 	MATRIX4X4 mWorld = GetLookatMatrix(m_vPos, m_pGMain->m_vEyePt);

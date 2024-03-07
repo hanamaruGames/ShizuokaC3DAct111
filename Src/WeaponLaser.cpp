@@ -67,7 +67,7 @@ bool CWeaponLaserProc::Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWo
 		}
 	}
 
-	return false;
+	return FALSE;
 }
 
 // ---------------------------------------------------------------------------
@@ -88,7 +88,7 @@ bool CWeaponLaserProc::Start(MATRIX4X4 mWorld, DWORD dwOwner)
 			return true;
 		}
 	}
-	return false;
+	return FALSE;
 }
 
 // ---------------------------------------------------------------------------
@@ -102,7 +102,7 @@ CWeaponLaserObj::CWeaponLaserObj(CBaseProc* pProc) : CBaseObj(pProc)
 	m_vStart = VECTOR3(0, 0, 0);		// 発射位置
 	m_vEnd = VECTOR3(0, 0, 0);			// 最終到達点
 
-	m_bActive = false;
+	m_bActive = FALSE;
 	m_dwStatus = NORMAL;
 
 	m_nAtc = WEAPON_ATC;
@@ -133,7 +133,7 @@ CWeaponLaserObj::~CWeaponLaserObj()
 bool CWeaponLaserObj::Start(MATRIX4X4 mStartWorld, DWORD dwOwner)
 {
 
-	if (m_bActive) return false;
+	if (m_bActive) return FALSE;
 
 	m_bActive = true;
 	m_mWorldOld = mStartWorld;  // レーザーの発射位置のマトリックスを保存しておく
@@ -190,7 +190,7 @@ void CWeaponLaserObj::Update()
 
 	}
 
-	m_bActive = false;	// １回ですぐ消す
+	m_bActive = FALSE;	// １回ですぐ消す
 
 }
 

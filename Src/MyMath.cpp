@@ -202,13 +202,13 @@ VECTOR3 GetRotateVector3(const MATRIX4X4& mWorld)
 	VECTOR3     angle;
 	double      threshold = 0.001;
 
-	if (fabs((double)mWorld._23 - 1.0) < threshold)  // Mat(2,3) sin(x)=1のとき
+	if (fabsf(mWorld._23 - 1.0) < threshold)  // Mat(2,3) sin(x)=1のとき
 	{
 		angle.x = XM_PI / 2;
 		angle.y = 0;
 		angle.z = atan2f(mWorld._12, mWorld._11);
 	}
-	else if (fabs(mWorld._23 + 1.0) < threshold)  // Mat(2,3) sin(x)=-1のとき
+	else if (fabsf(mWorld._23 + 1.0) < threshold)  // Mat(2,3) sin(x)=-1のとき
 	{
 		angle.x = -XM_PI / 2;
 		angle.y = 0;
@@ -382,7 +382,7 @@ VECTOR3 GetScaleVector(const MATRIX4X4& mat)
 //
 // 値が０の時は、Ｆｌｏａｔの最小値にする（０を避ける）
 //
-float avoidZero(float inp)
+FLOAT avoidZero(FLOAT inp)
 {
 	if (inp == 0.0f) {
 		inp = FLT_EPSILON;
@@ -393,14 +393,14 @@ float avoidZero(float inp)
 //
 // ２つの２Ｄベクトルの内積を計算する
 //
-float dot(const VECTOR2& vLhs, const VECTOR2& vRhs)
+FLOAT dot(const VECTOR2& vLhs, const VECTOR2& vRhs)
 {
 	return (vLhs.x*vRhs.x + vLhs.y*vRhs.y);
 }
 //
 // ２つの３Ｄベクトルの内積を計算する
 //
-float dot(const VECTOR3& vLhs, const VECTOR3& vRhs)
+FLOAT dot(const VECTOR3& vLhs, const VECTOR3& vRhs)
 {
 	return (vLhs.x*vRhs.x + vLhs.y*vRhs.y + vLhs.z*vRhs.z);
 }
@@ -417,7 +417,7 @@ VECTOR3 cross(const VECTOR3& vLhs, const VECTOR3& vRhs)
 // ２つの２Ｄベクトルの外積を計算し、z要素を返す
 // (z要素の値が正の場合、ベクトルvRhsはベクトルvLhsから反時計回りである。)
 //
-float crossZ(const VECTOR2& vLhs, const VECTOR2& vRhs)
+FLOAT crossZ(const VECTOR2& vLhs, const VECTOR2& vRhs)
 {
 	return vLhs.x*vRhs.y - vLhs.y*vRhs.x;
 }
@@ -425,7 +425,7 @@ float crossZ(const VECTOR2& vLhs, const VECTOR2& vRhs)
 //
 // ２Ｄベクトルの長さを求める
 //
-float magnitude(const VECTOR2& vLen)
+FLOAT magnitude(const VECTOR2& vLen)
 {
 	return sqrtf(vLen.x*vLen.x + vLen.y*vLen.y);
 }
@@ -433,7 +433,7 @@ float magnitude(const VECTOR2& vLen)
 //
 // ３Ｄベクトルの長さを求める
 //
-float magnitude(const VECTOR3& vLen)
+FLOAT magnitude(const VECTOR3& vLen)
 {
 	return sqrtf(vLen.x*vLen.x + vLen.y*vLen.y + vLen.z*vLen.z);
 }
@@ -441,21 +441,21 @@ float magnitude(const VECTOR3& vLen)
 //
 // ３Ｄベクトルの長さの２乗を求める
 //
-float magnitudeSQ(const VECTOR3& vLen)
+FLOAT magnitudeSQ(const VECTOR3& vLen)
 {
 	return vLen.x*vLen.x + vLen.y*vLen.y + vLen.z*vLen.z;
 }
 //
 // ２Ｄベクトルをスケーリングした値を求める
 //
-VECTOR2 scaling(const VECTOR2& vVec, const float& Scale)
+VECTOR2 scaling(const VECTOR2& vVec, const FLOAT& Scale)
 {
 	return VECTOR2(vVec.x*Scale, vVec.y*Scale);
 }
 //
 // ３Ｄベクトルをスケーリングした値を求める
 //
-VECTOR3 scaling(const VECTOR3& vVec, const float& Scale)
+VECTOR3 scaling(const VECTOR3& vVec, const FLOAT& Scale)
 {
 	return VECTOR3(vVec.x*Scale, vVec.y*Scale, vVec.z*Scale);
 }
@@ -478,7 +478,7 @@ VECTOR3 normalize(const VECTOR3& vVec)
 //
 // ２つの３Ｄベクトルの角度を計算する
 //
-float Angle(const VECTOR3& v1, const VECTOR3& v2)
+FLOAT Angle(const VECTOR3& v1, const VECTOR3& v2)
 {
 	return acosf(dot(v1, v2) / avoidZero(magnitude(v1)*magnitude(v2)));
 }
@@ -487,10 +487,10 @@ float Angle(const VECTOR3& v1, const VECTOR3& v2)
 // ３つの３Ｄベクトルの角度の和を計算する
 // （この関数の戻り値が３６０°（２π）の時は、原点が３つの３Ｄベクトルの中にある）
 //
-float AddAngle(const VECTOR3& p1, const VECTOR3& p2, const VECTOR3& p3)
+FLOAT AddAngle(const VECTOR3& p1, const VECTOR3& p2, const VECTOR3& p3)
 {
-	float p12m, p23m, p31m;
-	float w1, w2, w3;
+	FLOAT p12m, p23m, p31m;
+	FLOAT w1, w2, w3;
 
 	// 接触点が頂点に非常に近いとき（１ｍｍ以下）は、３Ｄベクトルの中とする  2005.10.1
 	if (((p1.x <= 0.001f && p1.x >= -0.001f) &&
@@ -506,7 +506,7 @@ float AddAngle(const VECTOR3& p1, const VECTOR3& p2, const VECTOR3& p3)
 	}
 
 	{
-		float p1m = magnitude(p1),	// ３Ｄベクトルｐ１の絶対値（長さ）
+		FLOAT p1m = magnitude(p1),	// ３Ｄベクトルｐ１の絶対値（長さ）
 			p2m = magnitude(p2),	// ３Ｄベクトルｐ２の絶対値（長さ）
 			p3m = magnitude(p3);	// ３Ｄベクトルｐ３の絶対値（長さ）
 		p12m = p1m * p2m;
@@ -537,10 +537,10 @@ float AddAngle(const VECTOR3& p1, const VECTOR3& p2, const VECTOR3& p3)
 //
 // ４つの３Ｄベクトルの角度の和を計算する
 //
-float AddAngle(const VECTOR3& p1, const VECTOR3& p2, const VECTOR3& p3, const VECTOR3& p4)
+FLOAT AddAngle(const VECTOR3& p1, const VECTOR3& p2, const VECTOR3& p3, const VECTOR3& p4)
 {
-	float p12m, p23m, p34m, p41m;
-	float w1, w2, w3, w4;
+	FLOAT p12m, p23m, p34m, p41m;
+	FLOAT w1, w2, w3, w4;
 
 	// 接触点が頂点に非常に近いとき（１ｍｍ以下）は、４Ｄベクトルの中とする  2005.10.1
 	if (((p1.x <= 0.001f && p1.x >= -0.001f) &&
@@ -558,7 +558,7 @@ float AddAngle(const VECTOR3& p1, const VECTOR3& p2, const VECTOR3& p3, const VE
 		return (2.0f * 3.14159f);
 	}
 	{
-		float p1m = magnitude(p1),
+		FLOAT p1m = magnitude(p1),
 			p2m = magnitude(p2),
 			p3m = magnitude(p3),
 			p4m = magnitude(p4);

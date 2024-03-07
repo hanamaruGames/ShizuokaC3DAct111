@@ -38,7 +38,7 @@ CDirectInput::~CDirectInput()
 //			DWORD		dwWidth	ウィンドの幅
 //			DWORD		dwHeightウィンドの高さ
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::StartDirectInput(HINSTANCE hInst, HWND hWnd, int flag, DWORD dwWidth, DWORD dwHeight)
 {
@@ -46,7 +46,7 @@ bool CDirectInput::StartDirectInput(HINSTANCE hInst, HWND hWnd, int flag, DWORD 
 	m_hr = DirectInput8Create(hInst, DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)&m_pDI8, nullptr);
 	if (DI_OK != m_hr) {
 		MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : DirectInputを初期化することができません。"), nullptr, MB_OK);
-		return false;
+		return FALSE;
 	}
 	m_hWnd = hWnd;
 
@@ -62,7 +62,7 @@ bool CDirectInput::StartDirectInput(HINSTANCE hInst, HWND hWnd, int flag, DWORD 
 //-----------------------------------------------------------------------------
 // DirectInputの終了
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::EndDirectInput(void)
 {
@@ -143,7 +143,7 @@ void CDirectInput::SetAcquire(void)
 //-----------------------------------------------------------------------------
 // データ読み込み
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::GetInput(void)
 {
@@ -160,7 +160,7 @@ bool CDirectInput::GetInput(void)
 // 
 // 引数		HWND hWnd	ウィンドウハンドル
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::InitKey(HWND hWnd)
 {
@@ -169,26 +169,26 @@ bool CDirectInput::InitKey(HWND hWnd)
 	m_hr = m_pDI8->CreateDevice(GUID_SysKeyboard, &m_pKey, nullptr);
 	if (DI_OK != m_hr) {
 		MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : DirectInputDeviceEx(keyboard)を初期化することができません。"),nullptr,MB_OK);
-		return false;
+		return FALSE;
 	}
 	// DirectInputデバイスのデータ形式の設定
 	m_pKey->SetDataFormat(&c_dfDIKeyboard);
 	if (DI_OK != m_hr) {
 		MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : DirectInputデバイスのデータ形式の設定に失敗しました。"),nullptr,MB_OK);
-		return false;
+		return FALSE;
 	}
 	// keyboardデバイスのインスタンスに対する協調レベルの確立
 	m_pKey->SetCooperativeLevel(hWnd, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
 	if (DI_OK != m_hr) {
 		MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : keyboardデバイスのインスタンスに対する協調レベルの確立に失敗しました。"),nullptr,MB_OK);
-		return false;
+		return FALSE;
 	}
 	return SetPropertyKey();
 }
 //-----------------------------------------------------------------------------
 // バッファサイズの設定(keyboard)
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::SetPropertyKey(void)
 {
@@ -210,16 +210,16 @@ bool CDirectInput::SetPropertyKey(void)
 //-----------------------------------------------------------------------------
 // キーボードの状態を得る
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::GetKey(void)
 {
-	if (!m_pKey) return false;
+	if (!m_pKey) return FALSE;
 	if (m_pKey->GetDeviceState(sizeof(m_diKeyState), m_diKeyState) != DI_OK) {
 		m_pKey->Acquire();
 		if (FAILED(m_pKey->GetDeviceState(sizeof(m_diKeyState), m_diKeyState))) {
 			//MessageBox(nullptr,_T("DInput.cpp : GetKey() : GetDeviceStateが異常終了しました。") ,nullptr,MB_OK );
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -230,7 +230,7 @@ bool CDirectInput::GetKey(void)
 		m_pKey->Acquire();
 		if (FAILED(m_pKey->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), m_pBufferKey, &m_BufferRestKey, 0))) {
 			//MessageBox(nullptr,_T("DInput.cpp : GetKey() : GetDeviceDataが異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 	}
 	m_BufferRestBackupKey = m_BufferRestKey;	// 読み込んだバッファ数を退避
@@ -243,11 +243,11 @@ bool CDirectInput::GetKey(void)
 // 引数		const int&		kmode	チェックするモード
 //			const DWORD&	kcode	チェックするキーコード　
 // 
-// 戻り値	true:チェックＯＫ　false:チェックＮＧ
+// 戻り値	true:チェックＯＫ　FALSE:チェックＮＧ
 //-----------------------------------------------------------------------------
 bool CDirectInput::CheckKey(const int& kmode, const DWORD& kcode)
 {
-	if (!m_bInputActive || !m_pKey) return false;
+	if (!m_bInputActive || !m_pKey) return FALSE;
 	switch (kmode) {
 	case KD_DAT :						// 直接データ(現在のキー押下状態)
 		return m_diKeyState[kcode] & 0x80;
@@ -267,10 +267,10 @@ bool CDirectInput::CheckKey(const int& kmode, const DWORD& kcode)
 				}
 			}
 		}
-		return false;
+		return FALSE;
 	default :
 		MessageBox(nullptr, _T("DInput.cpp : CheckKey() : 指定したキーモードが間違っています。"), nullptr, MB_OK);
-		return false;
+		return FALSE;
 	}
 }
 //*****************************************************************************
@@ -281,7 +281,7 @@ bool CDirectInput::CheckKey(const int& kmode, const DWORD& kcode)
 // 
 // 引数		HWND hWnd	ウィンドウハンドル
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::InitMouse(HWND hWnd)
 {
@@ -290,15 +290,15 @@ bool CDirectInput::InitMouse(HWND hWnd)
 	m_hr = m_pDI8->CreateDevice(GUID_SysMouse, &m_pMouse, nullptr);
 	if (DI_OK != m_hr) {
 		MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : DirectInputDeviceEx(mouse)を初期化することができません。"),nullptr,MB_OK);
-		return false;
+		return FALSE;
 	}
 	if (m_pMouse->SetDataFormat(&c_dfDIMouse) != DI_OK) {
 		MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : SetDataFormatメソッド(mouse)が異常終了しました。"), nullptr, MB_OK);
-		return false;
+		return FALSE;
 	}
 	if (m_pMouse->SetCooperativeLevel(hWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE) != DI_OK) {
 		MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : SetCooperativeLevelメソッド(mouse)が異常終了しました。"), nullptr, MB_OK);
-		return false;
+		return FALSE;
 	}
 
 	return SetPropertyMouse();
@@ -306,7 +306,7 @@ bool CDirectInput::InitMouse(HWND hWnd)
 //-----------------------------------------------------------------------------
 // バッファサイズの設定(mouse)
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::SetPropertyMouse(void)
 {
@@ -328,16 +328,16 @@ bool CDirectInput::SetPropertyMouse(void)
 //-----------------------------------------------------------------------------
 // マウスの状態を得る
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::GetMouse(void)
 {
-	if (!m_pMouse) return false;
+	if (!m_pMouse) return FALSE;
 	if (m_pMouse->GetDeviceState(sizeof(DIMOUSESTATE), &m_dims) != DI_OK) {
 		m_pMouse->Acquire();
 		if (FAILED(m_pMouse->GetDeviceState(sizeof(DIMOUSESTATE), &m_dims))) {
 			//MessageBox(nullptr,_T("DInput.cpp : GetMouse() : GetDeviceStateが異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -348,7 +348,7 @@ bool CDirectInput::GetMouse(void)
 		m_pMouse->Acquire();
 		if (FAILED(m_pMouse->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), m_pBufferMouse, &m_BufferRestMouse, 0))) {
 			//MessageBox(nullptr,_T("DInput.cpp : GetMouse() : GetDeviceDataが異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 	}
 	m_BufferRestBackupMouse = m_BufferRestMouse;	// 読み込んだバッファ数を退避
@@ -361,11 +361,11 @@ bool CDirectInput::GetMouse(void)
 // 引数		const int&		kmode	チェックするモード
 //			const DWORD&	kcode	チェックするキーコード　
 // 
-// 戻り値	true:チェックＯＫ　false:チェックＮＧ
+// 戻り値	true:チェックＯＫ　FALSE:チェックＮＧ
 //-----------------------------------------------------------------------------
 bool CDirectInput::CheckMouse(const int& kmode, const DWORD& kcode)
 {
-	if (!m_bInputActive || !m_pMouse) return false;
+	if (!m_bInputActive || !m_pMouse) return FALSE;
 
 	// 移動方向の取得のとき
 	if (kcode == DIM_LEFT || kcode == DIM_RIGHT || kcode == DIM_UP || kcode == DIM_DOWN) {
@@ -382,7 +382,7 @@ bool CDirectInput::CheckMouse(const int& kmode, const DWORD& kcode)
 		else if (m_dims.lY > 0 && kcode == DIM_DOWN) {
 			return true;
 		}
-		return false;
+		return FALSE;
 
 	}else{ // 各キー状態の取得のとき
 
@@ -406,10 +406,10 @@ bool CDirectInput::CheckMouse(const int& kmode, const DWORD& kcode)
 						}
 					}
 				}
-				return false;
+				return FALSE;
 			default:
 				MessageBox(nullptr, _T("DInput.cpp : CheckMouse() : 指定したキーモードが間違っています。"), nullptr, MB_OK);
-				return false;
+				return FALSE;
 		}
 	}
 
@@ -477,7 +477,7 @@ BOOL CALLBACK EnumJoysticksCallback(LPCDIDEVICEINSTANCE pInst, LPVOID lpvContext
 //-----------------------------------------------------------------------------
 // 列挙コールバック (Joystick)対応メソッド
 //-----------------------------------------------------------------------------
-bool CDirectInput::EnumJoysticksCb(LPCDIDEVICEINSTANCE pInst, LPVOID lpvContext)
+BOOL CDirectInput::EnumJoysticksCb(LPCDIDEVICEINSTANCE pInst, LPVOID lpvContext)
 {
 	LPDIRECTINPUTDEVICE8 pDevice = nullptr;
 	DIDEVCAPS            diDevCaps = { 0 };
@@ -500,7 +500,7 @@ bool CDirectInput::EnumJoysticksCb(LPCDIDEVICEINSTANCE pInst, LPVOID lpvContext)
 		m_bJoyFF[m_nJoySum] = true;		// フォースフィードバックジョイススティック
 		m_nJoyFFNum++;
 	}else{
-		m_bJoyFF[m_nJoySum] = false;	// 通常のジョイスティック
+		m_bJoyFF[m_nJoySum] = FALSE;	// 通常のジョイスティック
 	}
 
 	if (++m_nJoySum >= JOYSTICK_COUNT) return DIENUM_STOP;
@@ -513,7 +513,7 @@ bool CDirectInput::EnumJoysticksCb(LPCDIDEVICEINSTANCE pInst, LPVOID lpvContext)
 // 
 // 引数		HWND hWnd	ウィンドウハンドル
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::InitJoy(HWND hWnd)
 {
@@ -522,7 +522,7 @@ bool CDirectInput::InitJoy(HWND hWnd)
 	m_pDI8->EnumDevices( DI8DEVCLASS_GAMECTRL, EnumJoysticksCallback, nullptr, DIEDFL_ATTACHEDONLY);
 	if(!m_pJoy[0]) {
 		//MessageBox(nullptr,_T("DInput.cpp : StartDirectInput() : joystickが接続されていません。"), nullptr, MB_OK);
-		return false;
+		return FALSE;
 	}
 	int i;
 	for (i=0; i<m_nJoySum; i++) {
@@ -531,7 +531,7 @@ bool CDirectInput::InitJoy(HWND hWnd)
 		m_hr = m_pJoy[i]->SetDataFormat(&c_dfDIJoystick2);
 		if (DI_OK != m_hr) {
 			MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : SetDataFormatメソッド(joystick)が異常終了しました。"),nullptr,MB_OK);
-			return false;
+			return FALSE;
 		}
 
 		if( m_nJoyFFNum > 0 ){	// ＦＦジョイスティックが１つでもあるときは、全部を排他モードにする
@@ -541,7 +541,7 @@ bool CDirectInput::InitJoy(HWND hWnd)
 		}
 		if (DI_OK != m_hr) {
 			MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : SetCooperativeLevelメソッド(joystick)が異常終了しました。"),nullptr,MB_OK);
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -556,7 +556,7 @@ bool CDirectInput::InitJoy(HWND hWnd)
 // 
 // 引数		HWND hWnd	ウィンドウハンドル
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::InitJoyNormal(HWND hWnd)
 {
@@ -577,14 +577,14 @@ bool CDirectInput::InitJoyNormal(HWND hWnd)
 		m_hr = m_pJoy[i]->SetProperty(DIPROP_RANGE, &diprg.diph);
 		if (DI_OK != m_hr) {
 			MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : SetPropertyメソッド(joystick:DIJOFS_X)が異常終了しました。"),nullptr,MB_OK);
-			return false;
+			return FALSE;
 		}
 
 		diprg.diph.dwObj = DIJOFS_Y;
 		m_hr = m_pJoy[i]->SetProperty(DIPROP_RANGE, &diprg.diph);
 		if (DI_OK != m_hr) {
 			MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : SetPropertyメソッド(joystick:DIJOFS_Y)が異常終了しました。"),nullptr,MB_OK);
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -593,7 +593,7 @@ bool CDirectInput::InitJoyNormal(HWND hWnd)
 //-----------------------------------------------------------------------------
 // 通常のjoystickのバッファサイズの設定(joystick)
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::SetPropertyJoy(void)
 {
@@ -623,7 +623,7 @@ bool CDirectInput::SetPropertyJoy(void)
 // 
 // 引数		HWND hWnd	ウィンドウハンドル
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::InitJoyFF(HWND hWnd)
 {
@@ -646,14 +646,14 @@ bool CDirectInput::InitJoyFF(HWND hWnd)
 		dipr.diph.dwObj = DIJOFS_X;
 		if (m_pJoy[i]->SetProperty(DIPROP_RANGE, &dipr.diph) != DI_OK) {
 			MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : SetProperty(X軸範囲(RANGE):FFJoystick)が異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 
 		// Y軸範囲の設定
 		dipr.diph.dwObj = DIJOFS_Y;
 		if (m_pJoy[i]->SetProperty(DIPROP_RANGE, &dipr.diph) != DI_OK) {
 			MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : SetProperty(Y軸範囲(RANGE):FFJoystick)が異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -672,14 +672,14 @@ bool CDirectInput::InitJoyFF(HWND hWnd)
 		dipdw.diph.dwObj = DIJOFS_X;
 		if (m_pJoy[i]->SetProperty(DIPROP_DEADZONE, &dipdw.diph) != DI_OK) {
 			MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : SetProperty(X軸範囲(DEADZONE):FFJoystick)が異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 
 		// Y軸範囲の設定
 		dipdw.diph.dwObj = DIJOFS_Y;
 		if (m_pJoy[i]->SetProperty(DIPROP_DEADZONE, &dipdw.diph) != DI_OK) {
 			MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : SetProperty(Y軸範囲(RANGE):FFJoystick)が異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -697,7 +697,7 @@ bool CDirectInput::InitJoyFF(HWND hWnd)
 		m_hr = m_pJoy[i]->SetProperty(DIPROP_AUTOCENTER, &dipdw.diph);
 		if (FAILED(m_hr)) {
 			MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : SetProperty(自動センタリング):FFJoystick)が異常終了しました。"),nullptr,MB_OK);
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -728,7 +728,7 @@ bool CDirectInput::InitJoyFF(HWND hWnd)
 		didc.dwSize = sizeof(DIDEVCAPS);
 		if (m_pJoy[i]->GetCapabilities(&didc) != DI_OK) {
 			MessageBox(nullptr, _T("DInput.cpp : StartDirectInput() : GetCapabilities(ForceFeedback Joystick)が異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 
 		// 標準のＦＦ効果を設定する
@@ -736,7 +736,7 @@ bool CDirectInput::InitJoyFF(HWND hWnd)
 			//MessageBox(nullptr,_T("DInput.cpp : StartDirectInput() : ForceFeedback device found.\n"), nullptr, MB_OK); // -- 2018.8.27
 			if (!CreateJoyEffectStandard()) {
 				MessageBox(nullptr,_T("DInput.cpp : StartDirectInput() : CreateEffect(ForceFeedback Joystick)が異常終了しました。"), nullptr, MB_OK);
-				return false;
+				return FALSE;
 			}
 		}
 	}
@@ -750,7 +750,7 @@ bool CDirectInput::InitJoyFF(HWND hWnd)
 // 引数		DWORD	kcode	チェックするキーコード
 //			int		nSum	ジョイスティック番号。省略値はJOY_PLAYER1
 // 
-// 戻り値	true:チェックＯＫ　false:チェックＮＧ
+// 戻り値	true:チェックＯＫ　FALSE:チェックＮＧ
 //-----------------------------------------------------------------------------
 bool CDirectInput::CheckJoyImm(DWORD kcode, int nSum)
 {
@@ -768,19 +768,19 @@ bool CDirectInput::CheckJoyImm(DWORD kcode, int nSum)
 			return m_js[nSum].lY > DIJ_VOLUME;
 		default :
 			MessageBox(nullptr, _T("DInput.cpp : CheckJoystickImm() : kcodeの指定が間違っています。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 	}
 }
 //-----------------------------------------------------------------------------
 // ジョイスティックの状態を得る
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::GetJoy(void)
 {
 	for (int i=0; i<m_nJoySum; i++) {
-		if (!m_pJoy[i]) return false;
+		if (!m_pJoy[i]) return FALSE;
 		m_pJoy[i]->Poll();
 		m_pJoy[i]->GetDeviceState(sizeof(DIJOYSTATE2), &m_js[i]);
 
@@ -792,7 +792,7 @@ bool CDirectInput::GetJoy(void)
 			m_hr = m_pJoy[i]->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), m_pBufferJoy[i], &m_BufferRestJoy, 0);
 			if (FAILED(m_hr)) {
 				//MessageBox(nullptr,_T("DInput.cpp : GetJoy() : GetDeviceDataが異常終了しました。"),nullptr,MB_OK);
-				return false;
+				return FALSE;
 			}
 		}
 		m_BufferRestBackupJoy[i] = m_BufferRestJoy;	// 読み込んだバッファ数を退避
@@ -806,7 +806,7 @@ bool CDirectInput::GetJoy(void)
 //			DWORD	kcode	チェックするキーコード　
 //			int		nSum	ジョイスティック番号。省略値はJOY_PLAYER1
 // 
-// 戻り値	true:チェックＯＫ　false:チェックＮＧ
+// 戻り値	true:チェックＯＫ　FALSE:チェックＮＧ
 //-----------------------------------------------------------------------------
 bool CDirectInput::CheckUpDownLeftRight(int kmode, DWORD kcode, int nSum)
 {
@@ -845,7 +845,7 @@ bool CDirectInput::CheckUpDownLeftRight(int kmode, DWORD kcode, int nSum)
 			}
 		}
 	}
-	return false;
+	return FALSE;
 }
 
 //-----------------------------------------------------------------------------
@@ -855,11 +855,11 @@ bool CDirectInput::CheckUpDownLeftRight(int kmode, DWORD kcode, int nSum)
 //			const DWORD&	kcode	チェックするキーコード　
 //			int		nSum	ジョイスティック番号。省略値はJOY_PLAYER1
 // 
-// 戻り値	true:チェックＯＫ　false:チェックＮＧ
+// 戻り値	true:チェックＯＫ　FALSE:チェックＮＧ
 //-----------------------------------------------------------------------------
 bool CDirectInput::CheckJoy(const int& kmode, const DWORD& kcode, int nSum)
 {
-	if (!m_bInputActive || !m_pJoy[nSum]) return false;
+	if (!m_bInputActive || !m_pJoy[nSum]) return FALSE;
 
 
 	switch (kmode) {
@@ -890,10 +890,10 @@ bool CDirectInput::CheckJoy(const int& kmode, const DWORD& kcode, int nSum)
 				}
 			}
 		}
-		return false;
+		return FALSE;
 	default :
 		MessageBox(nullptr, _T("DInput.cpp : CheckJoy() : 指定したキーモードが間違っています。"), nullptr, MB_OK);
-		return false;
+		return FALSE;
 	}
 }
 //-----------------------------------------------------------------------------
@@ -901,15 +901,15 @@ bool CDirectInput::CheckJoy(const int& kmode, const DWORD& kcode, int nSum)
 //
 // 引数		int nSum		ジョイスティック番号。省略値はJOY_PLAYER1
 //
-// 戻り値	true:フォースフィードバックディバイス　false:一般ディバイス
+// 戻り値	true:フォースフィードバックディバイス　FALSE:一般ディバイス
 //-----------------------------------------------------------------------------
 bool CDirectInput::IfJoyFF(int nSum)
 {
-	if(!m_pJoy[nSum]) return false;
+	if(!m_pJoy[nSum]) return FALSE;
 	if( m_bJoyFF[nSum] ){	// ForceFeedback Joystickかどうか
 		return true;
 	}else{
-		return false;
+		return FALSE;
 	}
 }
 //-----------------------------------------------------------------------------
@@ -991,7 +991,7 @@ bool CDirectInput::CreateJoyEffectStandard(void)
 
 		if (m_pJoy[i]->CreateEffect(GUID_ConstantForce, &diEffect, &m_pJoyEffect[i][EF_BOUNCE], nullptr) != DI_OK) {
 			MessageBox(nullptr, _T("DInput.cpp : CreateEffect() : CreateEffect(Bounce)が異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 
 		// FIREエフェクトの生成
@@ -1014,7 +1014,7 @@ bool CDirectInput::CreateJoyEffectStandard(void)
 
 		if (m_pJoy[i]->CreateEffect(GUID_ConstantForce, &diEffect, &m_pJoyEffect[i][EF_FIRE], nullptr) != DI_OK) {
 			MessageBox(nullptr, _T("DInput.cpp : CreateEffect() : CreateEffect(Fire)が異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 
 		// EXPLODEエフェクトの生成
@@ -1046,7 +1046,7 @@ bool CDirectInput::CreateJoyEffectStandard(void)
 
 		if (m_pJoy[i]->CreateEffect(GUID_Square, &diEffect, &m_pJoyEffect[i][EF_EXPLODE], nullptr) != DI_OK) {
 			MessageBox(nullptr, _T("DInput.cpp : CreateEffect() : CreateEffect(Explode)が異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 
 		m_nJoyEFSum = 3;	// 標準効果が３つ登録された
@@ -1113,7 +1113,7 @@ bool CDirectInput::CreateJoyEffectStandard(void)
 
 		if (m_pJoy[i]->CreateEffect(GUID_ConstantForce, &diEffect, &m_pJoyEffect[i][EF_BOUNCE], nullptr) != DI_OK) {
 			MessageBox(nullptr, _T("DInput.cpp : CreateEffect() : CreateEffect(Bounce)が異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 
 		// FIREエフェクトの生成
@@ -1139,7 +1139,7 @@ bool CDirectInput::CreateJoyEffectStandard(void)
 
 		if (m_pJoy[i]->CreateEffect(GUID_ConstantForce, &diEffect, &m_pJoyEffect[i][EF_FIRE], nullptr) != DI_OK) {
 			MessageBox(nullptr, _T("DInput.cpp : CreateEffect() : CreateEffect(Fire)が異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 		
 		// EXPLODEエフェクトの生成
@@ -1174,7 +1174,7 @@ bool CDirectInput::CreateJoyEffectStandard(void)
 
 		if (m_pJoy[i]->CreateEffect(GUID_Square, &diEffect, &m_pJoyEffect[i][EF_EXPLODE], nullptr) != DI_OK) {
 			MessageBox(nullptr, _T("DInput.cpp : CreateEffect() : CreateEffect(Explode)が異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 
 		m_nJoyEFSum = 3;	// 標準効果が３つ登録された
@@ -1195,7 +1195,7 @@ BOOL CALLBACK EnumEffectsInFileProc(LPCDIFILEEFFECT lpdife, LPVOID pvRef )
 //-----------------------------------------------------------------------------
 // ForceFeedback効果列挙のコールバック(for ForceFeedback Joystic)対応のメソッド  
 //-----------------------------------------------------------------------------
-bool CDirectInput::EnumEffectsInFileCb(LPCDIFILEEFFECT lpdife, LPVOID pvRef )
+BOOL CDirectInput::EnumEffectsInFileCb(LPCDIFILEEFFECT lpdife, LPVOID pvRef )
 {
 	HRESULT hr;
 
@@ -1218,7 +1218,7 @@ bool CDirectInput::EnumEffectsInFileCb(LPCDIFILEEFFECT lpdife, LPVOID pvRef )
 //			int nEffectNo	効果番号（戻り値）　
 //			int nNum		一つの効果の個数（戻り値）
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::ReadJoyEffect(TCHAR* szFName, int &nEffectNo, int &nNum)
 {
@@ -1237,7 +1237,7 @@ bool CDirectInput::ReadJoyEffect(TCHAR* szFName, int &nEffectNo, int &nNum)
 
 		if( m_pJoy[i]->EnumEffectsInFile( szFName, EnumEffectsInFileProc, nullptr, DIFEF_MODIFYIFNEEDED ) != DI_OK ){
 			MessageBox(nullptr, _T("DInput.cpp : ReadJoyEffect() : EnumEffectsInFile()が異常終了しました。"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 		if( m_nJoyEFSum > nMaxSum )  nMaxSum = m_nJoyEFSum;
 	}
@@ -1255,19 +1255,19 @@ bool CDirectInput::ReadJoyEffect(TCHAR* szFName, int &nEffectNo, int &nNum)
 //			int nNum		一つの効果の個数(ReadJoyEffect関数の戻り値を使用する)。省略値は１
 //			int nSum		ジョイスティック番号。省略値はJOY_PLAYER1
 // 
-// 戻り値	true:成功　false:失敗
+// 戻り値	true:成功　FALSE:失敗
 //-----------------------------------------------------------------------------
 bool CDirectInput::PlayJoyEffect(int nEffectNo, int nNum, int nSum)
 {
 	int  i;
 
-	if( !m_bJoyFF[nSum] ) return false;	// 通常ジョイスティックを除く
+	if( !m_bJoyFF[nSum] ) return FALSE;	// 通常ジョイスティックを除く
 
 	for( i = 0; i < nNum; i++ ){
 		if (m_pJoyEffect[nSum][nEffectNo+i]) {
 			if (m_pJoyEffect[nSum][nEffectNo+i]->Start(1, 0) != DI_OK) {
 				MessageBox(nullptr, _T("DInput.cpp : PlayJoyEffect() : Start(Joy effect)が異常終了しました。"), nullptr, MB_OK);
-				return false;
+				return FALSE;
 			}
 		}
 	}

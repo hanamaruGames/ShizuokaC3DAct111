@@ -150,7 +150,7 @@ HRESULT CXAudioSource::Load(TCHAR* szFileName, DWORD dwNum)
 		LoadAudio(szFileName, dwNum);
 	}
 	else {
-		m_bWav = false;				// WAVファイル以外のときはMciを使用する
+		m_bWav = FALSE;				// WAVファイル以外のときはMciを使用する
 		LoadMci(szFileName);
 	}
 	return S_OK;

@@ -216,7 +216,7 @@ HRESULT CWave::SetSrc(const int& iWidth, const int& iHeight, const TCHAR* FName,
 	if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_pVertexBuffer)))
 	{
 		MessageBox(0, _T("ディスプレイスメントマッピング　バーテックスバッファ 作成失敗"), nullptr, MB_OK);
-		return false;
+		return FALSE;
 	}
 
 	//インデックスバッファーを作成
@@ -232,7 +232,7 @@ HRESULT CWave::SetSrc(const int& iWidth, const int& iHeight, const TCHAR* FName,
 	if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_pIndexBuffer))) 
 	{
 		MessageBox(0,_T("ディスプレイスメントマッピング　インデックスバッファ 作成失敗"), nullptr, MB_OK);
-		return false;
+		return FALSE;
 	}
 
 	SAFE_DELETE_ARRAY(pVertices); 

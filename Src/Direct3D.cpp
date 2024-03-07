@@ -91,7 +91,7 @@ HRESULT CDirect3D::InitD3D(HWND hWnd, DWORD dwWidth, DWORD dwHeight)
 
 	if( hr == E_FAIL){
 		MessageBox(0, _T("Direct3D.cpp D3Dデバイスとスワップチェーンの作成に失敗しました"), nullptr, MB_OK);
-		return false;
+		return E_FAIL;
 	}
 
 	//各種テクスチャーと、それに付帯する各種ビューを作成
@@ -166,14 +166,14 @@ HRESULT CDirect3D::InitD3D(HWND hWnd, DWORD dwWidth, DWORD dwHeight)
 	);
 	if (hr == E_FAIL) {
 		MessageBox(0, _T("Direct3D.cpp  COM オブジェクト(CLSID_WICImagingFactory)の作成に失敗しました"), nullptr, MB_OK);
-		return false;
+		return E_FAIL;
 	}
 
 	// DirectXMathライブラリが使えるかどうかチェックする
 	if (XMVerifyCPUSupport() != true)
 	{
 		MessageBox(0, _T("Direct3D.cpp  DirectXMathライブラリのＳＳＥが使えません。処理を終了いたします"), nullptr, MB_OK);
-		return false;
+		return E_FAIL;
 	}
 
 	return S_OK;
@@ -269,8 +269,8 @@ HRESULT CDirect3D::InitBlendState()
 	//pngファイル内にアルファ情報がある。アルファにより透過するよう指定している
 	D3D11_BLEND_DESC bd;
 	ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
-	bd.IndependentBlendEnable = false;
-	bd.AlphaToCoverageEnable = false;
+	bd.IndependentBlendEnable = FALSE;
+	bd.AlphaToCoverageEnable = FALSE;
 
 	bd.RenderTarget[0].BlendEnable = true;
 	bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
@@ -290,8 +290,8 @@ HRESULT CDirect3D::InitBlendState()
 
 	// 加算合成用ブレンドステート作成
 	ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
-	bd.IndependentBlendEnable = false;
-	bd.AlphaToCoverageEnable = false;
+	bd.IndependentBlendEnable = FALSE;
+	bd.AlphaToCoverageEnable = FALSE;
 
 	bd.RenderTarget[0].BlendEnable = true;
 	bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
@@ -370,7 +370,7 @@ void   CDirect3D::ClearRenderTarget(float ClearColor[])
 //	(設定したレンダーターゲットテクスチャ情報でＺバッファをＯＮ／ＯＦＦする)
 //
 //	引数
-//		bool bZbuf;    true:ＺバッファＯＮ  false:ＺバッファＯＦＦ
+//		bool bZbuf;    true:ＺバッファＯＮ  FALSE:ＺバッファＯＦＦ
 //
 //	戻り値
 //		なし

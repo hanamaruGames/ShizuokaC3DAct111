@@ -768,7 +768,7 @@ void CSprite::SetShader()
 	}
 
 	//Zバッファを無効化
-	m_pD3D->SetZBuffer(false);              // -- 2019.4.19
+	m_pD3D->SetZBuffer(FALSE);              // -- 2019.4.19
 
 }
 //------------------------------------------------------------------------
@@ -908,7 +908,7 @@ HRESULT CSprite::SetSrc3D(const float& fDestWidth, const float& fDestHeight, con
 //
 //	戻り値 bool
 //		true      表示継続
-//		false     表示終了
+//		FALSE     表示終了
 //
 //------------------------------------------------------------------------
 bool CSprite::Draw3D(CSpriteImage* pImage, const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const VECTOR2& vSize, const VECTOR2& vSrcPos, const VECTOR2& vSrcSize, const float& fAlpha)
@@ -936,13 +936,13 @@ bool CSprite::Draw3D(CSpriteImage* pImage, const VECTOR3& vPos, const MATRIX4X4&
 //
 //	戻り値 bool
 //		true      表示継続
-//		false     表示終了
+//		FALSE     表示終了
 //
 //------------------------------------------------------------------------
 bool CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const VECTOR2& vSize, const VECTOR2& vSrcPos, const VECTOR2& vSrcSize, const float& fAlpha)
 {
 	// イメージがないときは描画しない
-	if (m_pImage == nullptr ) return false;
+	if (m_pImage == nullptr ) return FALSE;
 
 	// 表示ビルボードの大きさのバーテックスバッファを作成する
 	SetSrc3D( vSize.x, vSize.y, (DWORD)vSrcPos.x, (DWORD)vSrcPos.y, (DWORD)vSrcSize.x, (DWORD)vSrcSize.y);
@@ -966,13 +966,13 @@ bool CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X
 //
 //	戻り値 bool
 //		true      表示継続
-//		false     表示終了
+//		FALSE     表示終了
 //
 //------------------------------------------------------------------------
 bool CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye)
 {
 	// イメージがなかったりバーテックスバッファが作成されていないときは描画しない
-	if (m_pImage == nullptr || m_pVertexBufferBillSprite == nullptr) return false;
+	if (m_pImage == nullptr || m_pVertexBufferBillSprite == nullptr) return FALSE;
 
 	//ビルボードの、視点を向くワールドトランスフォームを求める
 	MATRIX4X4 mWorld = GetLookatMatrix(vPos, vEye);
@@ -1056,7 +1056,7 @@ bool CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X
 //
 //	戻り値 bool
 //		true      表示継続
-//		false     表示終了
+//		FALSE     表示終了
 //
 //------------------------------------------------------------------------
 bool CSprite::DrawLine3D(const VECTOR3& vStart, const VECTOR3& vEnd, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const DWORD& colorABGR, const float& fAlpha)
@@ -1091,7 +1091,7 @@ bool CSprite::DrawLine3D(const VECTOR3& vStart, const VECTOR3& vEnd, const MATRI
 		if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_pVertexBufferLine)))
 		{
 			MessageBox(0, _T("Sprite3D.cpp バーテックスバッファーLINE 作成失敗"), nullptr, MB_OK);
-			return false;
+			return FALSE;
 		}
 	}
 	else {
@@ -1454,7 +1454,7 @@ void CFontTexture::SetShader()
 	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 
 	//Zバッファを無効化
-	m_pD3D->SetZBuffer(false);              // -- 2019.4.19
+	m_pD3D->SetZBuffer(FALSE);              // -- 2019.4.19
 
 }
 //------------------------------------------------------------------------
@@ -1533,7 +1533,7 @@ void CFontTexture::CreateTex(const DWORD&  dwKbn, const float&  fDestWidth, cons
 
 	// 文字列グラフィックの生成
 
-	DWORD     dwTextlen = (DWORD)_tcslen(text);    // 文字数（バイト数ではない）  // -- 2018.12.28
+	DWORD     dwTextlen = _tcslen(text);    // 文字数（バイト数ではない）  // -- 2018.12.28
 	DWORD     dwTextHeight = 0;
 	DWORD     dwTextWidth = 0;
 	DWORD     dwAllWidth = 0;
@@ -1800,13 +1800,13 @@ HRESULT CFontTexture::CreateVB3D(const float& fDestWidth, const float& fDestHeig
 //
 //	戻り値 bool
 //		true      表示継続
-//		false     表示終了
+//		FALSE     表示終了
 //
 //------------------------------------------------------------------------
 bool CFontTexture::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const TCHAR* szText, const VECTOR2& vSize, const DWORD& colorABGR, const float& fAlpha, const TCHAR* szFontName)
 {
 
-	if (szText[0] == _T('\0')) return false;  // 文字列がないときは描画しない
+	if (szText[0] == _T('\0')) return FALSE;  // 文字列がないときは描画しない
 
 	//
 	// 前回までの「文字列や色、サイズ」が１画面分・発生順にm_TextData配列に入っているので

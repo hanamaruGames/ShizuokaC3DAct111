@@ -65,6 +65,15 @@
     <Filter Include="ソースファイル\01_ゲームメイン\0110_BackFore">
       <UniqueIdentifier>{cc44635d-2378-4a29-b21d-d776b85b6019}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソースファイル\05_FrameWork">
+      <UniqueIdentifier>{341015f4-27ae-4ecb-bb0a-bdfd05999e17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\06_TitleScene">
+      <UniqueIdentifier>{5f147415-01bb-4da4-b987-8f1d37341506}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\07_PlayScene">
+      <UniqueIdentifier>{5b276dcd-4971-4dd7-8436-8f2d5a250674}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Main.aps">
@@ -281,6 +290,30 @@
     <ClInclude Include="Src\EffectStruct.h">
       <Filter>ソースファイル\01_ゲームメイン\0107_Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Src\GameObject.h">
+      <Filter>ソースファイル\05_FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ObjectManager.h">
+      <Filter>ソースファイル\05_FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\SceneBase.h">
+      <Filter>ソースファイル\05_FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\SceneFactory.h">
+      <Filter>ソースファイル\05_FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\SceneManager.h">
+      <Filter>ソースファイル\05_FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Time.h">
+      <Filter>ソースファイル\05_FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\TitleScene.h">
+      <Filter>ソースファイル\06_TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PlayScene.h">
+      <Filter>ソースファイル\07_PlayScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Main.cpp">
@@ -378,6 +411,27 @@
     </ClCompile>
     <ClCompile Include="Src\EffectParticle.cpp">
       <Filter>ソースファイル\01_ゲームメイン\0107_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ObjectManager.cpp">
+      <Filter>ソースファイル\05_FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\SceneBase.cpp">
+      <Filter>ソースファイル\05_FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\SceneFactory.cpp">
+      <Filter>ソースファイル\05_FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\SceneManager.cpp">
+      <Filter>ソースファイル\05_FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Time.cpp">
+      <Filter>ソースファイル\05_FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\TitleScene.cpp">
+      <Filter>ソースファイル\06_TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PlayScene.cpp">
+      <Filter>ソースファイル\07_PlayScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
