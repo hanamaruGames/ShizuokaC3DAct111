@@ -7,6 +7,7 @@
 //=============================================================================
 #pragma once
 #include "GameMain.h"
+#include "Object3D.h"
 
 // --------------------------------------------------------------------
 //武器　手に持つアイテム　オブジェクトクラス
@@ -35,7 +36,7 @@ public:
 // --------------------------------------------------------------------
 //武器　手に持つアイテム　プロシージャクラス
 // --------------------------------------------------------------------
-class CWeaponHoldProc : public CBaseProc
+class CWeaponHoldProc : public Object3D
 {
 protected:
 	// 定数定義  ------------------------------------------
@@ -47,6 +48,6 @@ public:
 	void GetInfo(MATRIX4X4 mHold, BASEHOLDITEM HoldItem, MATRIX4X4& mMat, VECTOR3& vMin, VECTOR3& vMax);
 	CBBox* GetBBox(MATRIX4X4 mHold, BASEHOLDITEM HoldItem);
 	int GetKind(BASEHOLDITEM HoldItem);
-	CWeaponHoldProc(CGameMain* pGMain);	// コンストラクタ
+	CWeaponHoldProc();	// コンストラクタ
 	virtual	~CWeaponHoldProc();
 };

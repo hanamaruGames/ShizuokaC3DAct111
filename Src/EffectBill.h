@@ -7,6 +7,7 @@
 //=============================================================================
 #pragma once
 #include "GameMain.h"
+#include "Object3D.h"
 #include "EffectStruct.h"
 
 // ------------------------------------------------------------------------
@@ -50,7 +51,7 @@ public:
 //	ビルボードのプロシージャクラス
 //
 // ========================================================================================
-class CEffectBillProc : public CBaseProc
+class CEffectBillProc : public Object3D
 {
 protected:
 	// 定数定義  ------------------------------------------
@@ -67,7 +68,7 @@ public:
 
 	BILLBOARDBASE* GetBillArrayPtr(int i);
 
-	CEffectBillProc(CGameMain* pGMain);	// コンストラクタ
+	CEffectBillProc();	// コンストラクタ
 	virtual	~CEffectBillProc();	// デストラクタ
 };
 

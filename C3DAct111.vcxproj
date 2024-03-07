@@ -561,6 +561,7 @@
     <ClInclude Include="Src\Map.h" />
     <ClInclude Include="Src\MyImgui.h" />
     <ClInclude Include="Src\MyMath.h" />
+    <ClInclude Include="Src\Object3D.h" />
     <ClInclude Include="Src\ObjectManager.h" />
     <ClInclude Include="Src\Playchar.h" />
     <ClInclude Include="Src\PlayScene.h" />
@@ -602,6 +603,7 @@
     <ClCompile Include="Src\MapLoadMap.cpp" />
     <ClCompile Include="Src\MyImgui.cpp" />
     <ClCompile Include="Src\MyMath.cpp" />
+    <ClCompile Include="Src\Object3D.cpp" />
     <ClCompile Include="Src\ObjectManager.cpp" />
     <ClCompile Include="Src\Playchar.cpp" />
     <ClCompile Include="Src\PlayScene.cpp" />

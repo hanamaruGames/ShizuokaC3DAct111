@@ -14,7 +14,7 @@
 //   なお、プロシージャのdeleteはCBaseProcのデストラクタで行うため不要
 //
 //------------------------------------------------------------------------
-CEffectBillFireProc::CEffectBillFireProc(CGameMain* pGMain) : CBaseProc(pGMain)
+CEffectBillFireProc::CEffectBillFireProc()
 {
 	BILLBOARDBASE bb = {};
 
@@ -98,7 +98,7 @@ HRESULT CEffectBillFireProc::Load(TCHAR* szFName, BILLBOARDBASE* pBillBase)
 {
 
 	//テクスチャー読み込み	
-	if (FAILED(m_pGMain->m_pD3D->CreateShaderResourceViewFromFile(szFName, &pBillBase->m_pTexture,
+	if (FAILED(GameDevice()->m_pD3D->CreateShaderResourceViewFromFile(szFName, &pBillBase->m_pTexture,
 		pBillBase->m_dwImageWidth, pBillBase->m_dwImageHeight, 3)))
 	{
 		MessageBox(0, _T("ビルボード　テクスチャーを読み込めません"), szFName, MB_OK);
@@ -146,7 +146,7 @@ HRESULT CEffectBillFireProc::SetSrc(BILLBOARDBASE* pBillBase)
 
 	D3D11_SUBRESOURCE_DATA InitData;
 	InitData.pSysMem = vertices;
-	if (FAILED(m_pGMain->m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &pBillBase->m_pVertexBuffer)))
+	if (FAILED(GameDevice()->m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &pBillBase->m_pVertexBuffer)))
 	{
 		return E_FAIL;
 	}
@@ -242,8 +242,8 @@ CEffectBillFireObj* CEffectBillFireProc::Start(int  nBillIdx)
 //------------------------------------------------------------------------
 CEffectBillFireObj::CEffectBillFireObj(CBaseProc* pProc) : CBaseObj(pProc)
 {
-	m_pD3D = m_pGMain->m_pD3D;
-	m_pShader = m_pGMain->m_pShader;
+	m_pD3D = GameDevice()->m_pD3D;
+	m_pShader = GameDevice()->m_pShader;
 
 	m_vPos = VECTOR3(0, 0, 0);
 	m_vUVOffset = VECTOR2(0, 0);
@@ -366,7 +366,7 @@ bool CEffectBillFireObj::Render()
 	if (!m_bActive) return FALSE;
 
 	//ビルボードの、視点を向くワールドトランスフォームを求める
-	MATRIX4X4 mWorld = GetLookatMatrix(m_vPos, m_pGMain->m_vEyePt);
+	MATRIX4X4 mWorld = GetLookatMatrix(m_vPos, GameDevice()->m_vEyePt);
 	// 描画中心位置の移動をする
 	MATRIX4X4 mPosUp = XMMatrixTranslation(GetBillArrayPtr()->m_fDestCenterX - GetBillArrayPtr()->m_fDestWidth / 2,
 		GetBillArrayPtr()->m_fDestCenterY - GetBillArrayPtr()->m_fDestHeight / 2, 0);
@@ -397,7 +397,7 @@ bool CEffectBillFireObj::Render()
 	if (SUCCEEDED(m_pD3D->m_pDeviceContext->Map(m_pShader->m_pConstantBufferEffect, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData)))
 	{
 		//ワールド、カメラ、射影行列、テクスチャーオフセットを渡す
-		cb.mWVP = XMMatrixTranspose(mWorld * m_pGMain->m_mView * m_pGMain->m_mProj);
+		cb.mWVP = XMMatrixTranspose(mWorld * GameDevice()->m_mView * GameDevice()->m_mProj);
 
 		cb.vUVOffset.x = m_vUVOffset.x / GetBillArrayPtr()->m_dwImageWidth;		// テクスチャアニメーションのオフセット
 		cb.vUVOffset.y = m_vUVOffset.y / GetBillArrayPtr()->m_dwImageHeight;		// テクスチャアニメーションのオフセット

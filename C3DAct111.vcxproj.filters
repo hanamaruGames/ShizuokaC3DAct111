@@ -314,6 +314,9 @@
     <ClInclude Include="Src\PlayScene.h">
       <Filter>ソースファイル\07_PlayScene</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Object3D.h">
+      <Filter>ソースファイル\05_FrameWork</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Main.cpp">
@@ -432,6 +435,9 @@
     </ClCompile>
     <ClCompile Include="Src\PlayScene.cpp">
       <Filter>ソースファイル\07_PlayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Object3D.cpp">
+      <Filter>ソースファイル\05_FrameWork</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

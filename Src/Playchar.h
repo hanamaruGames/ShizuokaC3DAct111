@@ -5,7 +5,7 @@
 //=============================================================================
 #pragma once
 #include "GameMain.h"
-
+#include "Object3D.h"
 
 // ---------------------------------------------------------------------
 // プロシージャID
@@ -58,7 +58,7 @@ public:
 //======================================================================
 // プレイキャラクター　プロシージャクラス
 //======================================================================
-class CPcProc : public CBaseProc
+class CPcProc : public Object3D
 {
 protected:
 	// 定数定義  ------------------------------------------
@@ -68,7 +68,7 @@ public:
 	CPcObj*			    GetPcObjPtr() { return (CPcObj*)GetObjArrayPtr()[0]; }
 	
 	// コンストラクタ
-	CPcProc(CGameMain* pGMain);
+	CPcProc();
 	virtual	~CPcProc();
 };
 

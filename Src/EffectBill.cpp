@@ -14,12 +14,12 @@
 //   なお、プロシージャのdeleteはCBaseProcのデストラクタで行うため不要
 //
 //------------------------------------------------------------------------
-CEffectBillProc::CEffectBillProc(CGameMain* pGMain) : CBaseProc(pGMain)
+CEffectBillProc::CEffectBillProc()
 {
 	BILLBOARDBASE bb = {};
 
 	// 半球ビルボードスタティックメッシュの読み込み  // -- 2019.7.17
-	m_pMeshArray.push_back(new CFbxMesh(pGMain->m_pFbxMeshCtrl, _T("Data/Item/BillSphere.mesh")));
+	m_pMeshArray.push_back(new CFbxMesh(GameDevice()->m_pFbxMeshCtrl, _T("Data/Item/BillSphere.mesh")));
 
 	// ------------------------------------------------------------------------------------------
 	// ビルボード構造体配列の設定
@@ -120,7 +120,7 @@ HRESULT CEffectBillProc::Load(TCHAR* szFName, BILLBOARDBASE* pBillBase)
 {
 
 	//テクスチャー読み込み	
-	if (FAILED(m_pGMain->m_pD3D->CreateShaderResourceViewFromFile(szFName, &pBillBase->m_pTexture,
+	if (FAILED(GameDevice()->m_pD3D->CreateShaderResourceViewFromFile(szFName, &pBillBase->m_pTexture,
 		pBillBase->m_dwImageWidth, pBillBase->m_dwImageHeight, 3)))
 	{
 		MessageBox(0, _T("ビルボード　テクスチャーを読み込めません"), szFName, MB_OK);
@@ -168,7 +168,7 @@ HRESULT CEffectBillProc::SetSrc(BILLBOARDBASE* pBillBase)
 
 	D3D11_SUBRESOURCE_DATA InitData;
 	InitData.pSysMem = vertices;
-	if (FAILED(m_pGMain->m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &pBillBase->m_pVertexBuffer)))
+	if (FAILED(GameDevice()->m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &pBillBase->m_pVertexBuffer)))
 	{
 		return E_FAIL;
 	}
@@ -233,8 +233,8 @@ bool CEffectBillProc::Start(int nBillIdx, VECTOR3 vPos)
 //------------------------------------------------------------------------
 CEffectBillObj::CEffectBillObj(CBaseProc* pProc) : CBaseObj(pProc)
 {
-	m_pD3D = m_pGMain->m_pD3D;
-	m_pShader = m_pGMain->m_pShader;
+	m_pD3D = GameDevice()->m_pD3D;
+	m_pShader = GameDevice()->m_pShader;
 
 	m_vPos = VECTOR3(0, 0, 0);
 	m_vUVOffset = VECTOR2(0, 0);
@@ -357,7 +357,7 @@ bool CEffectBillObj::Render()
 	if (!m_bActive) return FALSE;
 
 	//ビルボードの、視点を向くワールドトランスフォームを求める
-	MATRIX4X4 mWorld = GetLookatMatrix(m_vPos, m_pGMain->m_vEyePt);
+	MATRIX4X4 mWorld = GetLookatMatrix(m_vPos, GameDevice()->m_vEyePt);
 	// 描画中心位置の移動をする
 	MATRIX4X4 mPosUp = XMMatrixTranslation(GetBillArrayPtr()->m_fDestCenterX - GetBillArrayPtr()->m_fDestWidth / 2,
 		GetBillArrayPtr()->m_fDestCenterY - GetBillArrayPtr()->m_fDestHeight / 2, 0);
@@ -388,7 +388,7 @@ bool CEffectBillObj::Render()
 	if (SUCCEEDED(m_pD3D->m_pDeviceContext->Map(m_pShader->m_pConstantBufferEffect, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData)))
 	{
 		//ワールド、カメラ、射影行列、テクスチャーオフセットを渡す
-		cb.mWVP = XMMatrixTranspose(mWorld * m_pGMain->m_mView * m_pGMain->m_mProj);
+		cb.mWVP = XMMatrixTranspose(mWorld * GameDevice()->m_mView * GameDevice()->m_mProj);
 
 		cb.vUVOffset.x = m_vUVOffset.x / GetBillArrayPtr()->m_dwImageWidth;		// テクスチャアニメーションのオフセット
 		cb.vUVOffset.y = m_vUVOffset.y / GetBillArrayPtr()->m_dwImageHeight;		// テクスチャアニメーションのオフセット
@@ -440,7 +440,7 @@ void  CEffectBillObj::RenderMesh()
 	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pEffect3D_PS, nullptr, 0);
 
 	//ビルボードの、視点を向くワールドトランスフォームを求める
-	MATRIX4X4 mWorld = GetLookatMatrix(m_vPos, m_pGMain->m_vEyePt);
+	MATRIX4X4 mWorld = GetLookatMatrix(m_vPos, GameDevice()->m_vEyePt);
 	// 描画中心位置の移動をする
 	MATRIX4X4 mPosUp = XMMatrixTranslation(GetBillArrayPtr()->m_fDestCenterX - GetBillArrayPtr()->m_fDestWidth / 2,
 		GetBillArrayPtr()->m_fDestCenterY - GetBillArrayPtr()->m_fDestHeight / 2, 0);
@@ -462,7 +462,7 @@ void  CEffectBillObj::RenderMesh()
 	if (SUCCEEDED(m_pD3D->m_pDeviceContext->Map(m_pShader->m_pConstantBufferEffect, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData)))
 	{
 		//ワールド、カメラ、射影行列、テクスチャーオフセットを渡す
-		cb.mWVP = XMMatrixTranspose(mWorld * m_pGMain->m_mView * m_pGMain->m_mProj);
+		cb.mWVP = XMMatrixTranspose(mWorld * GameDevice()->m_mView * GameDevice()->m_mProj);
 
 		cb.vUVOffset.x = m_vUVOffset.x / GetBillArrayPtr()->m_dwImageWidth;			// テクスチャアニメーションのオフセット
 		cb.vUVOffset.y = m_vUVOffset.y / GetBillArrayPtr()->m_dwImageHeight;			// テクスチャアニメーションのオフセット
@@ -472,10 +472,10 @@ void  CEffectBillObj::RenderMesh()
 		cb.fAlpha = GetBillArrayPtr()->m_fAlpha;
 
 		memcpy_s(pData.pData, pData.RowPitch, (void*)(&cb), sizeof(cb));
-		cb.mWVP = XMMatrixTranspose(mWorld * m_pGMain->m_mView * m_pGMain->m_mProj);
-		cb.mWVP = XMMatrixTranspose(mWorld * m_pGMain->m_mView * m_pGMain->m_mProj);
-		cb.mWVP = XMMatrixTranspose(mWorld * m_pGMain->m_mView * m_pGMain->m_mProj);
-		cb.mWVP = XMMatrixTranspose(mWorld * m_pGMain->m_mView * m_pGMain->m_mProj);
+		cb.mWVP = XMMatrixTranspose(mWorld * GameDevice()->m_mView * GameDevice()->m_mProj);
+		cb.mWVP = XMMatrixTranspose(mWorld * GameDevice()->m_mView * GameDevice()->m_mProj);
+		cb.mWVP = XMMatrixTranspose(mWorld * GameDevice()->m_mView * GameDevice()->m_mProj);
+		cb.mWVP = XMMatrixTranspose(mWorld * GameDevice()->m_mView * GameDevice()->m_mProj);
 		m_pD3D->m_pDeviceContext->Unmap(m_pShader->m_pConstantBufferEffect, 0);
 	}
 
@@ -493,7 +493,7 @@ void  CEffectBillObj::RenderMesh()
 	m_pD3D->m_pDeviceContext->PSSetSamplers(0, 1, &m_pD3D->m_pSampleLinear);
 
 	// メッシュの描画順を決定するm_dwRenderIdxArrayの設定
-	GetMesh()->SetRenderIdxArray(mWorld, m_pGMain->m_vEyePt);
+	GetMesh()->SetRenderIdxArray(mWorld, GameDevice()->m_vEyePt);
 
 	// メッシュの数だけテクスチャー、バーテックスバッファ、インデックスバッファをセットして、レンダリングする
 	for (DWORD mi = 0; mi < GetMesh()->m_dwMeshNum; mi++)

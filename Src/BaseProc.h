@@ -44,7 +44,6 @@ class CBaseProc;
 class CBaseObj
 {
 protected:
-	CGameMain*		m_pGMain;			// ゲームメインクラス
 	CBaseProc*		m_pProc;			// 親のプロシージャ                     // -- 2022.2.16
 	DWORD			m_dwStatus;			// ステータス
 	DWORD			m_dwStatusSub;		// ステータスサブ
@@ -138,8 +137,6 @@ public:
 class  CBaseProc
 {
 protected:
-	CGameMain*		m_pGMain;				// ゲームメインクラス
-
 	// 
 	// 下位のプロシージャポインタ配列は、プロシージャを階層構造にして管理するときに使用する
 	// オブジェクトポインタ配列は、プロシージャの中にオブジェクトを配置して管理するときに使用する
@@ -181,7 +178,6 @@ public:
 	virtual std::vector<CFbxMesh*>   GetMeshArrayPtr() { return m_pMeshArray; }	// メッシュポインタ配列   // -- 2022.2.16
 	virtual std::vector<BASEHOLDITEM> GetHoldItemArrayPtr() { return m_HoldItemArray; }		// 手に持つ武器   // -- 2022.2.16
 	virtual CBaseObj* GetObj(int i=0) { return m_pObjArray[i]; } // -- 2022.2.16
-	virtual CGameMain* GetGMain() { return m_pGMain; }           // -- 2022.2.16
 	virtual CFbxMesh* GetMesh(int idx = 0);                      // -- 2022.12.20
 	virtual BASEHOLDITEM  GetHoldItem(int idx = 0);              // -- 2022.12.20
 	virtual DWORD GetProcID() { return m_dwProcID; }             // -- 2022.2.16
@@ -189,9 +185,16 @@ public:
 	virtual void AddNum(int n) { m_nNum += n; }
 
 	// コンストラクタ（基本プロシージャの初期化）
+	CBaseProc()
+	{
+		m_dwProcID = 0;      // プロシージャＩＤ
+		m_nMaxNum = 0;		// 最大発生数
+		m_nNum = 0;			// 発生数
+		m_nMaxwaitTime = 0;	// 最大待ち時間
+		m_nWaitTime = 0;	// 現在の待ち時間
+	}
 	CBaseProc(CGameMain* pGMain)
 	{
-		m_pGMain = pGMain;   // ゲームメインクラス
 		m_dwProcID = 0;      // プロシージャＩＤ
 		m_nMaxNum = 0;		// 最大発生数
 		m_nNum = 0;			// 発生数

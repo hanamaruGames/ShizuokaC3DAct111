@@ -16,11 +16,11 @@
 // マッププロシージャのコンストラクタ
 //
 //-----------------------------------------------------------------------------
-CMapProc::CMapProc(CGameMain*	pGMain)
+CMapProc::CMapProc()
 {
 	// クラス全体のクリヤー
 	// (vectorクラスは初期化不要)
-	m_pGMain = pGMain;
+//	GameDevice() = pGMain;
 	m_dwMapNo = 0;
 	m_bActive = FALSE;
 	m_pColMesh   = nullptr;					// コリジョンメッシュへのポインタ
@@ -306,7 +306,7 @@ int CMapProc::isCollisionMove(MATRIX4X4* pWorld, MATRIX4X4 mWorldOld, VECTOR3& v
 //-----------------------------------------------------------------------------
 void CMapProc::Update()
 {
-	CDirectInput* pDI = m_pGMain->m_pDI;
+	CDirectInput* pDI = GameDevice()->m_pDI;
 	const float MAP_SKYROTSPEED = MAP_SKYROTSPEED_X1000 / 1000.0f;
 
 	// イベントの更新処理                         // -- 2021.2.4
@@ -318,7 +318,7 @@ void CMapProc::Update()
 		MATRIX4X4 mRot;
 		mRot = XMMatrixRotationY(XMConvertToRadians(MAP_SKYROTSPEED));
 		mRot = mRot * GetRotateMatrix(m_SkyMap[0].m_mWorld);
-		m_SkyMap[0].m_mWorld = XMMatrixTranslation(m_pGMain->m_vEyePt.x, m_pGMain->m_vEyePt.y, m_pGMain->m_vEyePt.z);
+		m_SkyMap[0].m_mWorld = XMMatrixTranslation(GameDevice()->m_vEyePt.x, GameDevice()->m_vEyePt.y, GameDevice()->m_vEyePt.z);
 		m_SkyMap[0].m_mWorld = mRot * m_SkyMap[0].m_mWorld;
 	}
 
@@ -354,7 +354,7 @@ int  CMapProc::SetEvent(VECTOR3 vMin, VECTOR3 vMax, MATRIX4X4 mWorld, EVENTKIND 
 	m_EventMap.push_back(em);
 
 	// バウンディングボックスの設定
-	m_EventMap[m_nEvtIdx].m_pBBox = new CBBox(m_pGMain->m_pShader, vMin, vMax);
+	m_EventMap[m_nEvtIdx].m_pBBox = new CBBox(GameDevice()->m_pShader, vMin, vMax);
 	m_EventMap[m_nEvtIdx].m_pBBox->m_mWorld = mWorld;
 
 	// 各項目の設定
@@ -377,21 +377,22 @@ int  CMapProc::SetEvent(VECTOR3 vMin, VECTOR3 vMax, MATRIX4X4 mWorld, EVENTKIND 
 void  CMapProc::UpdateEvent()
 {
 	VECTOR3 vHit, vNrm;
+	CPcProc* pPc = ObjectManager::FindGameObject<CPcProc>();
 
 	for (int i = 0; i < m_EventMap.size(); i++)
 	{
 		// PCのバウンディングボックスに接触しているかの判定
-		if (m_EventMap[i].m_pBBox && m_EventMap[i].m_pBBox->OBBCollisionDetection(m_pGMain->m_pPcProc->GetPcObjPtr()->GetBBox(), &vHit, &vNrm))
+		if (m_EventMap[i].m_pBBox && m_EventMap[i].m_pBBox->OBBCollisionDetection(pPc->GetPcObjPtr()->GetBBox(), &vHit, &vNrm))
 		{
 			// PCのバウンディングボックスに接触しているとき
 			if (m_EventMap[i].m_nEvtCycle == 0)  // イベントサイクルが０のとき(まだ接触していなかったとき)
 			{
-				if (m_EventMap[i].m_nEvtKeyPush == 1 && !(m_pGMain->m_pDI->CheckKey(KD_DAT, DIK_RETURN) || m_pGMain->m_pDI->CheckJoy(KD_DAT, DIJ_A)))  // Enterキープッシュが必要なとき
+				if (m_EventMap[i].m_nEvtKeyPush == 1 && !(GameDevice()->m_pDI->CheckKey(KD_DAT, DIK_RETURN) || GameDevice()->m_pDI->CheckJoy(KD_DAT, DIJ_A)))  // Enterキープッシュが必要なとき
 				{
-					VECTOR3 vPc = GetPositionVector(m_pGMain->m_pPcProc->GetPcObjPtr()->GetWorld());
+					VECTOR3 vPc = GetPositionVector(pPc->GetPcObjPtr()->GetWorld());
 					vPc.y += 2.0f;
 					// PCの頭上に、Enterキープッシュが行われていない事の表示をする
-					m_pGMain->m_pFont->Draw3D(vPc, m_pGMain->m_mView, m_pGMain->m_mProj, m_pGMain->m_vEyePt, _T("Push Enter Key!"), VECTOR2(0.8f, 0.2f), RGB(255, 0, 0), 1.0f, _T("HGP創英角ｺﾞｼｯｸUB"));
+					GameDevice()->m_pFont->Draw3D(vPc, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vEyePt, _T("Push Enter Key!"), VECTOR2(0.8f, 0.2f), RGB(255, 0, 0), 1.0f, _T("HGP創英角ｺﾞｼｯｸUB"));
 				}
 				else {
 					// イベント実行
@@ -577,10 +578,10 @@ void  CMapProc::Render(void)
 		{
 			// 空のレンダリング   陰影をつけないレンダリング 
 			// Zバッファを無効化
-			m_pGMain->m_pD3D->SetZBuffer(FALSE);
-			m_SkyMap[0].m_pMesh->Render(m_SkyMap[0].m_mWorld, m_pGMain->m_mView, m_pGMain->m_mProj, VECTOR3(0, 0, 0), m_pGMain->m_vEyePt);  // 陰影をつけないレンダリング 
+			GameDevice()->m_pD3D->SetZBuffer(FALSE);
+			m_SkyMap[0].m_pMesh->Render(m_SkyMap[0].m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, VECTOR3(0, 0, 0), GameDevice()->m_vEyePt);  // 陰影をつけないレンダリング 
 			// Zバッファを有効化
-			m_pGMain->m_pD3D->SetZBuffer(true);
+			GameDevice()->m_pD3D->SetZBuffer(true);
 		}
 
 		// マップレンダリング
@@ -589,19 +590,19 @@ void  CMapProc::Render(void)
 			if (m_StageMap[i].m_nMaterialFlag == 0)  // 通常のブレンドステート
 			{
 				if (m_StageMap[i].m_pMesh)
-					m_StageMap[i].m_pMesh->Render(m_StageMap[i].m_mWorld, m_pGMain->m_mView, m_pGMain->m_mProj, m_pGMain->m_vLightDir, m_pGMain->m_vEyePt);
+					m_StageMap[i].m_pMesh->Render(m_StageMap[i].m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
 
 			}
 			else if (m_StageMap[i].m_nMaterialFlag == 2)  // ディスプレースメントマッピング   // -- 2020.12.15
 			{
 				if (m_StageMap[i].m_pMesh)
-					m_StageMap[i].m_pMesh->RenderDisplace(m_StageMap[i].m_mWorld, m_pGMain->m_mView, m_pGMain->m_mProj, m_pGMain->m_vLightDir, m_pGMain->m_vEyePt);
+					m_StageMap[i].m_pMesh->RenderDisplace(m_StageMap[i].m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
 
 			}
 			else if (m_StageMap[i].m_nMaterialFlag == 3) // 波のレンダリング
 			{
 				if (m_StageMap[i].m_pWave)
-					m_StageMap[i].m_pWave->Render(m_StageMap[i].m_mWorld, m_pGMain->m_mView, m_pGMain->m_mProj, m_pGMain->m_vLightDir, m_pGMain->m_vEyePt);
+					m_StageMap[i].m_pWave->Render(m_StageMap[i].m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
 			}
 		}
 
@@ -609,7 +610,7 @@ void  CMapProc::Render(void)
 		for (DWORD i = 0; i < m_MoveMap.size(); i++)
 		{
 			if (m_MoveMap[i].m_pMesh && m_MoveMap[i].m_bActive)
-				m_MoveMap[i].m_pMesh->Render(m_MoveMap[i].m_pColMesh->m_mWorld, m_pGMain->m_mView, m_pGMain->m_mProj, m_pGMain->m_vLightDir, m_pGMain->m_vEyePt);
+				m_MoveMap[i].m_pMesh->Render(m_MoveMap[i].m_pColMesh->m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
 		}
 
 	}

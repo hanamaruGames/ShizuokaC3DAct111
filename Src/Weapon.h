@@ -6,6 +6,7 @@
 #pragma once
 
 #include "GameMain.h"
+#include "Object3D.h"
 
 #include "WeaponLaser.h"
 #include "WeaponHold.h"
@@ -14,14 +15,14 @@
 // ======================================================================
 // 武器全体のメインプロシージャクラス
 // ======================================================================
-class CWeaponProc : public CBaseProc
+class CWeaponProc : public Object3D
 {
 public:
 	CWeaponLaserProc*     m_pWeaponLaserProc;
 	CWeaponHoldProc*      m_pWeaponHoldProc;
 
 public:
-	CWeaponProc(CGameMain* pGMain);	// コンストラクタ
+	CWeaponProc();	// コンストラクタ
 	virtual	~CWeaponProc() { ; }
 };
 

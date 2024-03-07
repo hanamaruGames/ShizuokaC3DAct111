@@ -7,6 +7,7 @@
 //=============================================================================
 #pragma once
 #include "GameMain.h"
+#include "Object3D.h"
 #include "EffectStruct.h"
 
 // -----------------------------------------------------------------------------
@@ -51,7 +52,7 @@ public:
 //	パーティクルのプロシージャクラス
 //
 // ========================================================================================
-class CEffectParticleProc : public CBaseProc
+class CEffectParticleProc : public Object3D
 {
 protected:
 	// 定数定義  ------------------------------------------
@@ -70,6 +71,6 @@ public:
 
 	PARTICLEBASE* GetPartArrayPtr(int i);
 
-	CEffectParticleProc(CGameMain* pGMain);	// コンストラクタ
+	CEffectParticleProc();	// コンストラクタ
 	~CEffectParticleProc();	// デストラクタ
 };

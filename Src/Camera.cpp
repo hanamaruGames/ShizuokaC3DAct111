@@ -19,7 +19,7 @@
 //   なお、オブジェクトのdeleteはCBaseProcのデストラクタで行うため不要
 //
 // -------------------------------------------------------------------------------------------------------------------------
-CCameraProc::CCameraProc(CGameMain* pGMain) : CBaseProc(pGMain)
+CCameraProc::CCameraProc()
 {
 	m_nCamObjNo = 0;    // 選択するカメラオブジェクトＮＯ初期値０
 
@@ -46,9 +46,11 @@ CCameraProc::CCameraProc(CGameMain* pGMain) : CBaseProc(pGMain)
 // ---------------------------------------------------------------------------
 void CCameraProc::Update()
 {
+	Object3D::Update();
+
 	// カメラ制御の変更
 	// 表示するオブジェクトを切り替える
-	if (m_pGMain->m_pDI->CheckKey(KD_TRG, DIK_F)) // Fキー
+	if (GameDevice()->m_pDI->CheckKey(KD_TRG, DIK_F)) // Fキー
 	{
 		m_nCamObjNo = (m_nCamObjNo + 1) % m_pObjArray.size();   // 表示するオブジェクトを切り替える
 		//((CCameraObj*)m_pObjArray[m_nCamObjNo])->SetCamBase();  // カメラ変位初期値を設定する
@@ -117,11 +119,11 @@ void	CCameraObj::Update()
 	if (m_nCtrl == 0)  // TPS
 	{
 		// TPSは、ＰＣのローカル軸マトリックスを設定する
-		m_mBaseWorld = m_pGMain->m_pPcProc->GetPcObjPtr()->GetLocalMatrix();
+		m_mBaseWorld = ObjectManager::FindGameObject<CPcProc>()->GetPcObjPtr()->GetLocalMatrix();
 	}
 	else if (m_nCtrl == 1) {  // FPS
 		// FPSは、ＰＣのワールドマトリックスを設定する
-		m_mBaseWorld = m_pGMain->m_pPcProc->GetPcObjPtr()->GetWorld();
+		m_mBaseWorld = ObjectManager::FindGameObject<CPcProc>()->GetPcObjPtr()->GetWorld();
 	}
 	else {  // 固定カメラ
 		// 固定カメラは絶対座標の原点を設定する
@@ -134,31 +136,31 @@ void	CCameraObj::Update()
 	// 注視点のベクトルを作成する処理
 	// (注視点のローカル座標と基点ワールドマトリックスを掛け合わせ、注視点マトリックスを得る)
 	MATRIX4X4 mLookat = XMMatrixTranslationFromVector(m_vLocalLookat) * m_mBaseWorld;
-	m_pGMain->m_vLookatPt = GetPositionVector(mLookat);    // 注視点マトリックスから注視点位置を得る
+	GameDevice()->m_vLookatPt = GetPositionVector(mLookat);    // 注視点マトリックスから注視点位置を得る
 
 	// カメラ（視点）ベクトルを作成する処理
 	// (カメラ（視点）のローカル座標と基点ワールドマトリックスを掛け合わせ、視点マトリックスを得る)
 	MATRIX4X4 mEye = XMMatrixTranslationFromVector(m_vLocalEye) * m_mBaseWorld;
-	m_pGMain->m_vEyePt = GetPositionVector(mEye);        // 視点マトリックスから視点位置を得る
+	GameDevice()->m_vEyePt = GetPositionVector(mEye);        // 視点マトリックスから視点位置を得る
 
 	// TPS視点の時、障害物を回避する処理
 	if (m_nCtrl == 0) EvasiveObstacle();
 
 	// 視点ベクトルと注視点ベクトルからカメラのワールドマトリックスを得る（今は使用していない）
-	m_mWorld = GetLookatMatrix(m_pGMain->m_vEyePt, m_pGMain->m_vLookatPt);
+	m_mWorld = GetLookatMatrix(GameDevice()->m_vEyePt, GameDevice()->m_vLookatPt);
 
 	// ビューマトリックスの作成
 	VECTOR3 vUpVec(0.0f, 1.0f, 0.0f);    // 上方位置を絶対座標の上方向とする
 	// カメラ(視点)の位置、上方向、および注視点を使用して、左手座標系のビュー行列を作成
-	m_pGMain->m_mView = XMMatrixLookAtLH(m_pGMain->m_vEyePt, m_pGMain->m_vLookatPt, vUpVec);
+	GameDevice()->m_mView = XMMatrixLookAtLH(GameDevice()->m_vEyePt, GameDevice()->m_vLookatPt, vUpVec);
 
 	// カメラの位置、上方向、およびカメラの向きを使用して、左手座標系のビュー行列を作成（使用していない）
 	//VECTOR3 vEyeDir = XMVector3TransformCoord(VECTOR3(0, 0, 1), GetRotateMatrix(m_mWorld));
-	//m_pGMain->m_mView = XMMatrixLookToLH(m_pGMain->m_vEyePt, vEyeDir, vUpVec);
+	//GameDevice()->m_mView = XMMatrixLookToLH(GameDevice()->m_vEyePt, vEyeDir, vUpVec);
 
 	// ライト視点からのビュートランスフォーム（ShadowMap用）ライト視点をＰＣの位置に合わせるとき（使用していない）
-	//m_pGMain->m_vLightEye = m_pGMain->m_vLookatPt + m_pGMain->m_vLightDir * 100.0f;	        // カメラ（視点）位置を光源の方向100ｍの位置にする
-	//m_pGMain->m_mLightView = XMMatrixLookAtLH(m_pGMain->m_vLightEye, m_pGMain->m_vLookatPt, vUpVec);
+	//GameDevice()->m_vLightEye = GameDevice()->m_vLookatPt + GameDevice()->m_vLightDir * 100.0f;	        // カメラ（視点）位置を光源の方向100ｍの位置にする
+	//GameDevice()->m_mLightView = XMMatrixLookAtLH(GameDevice()->m_vLightEye, GameDevice()->m_vLookatPt, vUpVec);
 
 }
 
@@ -196,12 +198,13 @@ void	CCameraObj::EvasiveObstacle()
 {
 	VECTOR3 vHit;
 	VECTOR3 vNorm;
-	if (m_pGMain->m_pMapProc->Hitcheck(m_pGMain->m_vEyePt, m_pGMain->m_vLookatPt, &vHit, &vNorm))   // 障害物との接触チェック
+	CMapProc* pMap = ObjectManager::FindGameObject<CMapProc>();
+	if (pMap->Hitcheck(GameDevice()->m_vEyePt, GameDevice()->m_vLookatPt, &vHit, &vNorm))   // 障害物との接触チェック
 	{
 		MATRIX4X4 mTemp;
-		mTemp = GetLookatMatrix(vHit, m_pGMain->m_vLookatPt);        // 障害物との接触点から注視位置を見るマトリックス
+		mTemp = GetLookatMatrix(vHit, GameDevice()->m_vLookatPt);        // 障害物との接触点から注視位置を見るマトリックス
 		mTemp = XMMatrixTranslation(0.0f, 0.0f, 0.01f) * mTemp;      // 障害物との接触点から1cm注視方向に移動した視点位置を得る
-		m_pGMain->m_vEyePt = GetPositionVector(mTemp);
+		GameDevice()->m_vEyePt = GetPositionVector(mTemp);
 	}
 }
 //----------------------------------------------------------------------------- 
@@ -213,7 +216,7 @@ void	CCameraObj::EvasiveObstacle()
 //-----------------------------------------------------------------------------
 void	CCameraObj::ManualOperation()
 {
-	CDirectInput* pDI = m_pGMain->m_pDI;
+	CDirectInput* pDI = GameDevice()->m_pDI;
 
 	// カメラ視点の相対位置の変更
 	if (m_nCtrl == 0)   // TPS視点の時

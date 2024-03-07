@@ -7,6 +7,7 @@
 //=============================================================================
 #pragma once
 #include "GameMain.h"
+#include "Object3D.h"
 
 // --------------------------------------------------------------------
 //武器　レーザー　オブジェクトクラス
@@ -37,7 +38,7 @@ public:
 // --------------------------------------------------------------------
 //武器　レーザー　プロシージャクラス
 // --------------------------------------------------------------------
-class CWeaponLaserProc : public CBaseProc
+class CWeaponLaserProc : public Object3D
 {
 protected:
 	// 定数定義  ------------------------------------------
@@ -47,6 +48,6 @@ public:
 	bool Start(MATRIX4X4, DWORD dwOwner);  //武器　レーザーの発射
 	bool Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWorld, DWORD dwOwner);
 
-	CWeaponLaserProc(CGameMain* pGMain);	// コンストラクタ
+	CWeaponLaserProc();	// コンストラクタ
 	virtual	~CWeaponLaserProc();
 };

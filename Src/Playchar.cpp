@@ -19,13 +19,13 @@
 //   ‚È‚¨AƒIƒuƒWƒFƒNƒg‚Ìdelete‚ÍCBaseProc‚ÌƒfƒXƒgƒ‰ƒNƒ^‚Ås‚¤‚½‚ß•s—v
 //
 // ---------------------------------------------------------------------------
-CPcProc::CPcProc(CGameMain* pGMain) : CBaseProc(pGMain)
+CPcProc::CPcProc()
 {
 	BASEHOLDITEM hi;
 
 	// FbxƒXƒLƒ“ƒƒbƒVƒ…‚Ìİ’è                                          // -- 2022.12.20
 	// ‚o‚b‚Q@e||||||||||||||||||||||||||||||
-	//m_pMeshArray.push_back( new CFbxMesh( m_pGMain->m_pFbxMeshCtrl, _T("Data/Char/PC2/pc2g.mesh")));    // ‚o‚b‚Q@e
+	//m_pMeshArray.push_back( new CFbxMesh( GameDevice()->m_pFbxMeshCtrl, _T("Data/Char/PC2/pc2g.mesh")));    // ‚o‚b‚Q@e
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/PC2/pc2g_stand.anmx"));  // 0:eAnimNum_Idle
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/PC2/pc2g_walk.anmx"));   // 1:eAnimNum_Walk
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/PC2/pc2g_walk.anmx"));   // 2:eAnimNum_Run
@@ -41,7 +41,7 @@ CPcProc::CPcProc(CGameMain* pGMain) : CBaseProc(pGMain)
 	//m_HoldItemArray.back().m_nOffsetRot = VECTOR3(-90.0f, 0.0f, 0.0f);  // è‚É‚Â•Ší‚ÌŠp“xƒIƒtƒZƒbƒg
 
 	// ‚o‚b‚Q@Œ•||||||||||||||||||||||||||||||
-	//m_pMeshArray.push_back( new CFbxMesh( m_pGMain->m_pFbxMeshCtrl, _T("Data/Char/PC2/pc2s.mesh")));    // ‚o‚b‚Q@Œ•
+	//m_pMeshArray.push_back( new CFbxMesh( GameDevice()->m_pFbxMeshCtrl, _T("Data/Char/PC2/pc2s.mesh")));    // ‚o‚b‚Q@Œ•
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/PC2/pc2s_stand.anmx"));  // 0:eAnimNum_Idle
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/PC2/pc2s_walk.anmx"));   // 1:eAnimNum_Walk
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/PC2/pc2s_walk.anmx"));   // 2:eAnimNum_Run
@@ -57,7 +57,7 @@ CPcProc::CPcProc(CGameMain* pGMain) : CBaseProc(pGMain)
 	//m_HoldItemArray.back().m_nOffsetRot = VECTOR3(0.0f, 0.0f, -90.0f);  // è‚É‚Â•Ší‚ÌŠp“xƒIƒtƒZƒbƒg
 
 	// ‚o‚b‚S@e||||||||||||||||||||||||||||||
-	//m_pMeshArray.push_back( new CFbxMesh(m_pGMain->m_pFbxMeshCtrl, _T("Data/Char/PC4/pc4g.mesh")));    // ‚o‚b‚S@e
+	//m_pMeshArray.push_back( new CFbxMesh(GameDevice()->m_pFbxMeshCtrl, _T("Data/Char/PC4/pc4g.mesh")));    // ‚o‚b‚S@e
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/PC4/pc4g_stand.anmx"));  // 0:eAnimNum_Idle
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/PC4/pc4g_walk.anmx"));   // 1:eAnimNum_Walk
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/PC4/pc4g_walk.anmx"));   // 2:eAnimNum_Run
@@ -73,7 +73,7 @@ CPcProc::CPcProc(CGameMain* pGMain) : CBaseProc(pGMain)
 	//m_HoldItemArray.back().m_nOffsetRot = VECTOR3(0.0f, 180.0f, 0.0f);  // è‚É‚Â•Ší‚ÌŠp“xƒIƒtƒZƒbƒg
 
 	// ‚o‚b‚S@Œ•||||||||||||||||||||||||||||||
-	//m_pMeshArray.push_back( new CFbxMesh(m_pGMain->m_pFbxMeshCtrl, _T("Data/Char/PC4/pc4s.mesh")));    // ‚o‚b‚S@Œ•
+	//m_pMeshArray.push_back( new CFbxMesh(GameDevice()->m_pFbxMeshCtrl, _T("Data/Char/PC4/pc4s.mesh")));    // ‚o‚b‚S@Œ•
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/PC4/pc4s_stand.anmx"));  // 0:eAnimNum_Idle
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/PC4/pc4s_walk.anmx"));   // 1:eAnimNum_Walk
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/PC4/pc4s_walk.anmx"));   // 2:eAnimNum_Run
@@ -89,7 +89,7 @@ CPcProc::CPcProc(CGameMain* pGMain) : CBaseProc(pGMain)
 	//m_HoldItemArray.back().m_nOffsetRot = VECTOR3(0.0f, 180.0f, -90.0f);  // è‚É‚Â•Ší‚ÌŠp“xƒIƒtƒZƒbƒg
 
 	// ƒLƒƒƒ‰ƒNƒ^[@||||||||||||||||||||||||||||||
-	m_pMeshArray.push_back(new CFbxMesh(m_pGMain->m_pFbxMeshCtrl, _T("Data/Char/Character/character.mesh")));    // ƒLƒƒƒ‰ƒNƒ^[
+	m_pMeshArray.push_back(new CFbxMesh(GameDevice()->m_pFbxMeshCtrl, _T("Data/Char/Character/character.mesh")));    // ƒLƒƒƒ‰ƒNƒ^[
 	m_pMeshArray.back()->LoadAnimation(_T("Data/Char/Character/character_stand.anmx"));   // 0:eAnimNum_Idle
 	m_pMeshArray.back()->LoadAnimation(_T("Data/Char/Character/character_forward_start_RAXZ.anmx"), eRootAnimXZ);  // 1:eAnimNum_Walk
 	m_pMeshArray.back()->LoadAnimation(_T("Data/Char/Character/character_forward_middle_RAXZ.anmx"), eRootAnimXZ); // 2:eAnimNum_Run
@@ -105,7 +105,7 @@ CPcProc::CPcProc(CGameMain* pGMain) : CBaseProc(pGMain)
 	m_HoldItemArray.back().m_nOffsetRot = VECTOR3(0.0f, 0.0f, -90.0f);  // è‚É‚Â•Ší‚ÌŠp“xƒIƒtƒZƒbƒg
 
 	// Dreyar@||||||||||||||||||||||||||||||                        // -- 2022.12.20
-	//m_pMeshArray.push_back(new CFbxMesh(m_pGMain->m_pFbxMeshCtrl, _T("Data/Char/Dreyar/Dreyar.mesh")));    // Dreyar
+	//m_pMeshArray.push_back(new CFbxMesh(GameDevice()->m_pFbxMeshCtrl, _T("Data/Char/Dreyar/Dreyar.mesh")));    // Dreyar
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/Dreyar/Dreyar_Idle.anmx"));    // 0:eAnimNum_Idle
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/Dreyar/Dreyar_Walking.anmx")); // 1:eAnimNum_Walk
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/Dreyar/Dreyar_Running.anmx")); // 2:eAnimNum_Run
@@ -121,7 +121,7 @@ CPcProc::CPcProc(CGameMain* pGMain) : CBaseProc(pGMain)
 	//m_HoldItemArray.back().m_nOffsetRot = VECTOR3(0.0f, 0.0f, -90.0f);  // è‚É‚Â•Ší‚ÌŠp“xƒIƒtƒZƒbƒg
 
 	// Maria@||||||||||||||||||||||||||||||                            // -- 2022.12.20
-	//m_pMeshArray.push_back(new CFbxMesh(m_pGMain->m_pFbxMeshCtrl, _T("Data/Char/Maria/Maria.mesh")));    // Maria
+	//m_pMeshArray.push_back(new CFbxMesh(GameDevice()->m_pFbxMeshCtrl, _T("Data/Char/Maria/Maria.mesh")));    // Maria
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/Maria/Maria_Idle.anmx"));    // 0:eAnimNum_Idle
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/Maria/Maria_Walking.anmx")); // 1:eAnimNum_Walk
 	//m_pMeshArray.back()->LoadAnimation(_T("Data/Char/Maria/Maria_Running.anmx")); // 2:eAnimNum_Run
@@ -171,7 +171,7 @@ CPcObj::CPcObj(CBaseProc* pProc) : CBaseObj(pProc)
 	m_bSide = true;                        // -- 2018.8.4
 
 	// ƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚Ìİ’è
-	m_pBBox = new CBBox(m_pGMain->m_pShader, VECTOR3(-0.25f, -0.05f, -0.25f), VECTOR3(0.25f, 2.0f, 0.25f));
+	m_pBBox = new CBBox(GameDevice()->m_pShader, VECTOR3(-0.25f, -0.05f, -0.25f), VECTOR3(0.25f, 2.0f, 0.25f));
 	m_pBBox->m_mWorld = m_mWorld;                            // -- 2021.1.11
 
 	m_nMaxHp = PC_MAXHP;
@@ -257,20 +257,20 @@ void	CPcObj::Update()
 	// ƒ}ƒbƒvƒRƒŠƒWƒ‡ƒ“‚Æ©‘R—‰º
 	m_fJumpY += GAMEGRAVITY * m_fJumpTime;	// ©‘R—‰º
 	m_fJumpTime += 1.0f;
-	if (m_pGMain->m_pMapProc->isCollisionMoveGravity(&m_mWorld, m_mWorldOld) != 3)  // ƒ}ƒbƒvƒRƒŠƒWƒ‡ƒ“
+	if (ObjectManager::FindGameObject<CMapProc>()->isCollisionMoveGravity(&m_mWorld, m_mWorldOld) != 3)  // ƒ}ƒbƒvƒRƒŠƒWƒ‡ƒ“
 	{
 		m_fJumpY = 0.0f;  // ©‘R—‰º‚Ì’â~
 		m_fJumpTime = 0.0f;
 	}
 
 	//ƒŒƒ“ƒ_ƒŠƒ“ƒO
-	GetMesh()->Render(m_AnimStatus, m_mWorld, m_pGMain->m_mView, m_pGMain->m_mProj, m_pGMain->m_vLightDir, m_pGMain->m_vEyePt);
-	//GetMesh()->RenderDisplace(m_AnimStatus, m_mWorld, m_pGMain->m_mView, m_pGMain->m_mProj, m_pGMain->m_vLightDir, m_pGMain->m_vEyePt);
+	GetMesh()->Render(m_AnimStatus, m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
+	//GetMesh()->RenderDisplace(m_AnimStatus, m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
 
 	// ƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX
 	m_pBBox->m_mWorld = m_mWorld;
 	//m_pBBox->m_mWorld = GetMesh()->GetFrameMatrices(m_AnimStatus, m_mWorld, 0);  // ƒ‹[ƒgƒ{[ƒ“
-	//m_pBBox->Render( m_pGMain->m_mView, m_pGMain->m_mProj, m_pGMain->m_vLightDir, m_pGMain->m_vEyePt);
+	//m_pBBox->Render( GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
 
 
 	// è‚É‚Â•Ší‚âƒAƒCƒeƒ€‚Ì•\¦‚ğ‚·‚é     // -- 2021.2.4
@@ -278,13 +278,13 @@ void	CPcObj::Update()
 	{
 		MATRIX4X4 mHold;
 		mHold = GetMesh()->GetFrameMatrices(m_AnimStatus, m_mWorld, GetHoldItem().m_nPosBone, GetHoldItem().m_nPosMesh);  // è‚ÌˆÊ’u‚Ìƒ{[ƒ“ƒ}ƒgƒŠƒbƒNƒX
-		m_pGMain->m_pWeaponProc->m_pWeaponHoldProc->Disp(mHold, GetHoldItem()); // ƒAƒCƒeƒ€•\¦
+		ObjectManager::FindGameObject<CWeaponHoldProc>()->Disp(mHold, GetHoldItem()); // ƒAƒCƒeƒ€•\¦
 	}
 
 	// ‚o‚b‚Ì“ªã‚Ì–¼‘O•\¦
 	VECTOR3 vPcPos = GetPositionVector(m_mWorld);
 	//vPcPos.y += 2.0f;
-	//m_pGMain->m_pFont->Draw3D(vPcPos, m_pGMain->m_mView, m_pGMain->m_mProj, m_pGMain->m_vEyePt, _T("ƒvƒŒƒCƒLƒƒƒ‰ƒNƒ^["), VECTOR2(0.5f, 0.2f), RGB(0, 0, 255), 1.0f, _T("HGP‘n‰pŠpÎß¯Ìß‘Ì"));
+	//GameDevice()->m_pFont->Draw3D(vPcPos, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vEyePt, _T("ƒvƒŒƒCƒLƒƒƒ‰ƒNƒ^["), VECTOR2(0.5f, 0.2f), RGB(0, 0, 255), 1.0f, _T("HGP‘n‰pŠpÎß¯Ìß‘Ì"));
 
 
 }
@@ -308,7 +308,7 @@ void	CPcObj::UpdateNormal()
 	{
 		m_nCnt1--;
 		if (m_nCnt1 <= 0) m_dwStatus = NORMAL;
-		//m_pGMain->m_pRenderBufProc->SetDrawFont(300, 10, _T("** –³“Gó‘Ô **"), 16, RGB(255, 0, 0));
+		//GameDevice()->m_pRenderBufProc->SetDrawFont(300, 10, _T("** –³“Gó‘Ô **"), 16, RGB(255, 0, 0));
 	}
 	UpdateNormalMove();      // ‚o‚bƒIƒuƒWƒFƒNƒg‚ÌˆÚ“®ˆ—
 	UpdateNormalAttack();    // ‚o‚bƒIƒuƒWƒFƒNƒg‚ÌUŒ‚ˆ—
@@ -327,7 +327,7 @@ void	CPcObj::UpdateNormal()
 //-----------------------------------------------------------------------------
 void	CPcObj::UpdateNormalMove()
 {
-	CDirectInput* pDI = m_pGMain->m_pDI;
+	CDirectInput* pDI = GameDevice()->m_pDI;
 	const float PC_JUMP_SPEED = PC_JUMP_SPEED_X100 / 100.0f;  // ƒWƒƒƒ“ƒvƒXƒs[ƒh
 
 	MATRIX4X4 mYaw;  // ‚o‚b‚x²‰ñ“]ƒ}ƒgƒŠƒbƒNƒX
@@ -516,7 +516,7 @@ MATRIX4X4 CPcObj::UpdateNormalMoveKeystate(DWORD DIKey)
 //-----------------------------------------------------------------------------
 void	CPcObj::UpdateNormalAttack()
 {
-	CDirectInput* pDI = m_pGMain->m_pDI;
+	CDirectInput* pDI = GameDevice()->m_pDI;
 
 	// ------------------------------------------------------------- 
 	// ƒŒ[ƒU[‚Ì”­Ë
@@ -527,13 +527,15 @@ void	CPcObj::UpdateNormalAttack()
 
 		// è‚É‚ÂƒAƒCƒeƒ€‚©‚çe‚Ìî•ñ‚ğ“¾‚Ä”­Ë‚·‚é
 		mHold = GetMesh()->GetFrameMatrices(m_AnimStatus, m_mWorld, GetHoldItem().m_nPosBone, GetHoldItem().m_nPosMesh);  // e‚ÌªŒ³ˆÊ’u‚Ìƒ{[ƒ“ƒ}ƒgƒŠƒbƒNƒX
-		m_pGMain->m_pWeaponProc->m_pWeaponHoldProc->GetInfo(mHold, GetHoldItem(), mGun, vOffset); // ƒ{[ƒ“ƒ}ƒgƒŠƒbƒNƒX‚ğw’è‚µ‚Äè‚É‚ÂƒAƒCƒeƒ€‚Ìî•ñ‚ğ“¾‚é
-		if (m_pGMain->m_pWeaponProc->m_pWeaponHoldProc->GetKind(GetHoldItem()) != 2)   // e‚ğ‚Á‚Ä‚¢‚È‚¢‚Æ‚«
+		CWeaponHoldProc* pHold = ObjectManager::FindGameObject<CWeaponHoldProc>();
+		pHold->GetInfo(mHold, GetHoldItem(), mGun, vOffset); // ƒ{[ƒ“ƒ}ƒgƒŠƒbƒNƒX‚ğw’è‚µ‚Äè‚É‚ÂƒAƒCƒeƒ€‚Ìî•ñ‚ğ“¾‚é
+		if (pHold->GetKind(GetHoldItem()) != 2)   // e‚ğ‚Á‚Ä‚¢‚È‚¢‚Æ‚«
 		{
 			vOffset.z = 0.8f;   // ‚Æ‚è‚ ‚¦‚¸‘O•û‚É0.8
 		}
-		m_pGMain->m_pWeaponProc->m_pWeaponLaserProc->Start(mGun, vOffset, m_mWorld, PC); // ƒŒ[ƒU[”­Ë
-		m_pGMain->m_pSeLazer->Play(); // ƒŒ[ƒU[”­ËŒø‰Ê‰¹
+		CWeaponLaserProc* pLaser = ObjectManager::FindGameObject<CWeaponLaserProc>();
+		pLaser->Start(mGun, vOffset, m_mWorld, PC); // ƒŒ[ƒU[”­Ë
+		GameDevice()->m_pSeLazer->Play(); // ƒŒ[ƒU[”­ËŒø‰Ê‰¹
 
 	}
 
@@ -551,7 +553,7 @@ void	CPcObj::UpdateDamage()
 {
 	MATRIX4X4 mTemp;
 
-	m_pGMain->m_pBackForeProc->GetSprite()->DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, RGB(255, 255, 255), 1.0f); // ‰æ–Ê‚ğˆêu”’‚­ƒtƒ‰ƒbƒVƒ…
+	ObjectManager::FindGameObject<CBackForeProc>()->GetSprite()->DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, RGB(255, 255, 255), 1.0f); // ‰æ–Ê‚ğˆêu”’‚­ƒtƒ‰ƒbƒVƒ…
 
 	mTemp = XMMatrixTranslation(0, 0, -0.25f);	// ƒoƒbƒN‚·‚é
 	m_mWorld = mTemp * m_mWorld;
@@ -580,7 +582,7 @@ void	CPcObj::UpdateDamage()
 //-----------------------------------------------------------------------------
 void	CPcObj::UpdateDead()
 {
-	m_pGMain->m_pBackForeProc->GetSprite()->DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, RGB(255, 0, 0), 0.5f); // ‰æ–Ê‚ğÔ‚­‚·‚é
+	ObjectManager::FindGameObject<CBackForeProc>()->GetSprite()->DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, RGB(255, 0, 0), 0.5f); // ‰æ–Ê‚ğÔ‚­‚·‚é
 
 	if (m_AnimStatus.isEnd(eAnimNum_Die))  // €–Sƒ‚[ƒVƒ‡ƒ“‚ªI‚í‚Á‚½‚Æ‚«
 	{
@@ -593,7 +595,7 @@ void	CPcObj::UpdateDead()
 		if (m_pProc->GetNum() <= 0)
 		{
 			m_AnimStatus.playAnim = true;	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•œŠˆ‚³‚¹‚é
-			m_pGMain->m_dwGameStatus = GAMEOVER;	// ƒQ[ƒ€ƒI[ƒo[‚Ö
+			GameDevice()->m_dwGameStatus = GAMEOVER;	// ƒQ[ƒ€ƒI[ƒo[‚Ö
 		}
 		else {
 			// ƒQ[ƒ€ƒI[ƒo[‚Å‚È‚¢‚Æ‚«

@@ -13,16 +13,19 @@
 //	エフェクト　メインプロシージャクラスのコンストラクタ	
 //
 //------------------------------------------------------------------------
-CEffectProc::CEffectProc(CGameMain* pGMain) : CBaseProc(pGMain)
+CEffectProc::CEffectProc()
 {
-	m_pEffectParticleProc = new CEffectParticleProc(pGMain);     // パーティクルプロシージャの生成
-	m_pProcArray.push_back(m_pEffectParticleProc);   // プロシージャをプロシージャ配列に登録する
+	Instantiate<CEffectParticleProc>();
+//	m_pEffectParticleProc = new CEffectParticleProc(pGMain);     // パーティクルプロシージャの生成
+//	m_pProcArray.push_back(m_pEffectParticleProc);   // プロシージャをプロシージャ配列に登録する
 
-	m_pEffectBillProc = new CEffectBillProc(pGMain);     // ビルボードプロシージャの生成
-	m_pProcArray.push_back(m_pEffectBillProc);        // プロシージャをプロシージャ配列に登録する
+	Instantiate<CEffectBillProc>();
+//	m_pEffectBillProc = new CEffectBillProc(pGMain);     // ビルボードプロシージャの生成
+//	m_pProcArray.push_back(m_pEffectBillProc);        // プロシージャをプロシージャ配列に登録する
 
-	m_pEffectBillFireProc = new CEffectBillFireProc(pGMain);     // ビルボード炎プロシージャの生成
-	m_pProcArray.push_back(m_pEffectBillFireProc);        // プロシージャをプロシージャ配列に登録する
+	Instantiate<CEffectBillFireProc>();
+//	m_pEffectBillFireProc = new CEffectBillFireProc(pGMain);     // ビルボード炎プロシージャの生成
+//	m_pProcArray.push_back(m_pEffectBillFireProc);        // プロシージャをプロシージャ配列に登録する
 
 };
 

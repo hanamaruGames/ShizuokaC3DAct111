@@ -13,13 +13,13 @@
 //   なお、プロシージャのdeleteはCBaseProcのデストラクタで行うため不要
 //
 // ----------------------------------------------------------------------------------------------------------------------------
-CWeaponProc::CWeaponProc(CGameMain* pGMain) : CBaseProc(pGMain)
+CWeaponProc::CWeaponProc()
 {
+	Instantiate<CWeaponLaserProc>();
+//	m_pWeaponLaserProc = new CWeaponLaserProc();		// 武器・レーザープロシージャ
+//	m_pProcArray.push_back(m_pWeaponLaserProc);				// プロシージャをプロシージャ配列に登録する
 
-	m_pWeaponLaserProc = new CWeaponLaserProc(pGMain);		// 武器・レーザープロシージャ
-	m_pProcArray.push_back(m_pWeaponLaserProc);				// プロシージャをプロシージャ配列に登録する
-
-	m_pWeaponHoldProc = new CWeaponHoldProc(pGMain);		// 武器・手に持つアイテムのプロシージャ
-	m_pProcArray.push_back(m_pWeaponHoldProc);				// プロシージャをプロシージャ配列に登録する
-
+	Instantiate<CWeaponHoldProc>();
+//	m_pWeaponHoldProc = new CWeaponHoldProc();		// 武器・手に持つアイテムのプロシージャ
+//	m_pProcArray.push_back(m_pWeaponHoldProc);				// プロシージャをプロシージャ配列に登録する
 }

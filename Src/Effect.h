@@ -7,6 +7,7 @@
 //=============================================================================
 #pragma once
 #include "GameMain.h"
+#include "Object3D.h"
 
 #include "EffectStruct.h"
 #include "EffectParticle.h"
@@ -18,7 +19,7 @@
 //	エフェクト全体のメインプロシージャクラス
 //
 // ========================================================================================
-class CEffectProc : public CBaseProc
+class CEffectProc : public Object3D
 {
 public:
 	CEffectParticleProc* m_pEffectParticleProc;
@@ -26,6 +27,6 @@ public:
 	CEffectBillFireProc* m_pEffectBillFireProc;
 
 public:
-	CEffectProc(CGameMain* pGMain);	// コンストラクタ
+	CEffectProc();	// コンストラクタ
 	virtual	~CEffectProc() { ; }
 };

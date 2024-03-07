@@ -58,39 +58,41 @@ void CMapProc::MakeMap1()
 	DestroyAll();
 
 	// 全ての効果の非表示化 
-	m_pGMain->m_pEffectProc->SetNonActive();
+	ObjectManager::FindGameObject<CEffectProc>()->SetNonActive();
+
+	CPcProc* pPc = ObjectManager::FindGameObject<CPcProc>();
 
 	// ＰＣを(0,0,-20)の位置に置く -------------------------------------
-	m_pGMain->m_pPcProc->GetPcObjPtr()->SetWorld(XMMatrixTranslation(0.0f, 0.05f, -20.0f));
-	m_pGMain->m_pPcProc->GetPcObjPtr()->SetWorldOld(m_pGMain->m_pPcProc->GetPcObjPtr()->GetWorld());
-	m_pGMain->m_pPcProc->GetPcObjPtr()->SetLocalRotY(0.0f);  // ローカル軸(Y軸)を0度にする
+	pPc->GetPcObjPtr()->SetWorld(XMMatrixTranslation(0.0f, 0.05f, -20.0f));
+	pPc->GetPcObjPtr()->SetWorldOld(pPc->GetPcObjPtr()->GetWorld());
+	pPc->GetPcObjPtr()->SetLocalRotY(0.0f);  // ローカル軸(Y軸)を0度にする
 
 	// ステージマップの設定・コリジョンマップの設定 -----------------------------------------
-	m_pColMesh = new CCollision(m_pGMain->m_pFbxMeshCtrl);     // コリジョンマップの生成
+	m_pColMesh = new CCollision(GameDevice()->m_pFbxMeshCtrl);     // コリジョンマップの生成
 
 	// マップメッシュの設定[0]
 	m_StageMap.push_back(sm);
-	//m_StageMap.back().m_pMesh = new CFbxMesh(m_pGMain->m_pFbxMeshCtrl, _T("Data/Map/MapClsc/map40.mesh"));
-	m_StageMap.back().m_pMesh = new CFbxMesh(m_pGMain->m_pFbxMeshCtrl, _T("Data/Map/MapTkr/map50Field1.mesh"));       // -- 2022.2.16
+	//m_StageMap.back().m_pMesh = new CFbxMesh(GameDevice()->m_pFbxMeshCtrl, _T("Data/Map/MapClsc/map40.mesh"));
+	m_StageMap.back().m_pMesh = new CFbxMesh(GameDevice()->m_pFbxMeshCtrl, _T("Data/Map/MapTkr/map50Field1.mesh"));       // -- 2022.2.16
 	m_StageMap.back().m_mWorld = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 	//m_pColMesh->AddFbxLoad(_T("Data/Map/MapClsc/map40_CHK.mesh"), m_StageMap.back().m_mWorld); // マップメッシュコリジョンの設定
 	m_pColMesh->AddFbxLoad(_T("Data/Map/MapTkr/map50Field1.mesh"), m_StageMap.back().m_mWorld); // マップメッシュコリジョンの設定
 
 	// ドアメッシュの設定[1]
 	m_StageMap.push_back(sm);
-	m_StageMap.back().m_pMesh = new CFbxMesh(m_pGMain->m_pFbxMeshCtrl, _T("Data/Map/MapItem/DOOR1.mesh"));
+	m_StageMap.back().m_pMesh = new CFbxMesh(GameDevice()->m_pFbxMeshCtrl, _T("Data/Map/MapItem/DOOR1.mesh"));
 	m_StageMap.back().m_mWorld = XMMatrixTranslation(-80.0f, 0.0f, 80.0f);
 	m_pColMesh->AddFbxLoad(_T("Data/Map/MapItem/DOOR1.mesh"), m_StageMap.back().m_mWorld); // ドアメッシュコリジョンの設定
 
 	// 水面の設定[2]
 	m_StageMap.push_back(sm);
-	m_StageMap.back().m_pWave = new CWave(m_pGMain->m_pShader, 50, 70, _T("Data/Map/MapItem/WaterNM.png"));             // 水面の大きさ（メートル単位）とノーマルマップテクスチャの指定
+	m_StageMap.back().m_pWave = new CWave(GameDevice()->m_pShader, 50, 70, _T("Data/Map/MapItem/WaterNM.png"));             // 水面の大きさ（メートル単位）とノーマルマップテクスチャの指定
 	m_StageMap.back().m_mWorld = XMMatrixTranslation(38.0f, -0.5f, -5.0f);      // 水面を置く位置（作成した水面の左端、手前端の位置を指定する）
 	m_StageMap.back().m_nMaterialFlag = 3;   // 水面のディスプレイスメントマッピング
 
 	// 溶岩流の設定[2]
 	//m_StageMap.push_back(sm);
-	//m_StageMap.back().m_pWave = new CWave(m_pGMain->m_pShader, 50,70, _T("Data/Map/MapItem/lava03_NM.png"), _T("Data/Map/MapItem/lava03.png"), _T("Data/Map/MapItem/lava03.png"));      // 溶岩流の大きさ（メートル単位）と各種テクスチャの指定
+	//m_StageMap.back().m_pWave = new CWave(GameDevice()->m_pShader, 50,70, _T("Data/Map/MapItem/lava03_NM.png"), _T("Data/Map/MapItem/lava03.png"), _T("Data/Map/MapItem/lava03.png"));      // 溶岩流の大きさ（メートル単位）と各種テクスチャの指定
 	//m_StageMap.back().m_pWave->m_fMaxDistance = 40.0f;
 	//m_StageMap.back().m_pWave->m_fMinDistance = 20.0f;
 	//m_StageMap.back().m_pWave->m_fWaveHeight = 0.15f;
@@ -100,7 +102,7 @@ void CMapProc::MakeMap1()
 	// 空用  -----------------------------------------------------------
 	// 空マップの設定[0]
 	m_SkyMap.push_back(sm);
-	m_SkyMap.back().m_pMesh = new CFbxMesh(m_pGMain->m_pFbxMeshCtrl, _T("Data/Map/Sky/sky2.mesh"));
+	m_SkyMap.back().m_pMesh = new CFbxMesh(GameDevice()->m_pFbxMeshCtrl, _T("Data/Map/Sky/sky2.mesh"));
 	m_SkyMap.back().m_mWorld = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 
 	// ナビゲーションマップの設定 --------------------------------------

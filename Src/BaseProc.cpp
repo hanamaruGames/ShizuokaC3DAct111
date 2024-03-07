@@ -44,7 +44,7 @@ CBaseProc::~CBaseProc()
 void CBaseProc::UpdateAll()
 {
 
-	Update();                              // プロシージャの更新処理
+//	Update();                              // プロシージャの更新処理
 	if (m_nWaitTime > 0) m_nWaitTime--;    // ウェイトタイマーのカウントダウン
 
 	// オブジェクトポインタ配列の更新
@@ -210,12 +210,11 @@ void  CBaseProc::SetNonActive()
 //------------------------------------------------------------------------
 CBaseObj::CBaseObj(CBaseProc* pProc)
 {
-	m_pGMain = pProc->GetGMain();		// ゲームメインクラス
 	m_pProc  = pProc;					// 親のプロシージャ
 	ResetStatus();						// 各種ステータスをリセット
 	m_bActive = FALSE;					// true:表示  FALSE:非表示
 	m_dwObjID = pProc->GetProcID();		// オブジェクトＩＤ
-	m_dwObjNo = pProc->GetObjArrayPtr().size();	// オブジェクトＮＯ  プッシュバック前の配列サイズがオブジェクトＮＯとなる
+	m_dwObjNo = (DWORD)pProc->GetObjArrayPtr().size();	// オブジェクトＮＯ  プッシュバック前の配列サイズがオブジェクトＮＯとなる
 	m_nMeshIdx = 0;						// メッシュ配列の添字           // -- 2022.12.20
 	m_pBBox = nullptr;						// バウンディングボックスクラス
 	m_mWorld = XMMatrixIdentity();		// ワールドマトリクス

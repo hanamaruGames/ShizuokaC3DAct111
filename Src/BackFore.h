@@ -5,6 +5,7 @@
 //=============================================================================
 #pragma once
 #include "GameMain.h"
+#include "Object3D.h"
 
 
 // --------------------------------------------------------------------
@@ -12,18 +13,17 @@
 // 
 // (注意)基本プロシージャクラスは継承していない
 // --------------------------------------------------------------------
-class CBackForeProc 
+class CBackForeProc : Object3D
 {
 protected:
-	CGameMain*		m_pGMain;
 	CSpriteImage*   m_pImageForegrd;
 	CSprite*        m_pSprite;
 
 public:
-	void			Update();
+	void			Update() override;
 	CSpriteImage*   GetImage() { return m_pImageForegrd; }
 	CSprite*        GetSprite() { return m_pSprite; }
-	CBackForeProc(CGameMain* pGMain);	// コンストラクタ
+	CBackForeProc();	// コンストラクタ
 	~CBackForeProc();
 
 };

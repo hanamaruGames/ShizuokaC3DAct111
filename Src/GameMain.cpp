@@ -6,12 +6,6 @@
 //																GameMain.cpp
 //=============================================================================
 #include "GameMain.h"
-#include "Playchar.h"
-#include "Camera.h"
-#include "Map.h"
-#include "Weapon.h"
-#include "Effect.h"
-#include "BackFore.h"
 #include "SceneManager.h"
 #include "ObjectManager.h"
 
@@ -52,14 +46,6 @@ CGameMain::CGameMain(CMain*	pMain)
 	m_mProj = XMMatrixIdentity();	// プロジェクションマトリックス
 	m_vLightDir = VECTOR3(0,0,0);	// ディレクショナルライトの方向
 
-	// プロシージャ
-	m_pPcProc = nullptr;
-	m_pCameraProc = nullptr;
-	m_pMapProc = nullptr;
-	m_pWeaponProc = nullptr;
-	m_pEffectProc = nullptr;
-	m_pBackForeProc = nullptr;
-
 	// サウンド
 	m_pSeLazer = nullptr;
 	m_pSeNitro = nullptr;
@@ -87,13 +73,6 @@ CGameMain::~CGameMain()
 	SAFE_DELETE(m_pSeDead);
 	SAFE_DELETE(m_pSeNitro);
 	SAFE_DELETE(m_pBgm1);
-
-	SAFE_DELETE(m_pPcProc);
-	SAFE_DELETE(m_pCameraProc);
-	SAFE_DELETE(m_pMapProc);
-	SAFE_DELETE(m_pWeaponProc);
-	SAFE_DELETE(m_pEffectProc);
-	SAFE_DELETE(m_pBackForeProc);
 
 	SAFE_DELETE(m_pFbxMeshCtrl);    // -- 2021.2.4
 	SAFE_DELETE(m_pShader);
@@ -175,19 +154,6 @@ HRESULT CGameMain::Init()
 	m_vLookatPt = VECTOR3(0.0f, 1.0f, 1.0f);
 	m_mView = XMMatrixLookAtLH(m_vEyePt, m_vLookatPt, vUpVec);
 
-	// 各プロシージャの初期化
-	m_pPcProc = new CPcProc(this);		// ＰＣプロシージャ
-
-	m_pCameraProc = new CCameraProc(this);	// カメラプロシージャ
-
-	m_pEffectProc = new CEffectProc(this);  // ３Ｄ効果
-
-	m_pWeaponProc = new CWeaponProc(this);	// Weaponプロシージャ
-
-	m_pMapProc = new CMapProc(this);	// Mapプロシージャ
-
-	m_pBackForeProc = new CBackForeProc(this);  // 前景・背景
-
 	// サウンド
 	m_pSeLazer = new CXAudioSource( m_pXAudio, _T("Data/Sound/Lazer.wav"), 10);
 	m_pSeNitro = new CXAudioSource( m_pXAudio, _T("Data/Sound/Nitro2.WAV"), 10);
@@ -195,14 +161,6 @@ HRESULT CGameMain::Init()
 	m_pSeFire = new CXAudioSource( m_pXAudio, _T("Data/Sound/M_FIRE4.WAV"), 10);
 	m_pBgm1 = new CXAudioSource( m_pXAudio, _T("Data/Sound/DO_HT204.WAV"));
 	//m_pBgm1 = new CXAudioSource( m_pXAudio, _T("Data/Sound/B003B.MID"));
-
-	// ＢＧＭの再生
-	m_pBgm1->Play(AUDIO_LOOP);
-
-
-	// マップのロード
-	//（ 最初はマップ１をロードする）
-	m_pMapProc->LoadMap(1);
 
 	return S_OK;
 }
@@ -225,18 +183,21 @@ void CGameMain::Update()
 
 	if (m_pDI->CheckKey(KD_TRG, DIK_F4))  ChangeScreenMode();   // フルスクリーンの切り替え       // -- 2018.12.14
 
+	//画面クリア（実際は単色で画面を塗りつぶす処理）
+	float ClearColor[4] = { 0,0,0,1 };// クリア色作成　RGBAの順
+	m_pD3D->ClearRenderTarget(ClearColor); // 画面クリア
+
 	switch (m_dwGameStatus)
 	{
-
-	case GAMEMAIN:			// ゲーム主処理
-		GameMain();
-		break;
-
 	case GAMEEND:			// ゲーム終了
 		PostQuitMessage(0);
 		break;
 
 	}
+	SceneManager::Update();
+	ObjectManager::Update();
+	ObjectManager::Draw();
+	SceneManager::Draw();
 
 	MyImgui::ImguiRender();      // MyImgui実描画処理    // -- 2020.11.15
 
@@ -244,8 +205,6 @@ void CGameMain::Update()
 	//m_pD3D->m_pSwapChain->Present(1, 0);                   // 60fps Vsync
 	m_pD3D->m_pSwapChain->Present(0, 0);                   // Vsyncなし
 
-	SceneManager::Update();
-	ObjectManager::Update();
 }
 
 //------------------------------------------------------------------------
@@ -259,35 +218,12 @@ void CGameMain::Update()
 //------------------------------------------------------------------------
 void CGameMain::GameMain()
 {
-
-	//画面クリア（実際は単色で画面を塗りつぶす処理）
-	float ClearColor[4] = { 0,0,0,1 };// クリア色作成　RGBAの順
-	m_pD3D->ClearRenderTarget(ClearColor); // 画面クリア
-
-	// Mapの更新
-	m_pMapProc->Update();
-
-	// ＰＣの更新
-	m_pPcProc->UpdateAll();
-
-	// 武器の更新
-	m_pWeaponProc->UpdateAll();
-
-	// ３Ｄ効果の更新
-	m_pEffectProc->UpdateAll();
-
-	// 前景・背景の更新
-	m_pBackForeProc->Update();
-
-	// カメラの更新
-	m_pCameraProc->UpdateAll();
-
 }
 
 void CGameMain::Draw()
 {
-	ObjectManager::Draw();
-	SceneManager::Draw();
+//	ObjectManager::Draw();
+//	SceneManager::Draw();
 }
 
 //------------------------------------------------------------------------

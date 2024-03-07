@@ -14,7 +14,7 @@
 //   なお、プロシージャのdeleteはCBaseProcのデストラクタで行うため不要
 //
 //------------------------------------------------------------------------
-CEffectParticleProc::CEffectParticleProc(CGameMain* pGMain) : CBaseProc(pGMain)
+CEffectParticleProc::CEffectParticleProc()
 {
 	PARTICLEBASE pb = {};
 
@@ -105,7 +105,7 @@ HRESULT CEffectParticleProc::Load(TCHAR* szFName, PARTICLEBASE* pPartBase)
 {
 
 	//テクスチャー読み込み	
-	if (FAILED(m_pGMain->m_pD3D->CreateShaderResourceViewFromFile(szFName, &pPartBase->m_pTexture,
+	if (FAILED(GameDevice()->m_pD3D->CreateShaderResourceViewFromFile(szFName, &pPartBase->m_pTexture,
 		pPartBase->m_dwImageWidth, pPartBase->m_dwImageHeight, 3)))
 	{
 		MessageBox(0, _T("パーティクル　テクスチャーを読み込めません"), szFName, MB_OK);
@@ -148,7 +148,7 @@ HRESULT CEffectParticleProc::SetSrc(PARTICLEBASE* pPartBase)
 
 	D3D11_SUBRESOURCE_DATA InitData;
 	InitData.pSysMem = vertices;
-	if (FAILED(m_pGMain->m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &pPartBase->m_pVertexBuffer)))
+	if (FAILED(GameDevice()->m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &pPartBase->m_pVertexBuffer)))
 	{
 		return E_FAIL;
 	}
@@ -223,8 +223,8 @@ bool CEffectParticleProc::Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal)
 //------------------------------------------------------------------------
 CEffectParticleObj::CEffectParticleObj(CBaseProc* pProc) : CBaseObj(pProc)
 {
-	m_pD3D = m_pGMain->m_pD3D;
-	m_pShader = m_pGMain->m_pShader;
+	m_pD3D = GameDevice()->m_pD3D;
+	m_pShader = GameDevice()->m_pShader;
 
 	m_nPartIdx = 0;
 	m_MaxParticle = 0;
@@ -437,9 +437,9 @@ void CEffectParticleObj::Render()
 		if (GetPartArrayPtr()->m_FrameEnd < m_Frame + (GetPartArrayPtr()->m_iBarthFrame - m_pPtArray[i].BirthFrame)) continue;
 
 		//個々のパーティクルの、視点を向くワールドトランスフォームを求める
-		MATRIX4X4 mWorld = GetLookatMatrix(m_pPtArray[i].Pos, m_pGMain->m_vEyePt);
+		MATRIX4X4 mWorld = GetLookatMatrix(m_pPtArray[i].Pos, GameDevice()->m_vEyePt);
 
-		RenderParticle(mWorld, m_pGMain->m_mView, m_pGMain->m_mProj);  // パーティクルをレンダリング
+		RenderParticle(mWorld, GameDevice()->m_mView, GameDevice()->m_mProj);  // パーティクルをレンダリング
 	}
 
 	if (GetPartArrayPtr()->m_nBlendFlag == 1)   // 加算合成色指定

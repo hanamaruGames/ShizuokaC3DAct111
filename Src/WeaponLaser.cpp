@@ -18,10 +18,10 @@
 //   なお、オブジェクトのdeleteはCBaseProcのデストラクタで行うため不要
 //
 // ---------------------------------------------------------------------------
-CWeaponLaserProc::CWeaponLaserProc(CGameMain* pGMain) : CBaseProc(pGMain)
+CWeaponLaserProc::CWeaponLaserProc()
 {
 	// レーザーメッシュの設定
-	m_pMeshArray.push_back(new CFbxMesh(m_pGMain->m_pFbxMeshCtrl, _T("Data/Item/Laser2.mesh")));   // -- 2022.12.20
+	m_pMeshArray.push_back(new CFbxMesh(GameDevice()->m_pFbxMeshCtrl, _T("Data/Item/Laser2.mesh")));   // -- 2022.12.20
 
 	for (int i = 0; i < WEAPON_MAX; i++)
 	{
@@ -166,22 +166,23 @@ void CWeaponLaserObj::Update()
 
 	if (m_bActive)
 	{
+		CPcProc* pPc = ObjectManager::FindGameObject<CPcProc>();
 		// 敵やＰＣとのあたり判定
-		if ((m_dwOwner != PC && m_pGMain->m_pPcProc->Hitcheck(this, m_vEnd, m_vStart)))
+		if ((m_dwOwner != PC && pPc->Hitcheck(this, m_vEnd, m_vStart)))
 		{
-			m_pGMain->m_pEffectProc->m_pEffectParticleProc->Start(m_vHitPos, m_vHitNormal);	// パーティクルの発生
-			//m_pGMain->m_pEffectProc->m_pEffectBillProc->Start(m_vHitPos);	// 爆発ビルボードの発生
-			m_pGMain->m_pSeDead->Play();// 爆発効果音
+			ObjectManager::FindGameObject<CEffectParticleProc>()->Start(m_vHitPos, m_vHitNormal);	// パーティクルの発生
+			//GameDevice()->m_pEffectProc->m_pEffectBillProc->Start(m_vHitPos);	// 爆発ビルボードの発生
+			GameDevice()->m_pSeDead->Play();// 爆発効果音
 
 		}
 		else {
 			// マップとのあたり判定
 			VECTOR3 vHit, vNormal;
-			if (m_pGMain->m_pMapProc->Hitcheck(m_vEnd, m_vStart, &vHit, &vNormal))
+			if (ObjectManager::FindGameObject<CMapProc>()->Hitcheck(m_vEnd, m_vStart, &vHit, &vNormal))
 			{
-				m_pGMain->m_pEffectProc->m_pEffectParticleProc->Start(vHit, vNormal);	// パーティクルの発生
-				//m_pGMain->m_pEffectProc->m_pEffectBillProc->Start(vHit);	// 爆発ビルボードの発生
-				m_pGMain->m_pSeDead->Play();// 爆発効果音
+				ObjectManager::FindGameObject<CEffectParticleProc>()->Start(vHit, vNormal);	// パーティクルの発生
+				//GameDevice()->m_pEffectProc->m_pEffectBillProc->Start(vHit);	// 爆発ビルボードの発生
+				GameDevice()->m_pSeDead->Play();// 爆発効果音
 			}
 		}
 
@@ -208,10 +209,10 @@ void CWeaponLaserObj::Render()
 
 	// 加算合成色のブレンディングを設定
 	UINT mask = 0xffffffff;
-	m_pGMain->m_pD3D->m_pDeviceContext->OMSetBlendState(m_pGMain->m_pD3D->m_pBlendStateAdd, nullptr, mask);
-	GetMesh()->Render(m_mWorld, m_pGMain->m_mView, m_pGMain->m_mProj, VECTOR3(0, 0, 0), m_pGMain->m_vEyePt);        // -- 2022.2.16
+	GameDevice()->m_pD3D->m_pDeviceContext->OMSetBlendState(GameDevice()->m_pD3D->m_pBlendStateAdd, nullptr, mask);
+	GetMesh()->Render(m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, VECTOR3(0, 0, 0), GameDevice()->m_vEyePt);        // -- 2022.2.16
 
 	// 通常のブレンディングを設定
-	m_pGMain->m_pD3D->m_pDeviceContext->OMSetBlendState(m_pGMain->m_pD3D->m_pBlendStateTrapen, nullptr, mask);
+	GameDevice()->m_pD3D->m_pDeviceContext->OMSetBlendState(GameDevice()->m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 
 }

@@ -10,6 +10,7 @@
 //=============================================================================
 #pragma once
 #include "GameMain.h"
+#include "Object3D.h"
 
 //======================================================================
 // カメラ　オブジェクトクラス
@@ -44,7 +45,7 @@ public:
 //======================================================================
 // カメラ　プロシージャクラス
 //======================================================================
-class CCameraProc : public CBaseProc
+class CCameraProc : public Object3D
 {
 protected:
 	int  m_nCamObjNo;                         // カメラオブジェクトの要素番号
@@ -56,7 +57,7 @@ public:
 	void SetCamObjNo(int no) { m_nCamObjNo = no; }
 	void InitCam(int no, int ctrl, VECTOR3 lookat, VECTOR3 eye, float rot, float dist);
 
-	CCameraProc(CGameMain* pGMain);	// コンストラクタ
+	CCameraProc();	// コンストラクタ
 	virtual	~CCameraProc() { ; }
 };
 

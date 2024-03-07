@@ -72,12 +72,6 @@ class CFbxMeshCtrl;
 
 class CBaseObj;
 class CBaseProc;
-class CPcProc;
-class CCameraProc;
-class CMapProc;
-class CWeaponProc;
-class CEffectProc;
-class CBackForeProc;
 
 CGameMain* GameDevice();
 
@@ -104,15 +98,6 @@ public:
 	MATRIX4X4       m_mView;
 	MATRIX4X4       m_mProj;
 	VECTOR3         m_vLightDir;	//ディレクショナルライトの方向
-
-
-	// プロシージャ
-	CPcProc*		m_pPcProc;
-	CCameraProc*	m_pCameraProc;
-	CMapProc*		m_pMapProc;
-	CWeaponProc*	m_pWeaponProc;
-	CEffectProc*	m_pEffectProc;
-	CBackForeProc*	m_pBackForeProc;
 
 	// サウンド
 	CXAudioSource*   m_pSeLazer;

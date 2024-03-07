@@ -5,7 +5,7 @@
 //=============================================================================
 #pragma once
 #include "GameMain.h"
-
+#include "Object3D.h"
 
 // ゲームの中で使用する重力の加速度   // -- 2023.1.31
 #define  GAMEGRAVITY  (0.5f * GRAVITY * 0.00005f)
@@ -157,7 +157,7 @@ struct EVENTMAP
 // (注意)マップ　プロシージャクラスは、基本プロシージャクラスを継承していない
 // 
 //======================================================================
-class CMapProc
+class CMapProc : public Object3D
 {
 protected:
 	// 定数定義 -------------------------------------------------
@@ -165,8 +165,6 @@ protected:
 	static const int MAP_SKYROTSPEED_X1000 = 5;    // 空の回転スピードの1000倍
 
 	// -----------------------------------------------------------
-	CGameMain* m_pGMain;
-
 	DWORD								m_dwMapNo;
 	bool								m_bActive;
 
@@ -186,7 +184,7 @@ protected:
 
 public:
 	// メンバー関数
-	void Update();
+	void Update() override;
 	void Render();
 	void DestroyAll();
 	bool LoadMap(int mapbo);
@@ -210,6 +208,6 @@ public:
 	DWORD GetMapNo() { return m_dwMapNo; }
 
 	// コンストラクタ（プロシージャの初期化）
-	CMapProc(CGameMain* m_pGMain);
+	CMapProc();
 	~CMapProc();
 };
