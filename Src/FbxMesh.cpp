@@ -199,7 +199,12 @@ BOOL CFbxMesh::Load(const TCHAR* FName)
 			if (WName[0] == _T('\0'))     // -- 2020.12.15
 			{
 				// マテリアルカラーを使用するとき
+#if _UNICODE
 				SetMaterial(ti, WName);   // -- 2020.12.15
+#else
+				WideCharToMultiByte(CP_ACP, 0, WName, -1, TTName, sizeof(TTName), nullptr, nullptr);
+				SetMaterial(ti, TTName); // マルチバイトに対応しました
+#endif
 			}
 			else {
 				// テクスチャを使用するとき
