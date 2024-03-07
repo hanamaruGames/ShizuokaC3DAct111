@@ -15,6 +15,10 @@
 #include "SceneManager.h"
 #include "ObjectManager.h"
 
+namespace {
+	CGameMain* gameMainInstance;
+}
+
 // ============================================================================================
 //
 // CGameMain ゲームメインクラスの処理
@@ -29,6 +33,7 @@
 //------------------------------------------------------------------------
 CGameMain::CGameMain(CMain*	pMain)
 {
+	gameMainInstance = this;
 	m_pMain = pMain;		// メインクラス
 
 	m_pD3D = nullptr;			//	Direct3Dオブジェクト
@@ -337,3 +342,7 @@ HRESULT CGameMain::ChangeScreenMode(int nMode)
 	return Ret;
 }
 
+CGameMain* GameDevice()
+{
+	return gameMainInstance;
+}

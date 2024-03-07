@@ -202,13 +202,13 @@ VECTOR3 GetRotateVector3(const MATRIX4X4& mWorld)
 	VECTOR3     angle;
 	double      threshold = 0.001;
 
-	if (fabsf(mWorld._23 - 1.0) < threshold)  // Mat(2,3) sin(x)=1‚Ì‚Æ‚«
+	if (fabsf(mWorld._23 - 1.0f) < threshold)  // Mat(2,3) sin(x)=1‚Ì‚Æ‚«
 	{
 		angle.x = XM_PI / 2;
 		angle.y = 0;
 		angle.z = atan2f(mWorld._12, mWorld._11);
 	}
-	else if (fabsf(mWorld._23 + 1.0) < threshold)  // Mat(2,3) sin(x)=-1‚Ì‚Æ‚«
+	else if (fabsf(mWorld._23 + 1.0f) < threshold)  // Mat(2,3) sin(x)=-1‚Ì‚Æ‚«
 	{
 		angle.x = -XM_PI / 2;
 		angle.y = 0;
