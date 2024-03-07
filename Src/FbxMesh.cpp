@@ -789,7 +789,7 @@ bool CFbxMesh::CalcTangentSub(const VECTOR3& v1, const VECTOR3& v2, const VECTOR
 //	戻り値 
 //
 //------------------------------------------------------------------------
-bool  CFbxMesh::SetTexture(const DWORD& ti, const TCHAR* TexName)
+HRESULT CFbxMesh::SetTexture(const DWORD& ti, const TCHAR* TexName)
 {
 
 	// マテリアルカラーのクリヤー

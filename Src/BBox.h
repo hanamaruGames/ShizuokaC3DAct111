@@ -39,9 +39,9 @@ public:
 	VECTOR3    m_vAxisX;
 	VECTOR3    m_vAxisY;
 	VECTOR3    m_vAxisZ;
-	FLOAT      m_fLengthX;  // ボックスの半径（辺の長さの1/2）
-	FLOAT      m_fLengthY;  // ボックスの半径（辺の長さの1/2）
-	FLOAT      m_fLengthZ;  // ボックスの半径（辺の長さの1/2）
+	float      m_fLengthX;  // ボックスの半径（辺の長さの1/2）
+	float      m_fLengthY;  // ボックスの半径（辺の長さの1/2）
+	float      m_fLengthZ;  // ボックスの半径（辺の長さの1/2）
 	MATRIX4X4  m_mWorld;
 
 	VECTOR4    m_vDiffuse;  // ディフューズカラー  // -- 2020.1.24

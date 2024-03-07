@@ -9,13 +9,6 @@
 //-----------------------------------------------------------------------------
 #pragma once
 
-//警告非表示
-#pragma warning(disable : 4005)
-#pragma warning(disable : 4244)
-#pragma warning(disable : 4018)
-#pragma warning(disable : 4838)
-
-
 //ヘッダーファイルのインクルード
 #include <stdio.h>
 #include <windows.h>
@@ -391,20 +384,20 @@ VECTOR3   GetPositionVector(const MATRIX4X4& mat);
 MATRIX4X4 GetPositionMatrix(const MATRIX4X4& mat);
 VECTOR3 GetTargetRotateVector(const MATRIX4X4& mWorld, const VECTOR3& vTarget);
 
-FLOAT avoidZero(FLOAT inp);
-FLOAT dot(const VECTOR2& vLhs, const VECTOR2& vRhs);
-FLOAT dot(const VECTOR3& vLhs, const VECTOR3& vRhs);
+float avoidZero(float inp);
+float dot(const VECTOR2& vLhs, const VECTOR2& vRhs);
+float dot(const VECTOR3& vLhs, const VECTOR3& vRhs);
 VECTOR3 cross(const VECTOR3& vLhs, const VECTOR3& vRhs);
-FLOAT crossZ(const VECTOR2& vLhs, const VECTOR2& vRhs);
-FLOAT magnitude(const VECTOR2& vLen);
-FLOAT magnitude(const VECTOR3& vLen);
-FLOAT magnitudeSQ(const VECTOR3& vLen);
-VECTOR2 scaling(const VECTOR2& vVec, const FLOAT& Scale);
-VECTOR3 scaling(const VECTOR3& vVec, const FLOAT& Scale);
+float crossZ(const VECTOR2& vLhs, const VECTOR2& vRhs);
+float magnitude(const VECTOR2& vLen);
+float magnitude(const VECTOR3& vLen);
+float magnitudeSQ(const VECTOR3& vLen);
+VECTOR2 scaling(const VECTOR2& vVec, const float& Scale);
+VECTOR3 scaling(const VECTOR3& vVec, const float& Scale);
 VECTOR2 normalize(const VECTOR2& vVec);
 VECTOR3 normalize(const VECTOR3& vVec);
-FLOAT Angle(const VECTOR3& v1, const VECTOR3& v2);
-FLOAT AddAngle(const VECTOR3& p1, const VECTOR3& p2, const VECTOR3& p3);
-FLOAT AddAngle(const VECTOR3& p1, const VECTOR3& p2, const VECTOR3& p3, const VECTOR3& p4);
+float Angle(const VECTOR3& v1, const VECTOR3& v2);
+float AddAngle(const VECTOR3& p1, const VECTOR3& p2, const VECTOR3& p3);
+float AddAngle(const VECTOR3& p1, const VECTOR3& p2, const VECTOR3& p3, const VECTOR3& p4);
 
 int Random(int min1, int max1);

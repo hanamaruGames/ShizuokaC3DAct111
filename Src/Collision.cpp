@@ -1456,9 +1456,9 @@ bool CCollision::CheckHeight(MATRIX4X4& mWorld, const MATRIX4X4&  mWorldOld, con
 
 	struct ColFace*  pWIndex = nullptr;
 	VECTOR3 vXP(vNow.x, 0, vNow.z);     // 移動後点のY方向ベクトルを０にして平面上の位置を得る
-	FLOAT wkHeight = m_fHeight;
-	FLOAT MaxY = max(vOld.y, vNow.y);
-	FLOAT MinY = min(vOld.y, vNow.y);
+	float wkHeight = m_fHeight;
+	float MaxY = max(vOld.y, vNow.y);
+	float MinY = min(vOld.y, vNow.y);
 
 	float fRadius = (fObjheight < fHeightRadius) ? fHeightRadius : fObjheight;  // キャラクタの半径を最低fHeightRadiusとする
 	
@@ -1582,8 +1582,8 @@ int CCollision::CheckFloorMove(MATRIX4X4& mWorld, const MATRIX4X4&  mWorldOld)
 	// （誤差を考慮して0.0001fを調整する）
 	bool bJumpUp = (vNow.y - 0.0001f > vOld.y);	
 
-	FLOAT MaxY = max(vOld.y, vNow.y);
-	FLOAT MinY = min(vOld.y, vNow.y);
+	float MaxY = max(vOld.y, vNow.y);
+	float MinY = min(vOld.y, vNow.y);
 
 	//vOld = vNow;   // ?????
 
@@ -1876,7 +1876,7 @@ void CAABB::MakeAABB(const VECTOR3& v1, const VECTOR3& v2, const VECTOR3& v3)
 // v1～v2直線の長さで、半径rの幅のAABBを作成する
 //
 //------------------------------------------------------------------------
-void CAABB::MakeAABB(const VECTOR3& v1, const VECTOR3& v2, const FLOAT& r)
+void CAABB::MakeAABB(const VECTOR3& v1, const VECTOR3& v2, const float& r)
 {
 	if (v1.x > v2.x) {
 		m_vMin.x = v2.x;

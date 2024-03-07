@@ -126,8 +126,8 @@ HRESULT CDirect3D::InitD3D(HWND hWnd, DWORD dwWidth, DWORD dwHeight)
 
 	//ビューポートの設定
 	D3D11_VIEWPORT vp;
-	vp.Width = m_dwWindowWidth;
-	vp.Height = m_dwWindowHeight;
+	vp.Width = (float)m_dwWindowWidth;
+	vp.Height = (float)m_dwWindowHeight;
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	vp.TopLeftX = 0;
@@ -447,7 +447,7 @@ HRESULT CDirect3D::CreateTextureFromFile(const TCHAR* TName, ID3D11Texture2D** p
 	// マルチバイト文字の場合、
 	// 文字列のCHAR型をWCHAR型に変換
 	WCHAR WName[512] = { 0x00 };   // 変換後に文字列最後の\0が作成されないのでまず受取側をゼロクリヤーしておく
-	MultiByteToWideChar(CP_OEMCP, MB_PRECOMPOSED, TName, strlen(TName), WName, (sizeof(WName)) / 2);
+	MultiByteToWideChar(CP_OEMCP, MB_PRECOMPOSED, TName, (int)strlen(TName), WName, (sizeof(WName)) / 2);
 	if (FAILED(m_pFactory->CreateDecoderFromFilename(WName, 0,
 				GENERIC_READ, WICDecodeMetadataCacheOnDemand, &decoder)))
 	{

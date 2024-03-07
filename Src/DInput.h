@@ -5,7 +5,6 @@
 //
 // Copyright (c) 2019 静岡産業技術専門学校 ゲームクリエイト科 All rights reserved.
 //-----------------------------------------------------------------------------
-#pragma  warning(disable : 4996)
 
 #ifndef _DINPUT_H_
 #define _DINPUT_H_

@@ -154,8 +154,8 @@ HRESULT CGameMain::Init()
 	m_vLightDir = normalize( VECTOR3(0.8f, 1, -1) );  // 光源座標の初期値。正規化する
 
 	// プロジェクショントランスフォーム（射影変換）の初期値
-	//m_mProj = XMMatrixPerspectiveFovLH((FLOAT)(XM_PI / 4), (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 1000.0);
-	m_mProj = XMMatrixPerspectiveFovLH(XMConvertToRadians(38.0f), (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 1000.0);
+	//m_mProj = XMMatrixPerspectiveFovLH((float)(XM_PI / 4), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 1000.0);
+	m_mProj = XMMatrixPerspectiveFovLH(XMConvertToRadians(38.0f), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 1000.0);
 
 	// ビュートランスフォーム（視点座標変換）の初期値
 	VECTOR3 vUpVec(0.0f, 1.0f, 0.0f);//上方位置

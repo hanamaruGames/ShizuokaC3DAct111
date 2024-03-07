@@ -15,13 +15,6 @@
 
 #pragma once
 
-//警告非表示
-#pragma warning(disable : 4005)
-#pragma warning(disable : 4244)
-#pragma warning(disable : 4018)
-#pragma warning(disable : 4838)
-
-
 //ヘッダーファイルのインクルード
 #include <stdio.h>
 #include <windows.h>

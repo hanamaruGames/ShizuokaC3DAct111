@@ -182,7 +182,7 @@ void ImGui_ImplDX11_RenderDrawData(ImDrawData* draw_data)
         D3D11_VIEWPORT              Viewports[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
         ID3D11RasterizerState*      RS;
         ID3D11BlendState*           BlendState;
-        FLOAT                       BlendFactor[4];
+        float                       BlendFactor[4];
         UINT                        SampleMask;
         UINT                        StencilRef;
         ID3D11DepthStencilState*    DepthStencilState;

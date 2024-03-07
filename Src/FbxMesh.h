@@ -234,7 +234,7 @@ public:
 	void    SetRenderIdxArray(const MATRIX4X4& mWorld, const VECTOR3& vEye);
 	bool    CalcTangentSub(const VECTOR3& v1, const VECTOR3& v2, const VECTOR3& v3,
 							const VECTOR2& uv1, const VECTOR2& uv2, const VECTOR2& uv3, VECTOR3 &tangent, VECTOR3 &Binormal);
-	bool    SetTexture(const DWORD& ti, const TCHAR* TexName);
+	HRESULT SetTexture(const DWORD& ti, const TCHAR* TexName);
 	bool    SetMaterial(const DWORD& ti, const TCHAR* TexName);               // -- 2020.12.15
 
 	int GetEndFrame(const int& animNum);  // endFrame-startFrame‚ðŽæ“¾ 

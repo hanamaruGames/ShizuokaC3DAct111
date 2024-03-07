@@ -1533,7 +1533,7 @@ void CFontTexture::CreateTex(const DWORD&  dwKbn, const float&  fDestWidth, cons
 
 	// 文字列グラフィックの生成
 
-	DWORD     dwTextlen = _tcslen(text);    // 文字数（バイト数ではない）  // -- 2018.12.28
+	DWORD     dwTextlen = (DWORD)_tcslen(text);    // 文字数（バイト数ではない）  // -- 2018.12.28
 	DWORD     dwTextHeight = 0;
 	DWORD     dwTextWidth = 0;
 	DWORD     dwAllWidth = 0;
