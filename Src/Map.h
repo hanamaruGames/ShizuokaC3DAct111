@@ -32,8 +32,8 @@ struct STAGEMAP
 	}
 	void Init()    // 初期化メソッド
 	{
-		m_pMesh = NULL;
-		m_pWave = NULL;
+		m_pMesh = nullptr;
+		m_pWave = nullptr;
 		m_mWorld = XMMatrixIdentity();
 		m_nMaterialFlag = 0;
 	}
@@ -68,9 +68,9 @@ struct MOVEMAP
 	void Init()
 	{
 		m_bActive = FALSE;
-		m_pMesh = NULL;
+		m_pMesh = nullptr;
 		m_nMaterialFlag = 0;
-		m_pColMesh = NULL;
+		m_pColMesh = nullptr;
 		m_bMoveOn = TRUE;    // 初期設定は移動実行
 		m_nMoveFlag = 1;       // 初期設定は平行移動
 		m_vUp = VECTOR3(0, 0, 0);
@@ -137,7 +137,7 @@ struct EVENTMAP
 
 	EVENTMAP()    // コンストラクタ
 	{
-		m_pBBox = NULL;
+		m_pBBox = nullptr;
 		m_nEvtCycle = 0;
 		m_nEvtKind = eEvtKindNone;
 		m_nEvtNo = 0;

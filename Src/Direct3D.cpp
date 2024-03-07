@@ -73,12 +73,12 @@ HRESULT CDirect3D::InitD3D(HWND hWnd, DWORD dwWidth, DWORD dwHeight)
 	//sd.Flags = DXGI_SWAP_CHAIN_FLAG_GDI_COMPATIBLE;  //  -- 2017.1.28  GetDC対策 エラーになる？
 
 	D3D_FEATURE_LEVEL pFeatureLevels = D3D_FEATURE_LEVEL_11_0;
-	D3D_FEATURE_LEVEL* pFeatureLevel = NULL;
+	D3D_FEATURE_LEVEL* pFeatureLevel = nullptr;
 
 	HRESULT hr = D3D11CreateDeviceAndSwapChain(
-		NULL,
+		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE, 
-		NULL,
+		nullptr,
 		0, 
 		&pFeatureLevels, 
 		1, 
@@ -90,7 +90,7 @@ HRESULT CDirect3D::InitD3D(HWND hWnd, DWORD dwWidth, DWORD dwHeight)
 		&m_pDeviceContext);
 
 	if( hr == E_FAIL){
-		MessageBox(0, _T("Direct3D.cpp D3Dデバイスとスワップチェーンの作成に失敗しました"), NULL, MB_OK);
+		MessageBox(0, _T("Direct3D.cpp D3Dデバイスとスワップチェーンの作成に失敗しました"), nullptr, MB_OK);
 		return FALSE;
 	}
 
@@ -100,7 +100,7 @@ HRESULT CDirect3D::InitD3D(HWND hWnd, DWORD dwWidth, DWORD dwHeight)
 	ID3D11Texture2D *pBackBuffer_Tex;
 	m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer_Tex);
 	//そのテクスチャーに対しレンダーターゲットビュー(RTV)を作成
-	m_pDevice->CreateRenderTargetView(pBackBuffer_Tex, NULL, &m_pBackBuffer_TexRTV);
+	m_pDevice->CreateRenderTargetView(pBackBuffer_Tex, nullptr, &m_pBackBuffer_TexRTV);
 	SAFE_RELEASE(pBackBuffer_Tex);
 
 	//デプスステンシルビュー用のテクスチャーを作成
@@ -117,12 +117,12 @@ HRESULT CDirect3D::InitD3D(HWND hWnd, DWORD dwWidth, DWORD dwHeight)
 	descDepth.CPUAccessFlags = 0;
 	descDepth.MiscFlags = 0;
 
-	m_pDevice->CreateTexture2D(&descDepth, NULL, &m_pBackBuffer_DSTex);
+	m_pDevice->CreateTexture2D(&descDepth, nullptr, &m_pBackBuffer_DSTex);
 	//そのテクスチャーに対しデプスステンシルビュー(DSV)を作成
-	m_pDevice->CreateDepthStencilView(m_pBackBuffer_DSTex, NULL, &m_pBackBuffer_DSTexDSV);
+	m_pDevice->CreateDepthStencilView(m_pBackBuffer_DSTex, nullptr, &m_pBackBuffer_DSTexDSV);
 
 	//レンダーターゲットビューと深度ステンシルビューをパイプラインにバインド
-	SetRenderTarget(NULL, NULL);    // レンダーターゲットの設定   // -- 2019.4.19
+	SetRenderTarget(nullptr, nullptr);    // レンダーターゲットの設定   // -- 2019.4.19
 
 	//ビューポートの設定
 	D3D11_VIEWPORT vp;
@@ -165,14 +165,14 @@ HRESULT CDirect3D::InitD3D(HWND hWnd, DWORD dwWidth, DWORD dwHeight)
 			IID_PPV_ARGS(&m_pFactory)
 	);
 	if (hr == E_FAIL) {
-		MessageBox(0, _T("Direct3D.cpp  COM オブジェクト(CLSID_WICImagingFactory)の作成に失敗しました"), NULL, MB_OK);
+		MessageBox(0, _T("Direct3D.cpp  COM オブジェクト(CLSID_WICImagingFactory)の作成に失敗しました"), nullptr, MB_OK);
 		return FALSE;
 	}
 
 	// DirectXMathライブラリが使えるかどうかチェックする
 	if (XMVerifyCPUSupport() != TRUE)
 	{
-		MessageBox(0, _T("Direct3D.cpp  DirectXMathライブラリのＳＳＥが使えません。処理を終了いたします"), NULL, MB_OK);
+		MessageBox(0, _T("Direct3D.cpp  DirectXMathライブラリのＳＳＥが使えません。処理を終了いたします"), nullptr, MB_OK);
 		return FALSE;
 	}
 
@@ -262,7 +262,7 @@ HRESULT CDirect3D::InitBlendState()
 	// -------------------------------------------------------------------------------
 	// 現在のブレンドステートを取得する
 	UINT mask = 0xffffffff;
-	m_pDeviceContext->OMGetBlendState(&m_pBlendStateNormal, NULL, &mask);
+	m_pDeviceContext->OMGetBlendState(&m_pBlendStateNormal, nullptr, &mask);
 
 
 	//アルファブレンド用ブレンドステート作成
@@ -311,7 +311,7 @@ HRESULT CDirect3D::InitBlendState()
 
 	// デフォルトのブレンドステートをアルファブレンド用ブレンドステートにする            // -- 2020.1.15
 	// (透明色のブレンディングを設定)
-	m_pDeviceContext->OMSetBlendState(m_pBlendStateTrapen, NULL, mask);
+	m_pDeviceContext->OMSetBlendState(m_pBlendStateTrapen, nullptr, mask);
 
 	return S_OK;
 }
@@ -331,9 +331,9 @@ HRESULT CDirect3D::InitBlendState()
 //------------------------------------------------------------------------
 void   CDirect3D::SetRenderTarget(ID3D11RenderTargetView* pTexRTV, ID3D11DepthStencilView* pDSTexDSV)
 {
-	if (pTexRTV == NULL)
+	if (pTexRTV == nullptr)
 	{
-		// NULLの時は、バックバッファ
+		// nullptrの時は、バックバッファ
 		m_pTarget_TexRTV = m_pBackBuffer_TexRTV;
 		m_pTarget_DSTexDSV = m_pBackBuffer_DSTexDSV;
 	}
@@ -383,7 +383,7 @@ void   CDirect3D::SetZBuffer(BOOL bZBuf)
 		m_pDeviceContext->OMSetRenderTargets(1, &m_pTarget_TexRTV, m_pTarget_DSTexDSV);
 	}
 	else {
-		m_pDeviceContext->OMSetRenderTargets(1, &m_pTarget_TexRTV, NULL);
+		m_pDeviceContext->OMSetRenderTargets(1, &m_pTarget_TexRTV, nullptr);
 	}
 }
 
@@ -431,7 +431,7 @@ HRESULT CDirect3D::CreateTextureFromFile(const TCHAR* TName, ID3D11Texture2D** p
 	//
 	// ---------------------------------------------------------------------------
 
-	IWICBitmapDecoder* decoder = NULL;
+	IWICBitmapDecoder* decoder = nullptr;
 
 	// 画像ファイルを読み込んでデコーダを作成する
 
@@ -457,7 +457,7 @@ HRESULT CDirect3D::CreateTextureFromFile(const TCHAR* TName, ID3D11Texture2D** p
 #endif
 
 	// デコーダからフレームを作成する
-	IWICBitmapFrameDecode* frame = NULL;
+	IWICBitmapFrameDecode* frame = nullptr;
 	if (FAILED(decoder->GetFrame(0, &frame)))
 	{
 		MessageBox(0, _T("Direct3D.cpp decoderからframeを取得できません"), TName, MB_OK);
@@ -503,7 +503,7 @@ HRESULT CDirect3D::CreateTextureFromFile(const TCHAR* TName, ID3D11Texture2D** p
 	if (pixelFormat != GUID_WICPixelFormat32bppRGBA)  // 画像フォーマットがRGBA（32ビット）か
 	{
 		// RGBA（32ビット）の形式でないので、RGBA形式にフォーマットコンバートする
-		IWICFormatConverter* FC = NULL;
+		IWICFormatConverter* FC = nullptr;
 
 		if (FAILED(m_pFactory->CreateFormatConverter(&FC)))   // フォーマットコンバータの生成
 		{
@@ -604,7 +604,7 @@ HRESULT CDirect3D::MakeNoMipmapTexture( const DWORD& dwImageWidth, const DWORD& 
 
 	if (FAILED(m_pDevice->CreateTexture2D(&desc, &initData, ppTexture2D)))
 	{
-		//MessageBox(0, _T("Direct3D.cpp ミップマップ無し　テクスチャを生成できません"), NULL, MB_OK);
+		//MessageBox(0, _T("Direct3D.cpp ミップマップ無し　テクスチャを生成できません"), nullptr, MB_OK);
 		return E_FAIL;
 	}
 
@@ -647,7 +647,7 @@ HRESULT CDirect3D::MakeMipmapTexture(const DWORD& dwImageWidth, const DWORD& dwI
 
 	if (FAILED(m_pDevice->CreateTexture2D(&desc, &initData, &pWTexture2D)))
 	{
-		//MessageBox(0, _T("Direct3D.cpp ミップマップ作成用一時テクスチャを生成できません"), NULL, MB_OK);
+		//MessageBox(0, _T("Direct3D.cpp ミップマップ作成用一時テクスチャを生成できません"), nullptr, MB_OK);
 		return E_FAIL;
 	}
 
@@ -665,9 +665,9 @@ HRESULT CDirect3D::MakeMipmapTexture(const DWORD& dwImageWidth, const DWORD& dwI
 	desc.CPUAccessFlags = 0;
 	desc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;   // 後でミップマップの生成ができるようにする
 
-	if (FAILED(m_pDevice->CreateTexture2D(&desc, NULL, ppTexture2D)))
+	if (FAILED(m_pDevice->CreateTexture2D(&desc, nullptr, ppTexture2D)))
 	{
-		//MessageBox(0, _T("Direct3D.cpp 空テクスチャを生成できません"), NULL, MB_OK);
+		//MessageBox(0, _T("Direct3D.cpp 空テクスチャを生成できません"), nullptr, MB_OK);
 		return E_FAIL;
 	}
 
@@ -676,7 +676,7 @@ HRESULT CDirect3D::MakeMipmapTexture(const DWORD& dwImageWidth, const DWORD& dwI
 	// 画像データから作成したテクスチャーを、読み込みモードでマップする
 	if (FAILED(m_pDeviceContext->Map(pWTexture2D, NULL, D3D11_MAP_READ, 0, &mappedResource)))
 	{
-		//MessageBox(0, _T("Direct3D.cpp Map処理できません"), NULL, MB_OK);
+		//MessageBox(0, _T("Direct3D.cpp Map処理できません"), nullptr, MB_OK);
 		return E_FAIL;
 	}
 
@@ -687,14 +687,14 @@ HRESULT CDirect3D::MakeMipmapTexture(const DWORD& dwImageWidth, const DWORD& dwI
 	{
 		m_pDeviceContext->UpdateSubresource(*ppTexture2D,
 										D3D11CalcSubresource(iMip, 0, desc.MipLevels),
-										NULL,
+										nullptr,
 										mappedResource.pData,
 										mappedResource.RowPitch,
 										0
 		);
 	}
 
-	m_pDeviceContext->Unmap(pWTexture2D, NULL);
+	m_pDeviceContext->Unmap(pWTexture2D, 0);
 
 	SAFE_RELEASE(pWTexture2D);
 
@@ -729,7 +729,7 @@ HRESULT CDirect3D::CreateShaderResourceViewFromFile(const TCHAR* TName, ID3D11Sh
 	//
 	// ---------------------------------------------------------------------------------------
 
-	ID3D11Texture2D*	pTexture2D = NULL;
+	ID3D11Texture2D*	pTexture2D = nullptr;
 
 	// ミップマップレベルを調整する
 	UINT  MaxMipLevels = 8;

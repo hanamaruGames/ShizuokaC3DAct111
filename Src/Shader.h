@@ -195,7 +195,7 @@ public:
 	HRESULT InitShaderEffect();
 	HRESULT InitShaderConstant();
 
-	HRESULT MakeShader(TCHAR ProfileName[], TCHAR FileName[], void** ppShader, D3D11_INPUT_ELEMENT_DESC Fluid_layout[] = NULL, UINT numElements = 0, ID3D11InputLayout** ppInputLayout = NULL);
+	HRESULT MakeShader(TCHAR ProfileName[], TCHAR FileName[], void** ppShader, D3D11_INPUT_ELEMENT_DESC Fluid_layout[] = nullptr, UINT numElements = 0, ID3D11InputLayout** ppInputLayout = nullptr);
 	HRESULT MakeConstantBuffer(UINT size, ID3D11Buffer**  ppConstantBuffer);
 
 	CShader(CDirect3D* pD3D);

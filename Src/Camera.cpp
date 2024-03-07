@@ -73,7 +73,7 @@ void CCameraProc::InitCam(int no, int ctrl, VECTOR3 lookat, VECTOR3 eye, float r
 {
 	if (no < 0 || no >= m_pObjArray.size())
 	{
-		MessageBox(NULL, _T("■ InitCam( No,　・・・・・) ■"), _T("指定要素番号のオブジェクトがありません"), MB_OK);
+		MessageBox(nullptr, _T("■ InitCam( No,　・・・・・) ■"), _T("指定要素番号のオブジェクトがありません"), MB_OK);
 		return;
 	}
 

@@ -403,7 +403,7 @@ HRESULT CShader::InitShaderSprite()
 HRESULT CShader::MakeShader(TCHAR ProfileName[], TCHAR FileName[], void** ppShader, D3D11_INPUT_ELEMENT_DESC Fluid_layout[], UINT numElements, ID3D11InputLayout** ppInputLayout)
 {
 	// コンパイル済みシェーダの読み込み配列
-	BYTE* pCso = NULL;
+	BYTE* pCso = nullptr;
 	DWORD dwCsoSize = 0;
 
 	// コンパイル済みシェーダの読み込みをする
@@ -412,7 +412,7 @@ HRESULT CShader::MakeShader(TCHAR ProfileName[], TCHAR FileName[], void** ppShad
 	// シェーダー種類ごとの作成処理
 	if (_tcscmp(ProfileName, _T("VS")) == 0)	// バーテックスシェーダー
 	{
-		if (FAILED(m_pD3D->m_pDevice->CreateVertexShader(pCso, dwCsoSize, NULL, (ID3D11VertexShader**)ppShader)))
+		if (FAILED(m_pD3D->m_pDevice->CreateVertexShader(pCso, dwCsoSize, nullptr, (ID3D11VertexShader**)ppShader)))
 		{
 			SAFE_DELETE_ARRAY(pCso);
 			MessageBox(0, _T("バーテックスシェーダー作成失敗"), FileName, MB_OK);
@@ -430,7 +430,7 @@ HRESULT CShader::MakeShader(TCHAR ProfileName[], TCHAR FileName[], void** ppShad
 	}
 	else if (_tcscmp(ProfileName, _T("PS")) == 0)	// ピクセルシェーダー
 	{
-		if (FAILED(m_pD3D->m_pDevice->CreatePixelShader(pCso, dwCsoSize, NULL, (ID3D11PixelShader**)ppShader)))
+		if (FAILED(m_pD3D->m_pDevice->CreatePixelShader(pCso, dwCsoSize, nullptr, (ID3D11PixelShader**)ppShader)))
 		{
 			SAFE_DELETE_ARRAY(pCso);
 			MessageBox(0, _T("ピクセルシェーダー作成失敗"), FileName, MB_OK);
@@ -439,7 +439,7 @@ HRESULT CShader::MakeShader(TCHAR ProfileName[], TCHAR FileName[], void** ppShad
 	}
 	else if (_tcscmp(ProfileName, _T("GS")) == 0)	// ジオメトリシェーダー
 	{
-		if (FAILED(m_pD3D->m_pDevice->CreateGeometryShader(pCso, dwCsoSize, NULL, (ID3D11GeometryShader**)ppShader)))
+		if (FAILED(m_pD3D->m_pDevice->CreateGeometryShader(pCso, dwCsoSize, nullptr, (ID3D11GeometryShader**)ppShader)))
 		{
 			SAFE_DELETE_ARRAY(pCso);
 			MessageBox(0, _T("ジオメトリシェーダー作成失敗"), FileName, MB_OK);
@@ -448,7 +448,7 @@ HRESULT CShader::MakeShader(TCHAR ProfileName[], TCHAR FileName[], void** ppShad
 	}
 	else if (_tcscmp(ProfileName, _T("HS")) == 0)	// ハルシェーダー
 	{
-		if (FAILED(m_pD3D->m_pDevice->CreateHullShader(pCso, dwCsoSize, NULL, (ID3D11HullShader**)ppShader)))
+		if (FAILED(m_pD3D->m_pDevice->CreateHullShader(pCso, dwCsoSize, nullptr, (ID3D11HullShader**)ppShader)))
 		{
 			SAFE_DELETE_ARRAY(pCso);
 			MessageBox(0, _T("ハルシェーダー作成失敗"), FileName, MB_OK);
@@ -457,7 +457,7 @@ HRESULT CShader::MakeShader(TCHAR ProfileName[], TCHAR FileName[], void** ppShad
 	}
 	else if (_tcscmp(ProfileName, _T("DS")) == 0)	// ドメインシェーダー
 	{
-		if (FAILED(m_pD3D->m_pDevice->CreateDomainShader(pCso, dwCsoSize, NULL, (ID3D11DomainShader**)ppShader)))
+		if (FAILED(m_pD3D->m_pDevice->CreateDomainShader(pCso, dwCsoSize, nullptr, (ID3D11DomainShader**)ppShader)))
 		{
 			SAFE_DELETE_ARRAY(pCso);
 			MessageBox(0, _T("ドメインシェーダー作成失敗"), FileName, MB_OK);
@@ -466,7 +466,7 @@ HRESULT CShader::MakeShader(TCHAR ProfileName[], TCHAR FileName[], void** ppShad
 	}
 	else if (_tcscmp(ProfileName, _T("CS")) == 0)	// コンピュートシェーダ
 	{
-		if (FAILED(m_pD3D->m_pDevice->CreateComputeShader(pCso, dwCsoSize, NULL, (ID3D11ComputeShader**)ppShader)))
+		if (FAILED(m_pD3D->m_pDevice->CreateComputeShader(pCso, dwCsoSize, nullptr, (ID3D11ComputeShader**)ppShader)))
 		{
 			SAFE_DELETE_ARRAY(pCso);
 			MessageBox(0, _T("コンピュートシェーダ作成失敗"), FileName, MB_OK);
@@ -533,7 +533,7 @@ HRESULT CShader::InitShaderConstant()
 //------------------------------------------------------------------------
 HRESULT CShader::MakeConstantBuffer(UINT size, ID3D11Buffer**  ppConstantBuffer)
 {
-	D3D11_BUFFER_DESC cb = { NULL };
+	D3D11_BUFFER_DESC cb = { 0 };
 
 	cb.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	cb.ByteWidth = size;
@@ -542,9 +542,9 @@ HRESULT CShader::MakeConstantBuffer(UINT size, ID3D11Buffer**  ppConstantBuffer)
 	cb.StructureByteStride = 0;
 	cb.Usage = D3D11_USAGE_DYNAMIC;
 
-	if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&cb, NULL, ppConstantBuffer)))
+	if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&cb, nullptr, ppConstantBuffer)))
 	{
-		MessageBox(0, _T("コンスタントバッファー 作成失敗"), NULL, MB_OK);
+		MessageBox(0, _T("コンスタントバッファー 作成失敗"), nullptr, MB_OK);
 		return E_FAIL;
 	}
 	return S_OK;

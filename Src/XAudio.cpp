@@ -119,8 +119,8 @@ CXAudioSource::~CXAudioSource()
 		_tcscpy_s(AllStr, _T("close "));
 		_tcscat_s(AllStr, m_szAliasName);
 
-		mciSendString(AllStr, NULL, 0, NULL);  // なお、openしたファイルは必ずcloseする必要がある。alias名でcloseできる
-		//mciSendString(_T("close all"), NULL, 0, NULL);　は、全ての曲をclose
+		mciSendString(AllStr, nullptr, 0, nullptr);  // なお、openしたファイルは必ずcloseする必要がある。alias名でcloseできる
+		//mciSendString(_T("close all"), nullptr, 0, nullptr);　は、全ての曲をclose
 	}
 }
 
@@ -196,7 +196,7 @@ HRESULT CXAudioSource::LoadAudio(TCHAR* szFileName, DWORD dwSourceNum)
 //------------------------------------------------------------------------
 HRESULT CXAudioSource::LoadAudioSub(TCHAR* szFileName, DWORD dwIndex)
 {
-	HMMIO            hMmio = NULL;  //WindowsマルチメディアAPIのハンドル(WindowsマルチメディアAPIはWAVファイル関係の操作用のAPI)
+	HMMIO            hMmio = nullptr;  //WindowsマルチメディアAPIのハンドル(WindowsマルチメディアAPIはWAVファイル関係の操作用のAPI)
 	DWORD            dwWavSize = 0; //WAVファイル内　WAVデータのサイズ（WAVファイルはWAVデータで占められているので、ほぼファイルサイズと同一）
 	WAVEFORMATEX*    pwfex;         //WAVのフォーマット 例）16ビット、44100Hz、ステレオなど
 	MMCKINFO         ckInfo;        //　チャンク情報
@@ -207,14 +207,14 @@ HRESULT CXAudioSource::LoadAudioSub(TCHAR* szFileName, DWORD dwIndex)
 	//WAVファイル内のヘッダー情報（音データ以外）の確認と読み込み
 	ZeroMemory(&mmioInfo, sizeof(MMIOINFO));								// -- 2017.1.22
 	hMmio = mmioOpen(szFileName, &mmioInfo, MMIO_ALLOCBUF | MMIO_READ);	// -- 2017.1.22
-	if ( hMmio == NULL )
+	if ( hMmio == nullptr )
 	{
-		MessageBox(0, _T("XAudio2 サウンドデータ　読み込み失敗"), NULL, MB_OK);
+		MessageBox(0, _T("XAudio2 サウンドデータ　読み込み失敗"), nullptr, MB_OK);
 		return E_FAIL;
 	}
 
 	//ファイルポインタをRIFFチャンクの先頭にセットする
-	mmioDescend(hMmio, &riffckInfo, NULL, 0);
+	mmioDescend(hMmio, &riffckInfo, nullptr, 0);
 
 	// ファイルポインタを'f' 'm' 't' ' ' チャンクにセットする
 	ckInfo.ckid = mmioFOURCC('f', 'm', 't', ' ');
@@ -276,19 +276,19 @@ HRESULT CXAudioSource::LoadMci(TCHAR* szFileName)
 	_tcscat_s( AllStr, _T(" type mpegvideo alias "));
 	_tcscat_s( AllStr, m_szAliasName);
 
-	mciSendString( AllStr , NULL, 0, NULL);
+	mciSendString( AllStr , nullptr, 0, nullptr);
 
 	// 
 	// mciSendStringの例
 	// 
 	// なお、mciSendStringはUnicode版　mciSendStringAはマルチバイト対応版
 	// 
-	//mciSendString(_T("open Sound/bgm1.mp3 type mpegvideo alias BGM01"), NULL, 0, NULL);
-	//mciSendString(_T("open Sound/B003B.MID type mpegvideo alias BGM01"), NULL, 0, NULL);
-	//mciSendString(_T("open Sound/bgm1.mp3 type mpegvideo"), NULL, 0, NULL);
-	//mciSendString(_T("stop all"), NULL, 0, NULL);
-	//mciSendString(_T("play BGM01 from 0 repeat"), NULL, 0, NULL);
-	//mciSendString(_T("close all"), NULL, 0, NULL);　は、全ての曲をclose
+	//mciSendString(_T("open Sound/bgm1.mp3 type mpegvideo alias BGM01"), nullptr, 0, nullptr);
+	//mciSendString(_T("open Sound/B003B.MID type mpegvideo alias BGM01"), nullptr, 0, nullptr);
+	//mciSendString(_T("open Sound/bgm1.mp3 type mpegvideo"), nullptr, 0, nullptr);
+	//mciSendString(_T("stop all"), nullptr, 0, nullptr);
+	//mciSendString(_T("play BGM01 from 0 repeat"), nullptr, 0, nullptr);
+	//mciSendString(_T("close all"), nullptr, 0, nullptr);　は、全ての曲をclose
 
 	return S_OK;
 }
@@ -379,16 +379,16 @@ void  CXAudioSource::PlayMci(int loop)
 	{
 		_tcscat_s(AllStr, _T(" repeat"));
 	}
-	mciSendString(AllStr, NULL, 0, NULL);
+	mciSendString(AllStr, nullptr, 0, nullptr);
 
 	// MPEGビデオを再生するとき、標準指定では別ウィンドウとなる
 	// 自ウィンドウで再生するときは、事前に下記処理を行う
 	// 但し、DirectX描画を一時的に停止する必要がある
 	//TCHAR str[256];
 	//_stprintf_s(str, _T("window %s handle %d"), m_szAliasName, (int)m_pXAudio->m_hWnd);
-	//mciSendString( str , NULL, 0, NULL);
+	//mciSendString( str , nullptr, 0, nullptr);
 	//_stprintf_s(str, _T("put %s destination at 0 0 640 480"), m_szAliasName);
-	//mciSendString( str , NULL, 0, NULL);
+	//mciSendString( str , nullptr, 0, nullptr);
 
 
 }
@@ -446,7 +446,7 @@ void  CXAudioSource::StopMci()
 	_tcscpy_s(AllStr, _T("stop "));
 	_tcscat_s(AllStr, m_szAliasName);
 
-	mciSendString(AllStr, NULL, 0, NULL);
+	mciSendString(AllStr, nullptr, 0, nullptr);
 }
 
 //------------------------------------------------------------------------
@@ -508,6 +508,6 @@ void  CXAudioSource::VolumeMci(int nVol)
 	TCHAR str[512];
 
 	_stprintf_s(str, _T("setaudio %s volume to %d"), m_szAliasName, nVol);
-	mciSendString( str , NULL, 0, NULL);
+	mciSendString( str , nullptr, 0, nullptr);
 
 }

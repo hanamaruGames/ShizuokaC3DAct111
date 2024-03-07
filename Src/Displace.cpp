@@ -215,7 +215,7 @@ HRESULT CWave::SetSrc(const int& iWidth, const int& iHeight, const TCHAR* FName,
 	InitData.pSysMem = pVertices;
 	if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_pVertexBuffer)))
 	{
-		MessageBox(0, _T("ディスプレイスメントマッピング　バーテックスバッファ 作成失敗"), NULL, MB_OK);
+		MessageBox(0, _T("ディスプレイスメントマッピング　バーテックスバッファ 作成失敗"), nullptr, MB_OK);
 		return FALSE;
 	}
 
@@ -231,7 +231,7 @@ HRESULT CWave::SetSrc(const int& iWidth, const int& iHeight, const TCHAR* FName,
 	InitData.SysMemSlicePitch = 0;
 	if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_pIndexBuffer))) 
 	{
-		MessageBox(0,_T("ディスプレイスメントマッピング　インデックスバッファ 作成失敗"), NULL, MB_OK);
+		MessageBox(0,_T("ディスプレイスメントマッピング　インデックスバッファ 作成失敗"), nullptr, MB_OK);
 		return FALSE;
 	}
 
@@ -243,7 +243,7 @@ HRESULT CWave::SetSrc(const int& iWidth, const int& iHeight, const TCHAR* FName,
 	{
 		if (FAILED(m_pD3D->CreateShaderResourceViewFromFile(TexName, &m_pTexture)))
 		{
-			MessageBox(0, _T("ディスプレイスメントマッピング　テクスチャ 読み込み失敗"), NULL, MB_OK);
+			MessageBox(0, _T("ディスプレイスメントマッピング　テクスチャ 読み込み失敗"), nullptr, MB_OK);
 			return E_FAIL;
 		}
 	}
@@ -253,7 +253,7 @@ HRESULT CWave::SetSrc(const int& iWidth, const int& iHeight, const TCHAR* FName,
 	{
 		if (FAILED(m_pD3D->CreateShaderResourceViewFromFile(FName, &m_pNormalTexture)))
 		{
-			MessageBox(0, _T("ディスプレイスメントマッピング　ノーマルテクスチャ 読み込み失敗"), NULL, MB_OK);
+			MessageBox(0, _T("ディスプレイスメントマッピング　ノーマルテクスチャ 読み込み失敗"), nullptr, MB_OK);
 			return E_FAIL;
 		}
 	}
@@ -263,7 +263,7 @@ HRESULT CWave::SetSrc(const int& iWidth, const int& iHeight, const TCHAR* FName,
 	{
 		if (FAILED(m_pD3D->CreateShaderResourceViewFromFile(SpecName, &m_pSpecularTexture)))
 		{
-			MessageBox(0, _T("ディスプレイスメントマッピング　スペキュラテクスチャ 読み込み失敗"), NULL, MB_OK);
+			MessageBox(0, _T("ディスプレイスメントマッピング　スペキュラテクスチャ 読み込み失敗"), nullptr, MB_OK);
 			return E_FAIL;
 		}
 	}
@@ -290,10 +290,10 @@ void CWave::Render(const MATRIX4X4& mWorld, const MATRIX4X4& mView, const MATRIX
 	//m_pD3D->m_pDeviceContext->RSSetState(m_pD3D->m_pRStateLW);  // 左回り、ワイヤーフレーム表示    // -- 2021.1.11
 
 	// 使用するシェーダーの登録
-	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pDisplaceWave_VS, NULL, 0);
-	m_pD3D->m_pDeviceContext->HSSetShader(m_pShader->m_pDisplaceWave_HS, NULL, 0);
-	m_pD3D->m_pDeviceContext->DSSetShader(m_pShader->m_pDisplaceWave_DS, NULL, 0);
-	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pDisplaceWave_PS, NULL, 0);
+	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pDisplaceWave_VS, nullptr, 0);
+	m_pD3D->m_pDeviceContext->HSSetShader(m_pShader->m_pDisplaceWave_HS, nullptr, 0);
+	m_pD3D->m_pDeviceContext->DSSetShader(m_pShader->m_pDisplaceWave_DS, nullptr, 0);
+	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pDisplaceWave_PS, nullptr, 0);
 
 
 	// シェーダーのコンスタントバッファーに各種データを渡す	
@@ -337,7 +337,7 @@ void CWave::Render(const MATRIX4X4& mWorld, const MATRIX4X4& mView, const MATRIX
 	{
 
 		// モデルから見た視点位置（つまり、モデルの逆ワールドをかけた視点）を渡す
-		sg.vEyePosInv = XMVector3TransformCoord(vEye, XMMatrixInverse(NULL, mWorld));
+		sg.vEyePosInv = XMVector3TransformCoord(vEye, XMMatrixInverse(nullptr, mWorld));
 
 		// 最小距離、最大距離
 		sg.fMinDistance = m_fMinDistance;
@@ -425,8 +425,8 @@ void CWave::Render(const MATRIX4X4& mWorld, const MATRIX4X4& mView, const MATRIX
 	m_pD3D->m_pDeviceContext->DrawIndexed(m_dwNumIndex, 0, 0);
 
 	// ハルシェーダーとドメインシェーダーをリセットする
-	m_pD3D->m_pDeviceContext->HSSetShader(NULL, NULL, 0);
-	m_pD3D->m_pDeviceContext->DSSetShader(NULL, NULL, 0);
+	m_pD3D->m_pDeviceContext->HSSetShader(nullptr, nullptr, 0);
+	m_pD3D->m_pDeviceContext->DSSetShader(nullptr, nullptr, 0);
 
 
 }

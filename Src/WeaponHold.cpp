@@ -128,7 +128,7 @@ int CWeaponHoldProc::GetKind(BASEHOLDITEM HoldItem)
 CWeaponHoldObj::CWeaponHoldObj(CBaseProc* pProc) : CBaseObj(pProc)
 {
 	m_nKindNo = 0;
-	m_pMesh = NULL;
+	m_pMesh = nullptr;
 	m_vOffset = VECTOR3(0.0f, 0.0f, 0.0f);   // オフセットの設定
 }
 //============================================================================
@@ -145,14 +145,14 @@ void CWeaponHoldObj::Init()
 	{
 	case 0:     // 未設定
 		m_nKindNo = 0;
-		m_pMesh = NULL; // オブジェクトは無し
-		m_pBBox = NULL; // BBoxの設定
+		m_pMesh = nullptr; // オブジェクトは無し
+		m_pBBox = nullptr; // BBoxの設定
 		m_vOffset = VECTOR3(0.0f, 0.0f, 0.0f);   // オフセットなし
 		break;
 
 	case 1:     // 透明な剣の設定
 		m_nKindNo = 1;  // 1:種別　剣
-		m_pMesh = NULL; // オブジェクトは無し
+		m_pMesh = nullptr; // オブジェクトは無し
 		m_pBBox = new CBBox(m_pGMain->m_pShader, VECTOR3(-0.15f, -0.15f, -0.15f), VECTOR3(0.15f, 1.8f, 0.15f));// BBoxの設定
 		m_vOffset = VECTOR3(0.0f, 0.0f, 0.0f);   // 銃口までのオフセットの設定
 		break;
@@ -174,7 +174,7 @@ void CWeaponHoldObj::Init()
 
 	case 4:     // 透明な銃の設定
 		m_nKindNo = 2;  // 2:種別　銃
-		m_pMesh = NULL; // オブジェクトは無し
+		m_pMesh = nullptr; // オブジェクトは無し
 		m_vOffset = VECTOR3(0.0f, 0.0f, 0.51f);   // 銃口までのオフセットの設定
 		break;
 
@@ -192,15 +192,15 @@ void CWeaponHoldObj::Init()
 
 	case 7:     // 透明な盾の設定
 		m_nKindNo = 1;  // 1:種別　剣
-		m_pMesh = NULL; // オブジェクトは無し
+		m_pMesh = nullptr; // オブジェクトは無し
 		m_pBBox = new CBBox(m_pGMain->m_pShader, VECTOR3(-1.0f, -1.5f, -0.3f), VECTOR3(1.0f, 1.5f, 0.3f));// BBoxの設定
 		m_vOffset = VECTOR3(0.0f, 0.0f, 0.0f);   // 銃口までのオフセットの設定
 		break;
 
 	default:
 		m_nKindNo = 0;
-		m_pMesh = NULL; // オブジェクトは無し
-		m_pBBox = NULL; // BBoxの設定
+		m_pMesh = nullptr; // オブジェクトは無し
+		m_pBBox = nullptr; // BBoxの設定
 		m_vOffset = VECTOR3(0.0f, 0.0f, 0.0f);   // オフセットなし
 		break;
 	}

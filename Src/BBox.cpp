@@ -203,7 +203,7 @@ HRESULT CBBox::InitMesh()
 	D3D11_MAPPED_SUBRESOURCE msr;
 
 	// バーテックスバッファがすでに作成済みかどうかチェックする
-	if (m_pVertexBuffer == NULL)
+	if (m_pVertexBuffer == nullptr)
 	{
 		//バーテックスバッファーを作成
 		//bd.Usage = D3D11_USAGE_DEFAULT;
@@ -216,7 +216,7 @@ HRESULT CBBox::InitMesh()
 		InitData.pSysMem = pVertices;
 		if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_pVertexBuffer)))
 		{
-			MessageBox(0, _T("ＢＢｏｘ　バーテックスバッファ 作成失敗"), NULL, MB_OK);
+			MessageBox(0, _T("ＢＢｏｘ　バーテックスバッファ 作成失敗"), nullptr, MB_OK);
 			return E_FAIL;
 		}
 	}
@@ -228,7 +228,7 @@ HRESULT CBBox::InitMesh()
 			m_pD3D->m_pDeviceContext->Unmap(m_pVertexBuffer, 0);
 		}
 		else {
-			MessageBox(0, _T("ＢＢｏｘ　バーテックスバッファ 書き換え失敗"), NULL, MB_OK);
+			MessageBox(0, _T("ＢＢｏｘ　バーテックスバッファ 書き換え失敗"), nullptr, MB_OK);
 			return E_FAIL;
 
 		}
@@ -236,7 +236,7 @@ HRESULT CBBox::InitMesh()
 
 	// インデックスバッファがすでに作成済みかどうかチェックする
 	// すでに作成済みのとき、同じ立方体のためインデックスバッファの書き換えは不要
-	if (m_pIndexBuffer == NULL)
+	if (m_pIndexBuffer == nullptr)
 	{
 		//インデックスバッファーを作成
 		bd.Usage = D3D11_USAGE_DEFAULT;
@@ -251,7 +251,7 @@ HRESULT CBBox::InitMesh()
 		InitData.SysMemSlicePitch = 0;
 		if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_pIndexBuffer)))
 		{
-			MessageBox(0, _T("ＢＢｏｘ　インデックスバッファ 作成失敗"), NULL, MB_OK);
+			MessageBox(0, _T("ＢＢｏｘ　インデックスバッファ 作成失敗"), nullptr, MB_OK);
 			return E_FAIL;
 		}
 	}
@@ -567,7 +567,7 @@ bool CBBox::OBBCollisionTri(const VECTOR3* pTri, VECTOR3* vhit)
 
 	// OBBのワールドマトリックスの逆行列を求める
 	// （この段階で、ＯＢＢはそのローカル座標がワールド座標系と一致するＡＡＢＢと同様になる）
-	MATRIX4X4 mWorldInv = XMMatrixInverse(NULL, m_mWorld);
+	MATRIX4X4 mWorldInv = XMMatrixInverse(nullptr, m_mWorld);
 
 	// 三角形にOBBのワールドマトリックスの逆行列を掛け合わせ、OBBのローカル座標系に変換する
 	VECTOR3 vT[3];
@@ -737,8 +737,8 @@ void CBBox::Render(const MATRIX4X4& mWorld, const MATRIX4X4& mView, const MATRIX
 {
 
 	// 使用するシェーダーの登録	
-	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pSimple_VS, NULL, 0);
-	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pSimple_PS, NULL, 0);
+	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pSimple_VS, nullptr, 0);
+	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pSimple_PS, nullptr, 0);
 
 	// シェーダーのコンスタントバッファーに各種データを渡す	
 	D3D11_MAPPED_SUBRESOURCE pData;

@@ -266,7 +266,7 @@ HRESULT CSprite::SetSrc(const DWORD& srcX, const DWORD& srcY, const DWORD& srcwi
 	};
 
 	// バーテックスバッファがすでに作成済みかどうかチェックする
-	if (m_pVertexBufferSprite == NULL)
+	if (m_pVertexBufferSprite == nullptr)
 	{
 		// 新規作成する
 		D3D11_BUFFER_DESC bd;
@@ -282,7 +282,7 @@ HRESULT CSprite::SetSrc(const DWORD& srcX, const DWORD& srcY, const DWORD& srcwi
 		InitData.pSysMem = vertices;
 		if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_pVertexBufferSprite)))
 		{
-			MessageBox(0, _T("Sprite.cpp バーテックスバッファー作成失敗"), NULL, MB_OK);
+			MessageBox(0, _T("Sprite.cpp バーテックスバッファー作成失敗"), nullptr, MB_OK);
 			return E_FAIL;
 		}
 	}
@@ -506,7 +506,7 @@ void CSprite::DrawLine(const float& StartX, const float& StartY, const float& En
 	};
 
 	// バーテックスバッファがすでに作成済みかどうかチェックする
-	if (m_pVertexBufferLine == NULL)
+	if (m_pVertexBufferLine == nullptr)
 	{
 		// 新規作成する
 		D3D11_BUFFER_DESC bd;
@@ -522,7 +522,7 @@ void CSprite::DrawLine(const float& StartX, const float& StartY, const float& En
 		InitData.pSysMem = vertices;
 		if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_pVertexBufferLine)))
 		{
-			MessageBox(0, _T("Sprite.cpp バーテックスバッファーLINE 作成失敗"), NULL, MB_OK);
+			MessageBox(0, _T("Sprite.cpp バーテックスバッファーLINE 作成失敗"), nullptr, MB_OK);
 			return;
 		}
 	}
@@ -649,7 +649,7 @@ void  CSprite::DrawRect(const float& posX, const float& posY, const DWORD& width
 	};
 
 	// バーテックスバッファがすでに作成済みかどうかチェックする
-	if (m_pVertexBufferRect == NULL)
+	if (m_pVertexBufferRect == nullptr)
 	{
 		// 新規作成する
 		D3D11_BUFFER_DESC bd;
@@ -665,7 +665,7 @@ void  CSprite::DrawRect(const float& posX, const float& posY, const DWORD& width
 		InitData.pSysMem = vertices;
 		if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_pVertexBufferRect)))
 		{
-			MessageBox(0, _T("Sprite.cpp バーテックスバッファーRECT 作成失敗"), NULL, MB_OK);
+			MessageBox(0, _T("Sprite.cpp バーテックスバッファーRECT 作成失敗"), nullptr, MB_OK);
 			return;
 		}
 	}
@@ -738,8 +738,8 @@ void CSprite::SetShader()
 {
 
 	//使用するシェーダーのセット
-	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pSprite3D_VS, NULL, 0);
-	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pSprite3D_PS, NULL, 0);
+	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pSprite3D_VS, nullptr, 0);
+	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pSprite3D_PS, nullptr, 0);
 
 
 	//このコンスタントバッファーをどのシェーダーで使うか
@@ -759,12 +759,12 @@ void CSprite::SetShader()
 	if (m_nBlend == 1)
 	{
 		// 1:透過色のブレンディングを設定
-		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, NULL, mask);
+		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 	}
 	else if (m_nBlend == 2)
 	{
 		// 2:加算合成のブレンディングを設定
-		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateAdd, NULL, mask);
+		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateAdd, nullptr, mask);
 	}
 
 	//Zバッファを無効化
@@ -789,7 +789,7 @@ void CSprite::ResetShader()
 
 	// 通常のブレンディングに戻す
 	UINT mask = 0xffffffff;
-	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, NULL, mask);
+	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 
 
 }
@@ -857,7 +857,7 @@ HRESULT CSprite::SetSrc3D(const float& fDestWidth, const float& fDestHeight, con
 	};
 
 	// バーテックスバッファがすでに作成済みかどうかチェックする
-	if (m_pVertexBufferBillSprite == NULL)
+	if (m_pVertexBufferBillSprite == nullptr)
 	{
 		// 新規作成する
 		D3D11_BUFFER_DESC bd;
@@ -942,7 +942,7 @@ BOOL CSprite::Draw3D(CSpriteImage* pImage, const VECTOR3& vPos, const MATRIX4X4&
 BOOL CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const VECTOR2& vSize, const VECTOR2& vSrcPos, const VECTOR2& vSrcSize, const float& fAlpha)
 {
 	// イメージがないときは描画しない
-	if (m_pImage == NULL ) return FALSE;
+	if (m_pImage == nullptr ) return FALSE;
 
 	// 表示ビルボードの大きさのバーテックスバッファを作成する
 	SetSrc3D( vSize.x, vSize.y, (DWORD)vSrcPos.x, (DWORD)vSrcPos.y, (DWORD)vSrcSize.x, (DWORD)vSrcSize.y);
@@ -972,14 +972,14 @@ BOOL CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X
 BOOL CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye)
 {
 	// イメージがなかったりバーテックスバッファが作成されていないときは描画しない
-	if (m_pImage == NULL || m_pVertexBufferBillSprite == NULL) return FALSE;
+	if (m_pImage == nullptr || m_pVertexBufferBillSprite == nullptr) return FALSE;
 
 	//ビルボードの、視点を向くワールドトランスフォームを求める
 	MATRIX4X4 mWorld = GetLookatMatrix(vPos, vEye);
 
 	//使用するシェーダーのセット
-	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pSprite3D_VS_BILL, NULL, 0);
-	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pSprite3D_PS, NULL, 0);
+	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pSprite3D_VS_BILL, nullptr, 0);
+	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pSprite3D_PS, nullptr, 0);
 
 	//バーテックスバッファーをセット
 	UINT stride = sizeof(SpriteVertex);
@@ -991,12 +991,12 @@ BOOL CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X
 	if (m_nBlend == 1)
 	{
 		// 1:透過色のブレンディングを設定
-		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, NULL, mask);
+		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 	}
 	else if (m_nBlend == 2)
 	{
 		// 2:加算合成のブレンディングを設定
-		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateAdd, NULL, mask);
+		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateAdd, nullptr, mask);
 	}
 
 	//シェーダーのコンスタントバッファーに各種データを渡す
@@ -1031,7 +1031,7 @@ BOOL CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X
 	m_pD3D->m_pDeviceContext->Draw(4, 0);
 
 	// 通常のブレンディングに戻す
-	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, NULL, mask);
+	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 
 	return TRUE;
 
@@ -1063,8 +1063,8 @@ BOOL CSprite::DrawLine3D(const VECTOR3& vStart, const VECTOR3& vEnd, const MATRI
 {
 
 	//使用するシェーダーのセット
-	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pSprite3D_VS_BILL, NULL, 0);
-	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pSprite3D_PS, NULL, 0);
+	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pSprite3D_VS_BILL, nullptr, 0);
+	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pSprite3D_PS, nullptr, 0);
 
 	// 線ポリゴンバーテックスバッファー作成
 	SpriteVertex vertices[] =
@@ -1074,7 +1074,7 @@ BOOL CSprite::DrawLine3D(const VECTOR3& vStart, const VECTOR3& vEnd, const MATRI
 	};
 
 	// バーテックスバッファがすでに作成済みかどうかチェックする
-	if (m_pVertexBufferLine == NULL)
+	if (m_pVertexBufferLine == nullptr)
 	{
 		// 新規作成する
 		D3D11_BUFFER_DESC bd;
@@ -1090,7 +1090,7 @@ BOOL CSprite::DrawLine3D(const VECTOR3& vStart, const VECTOR3& vEnd, const MATRI
 		InitData.pSysMem = vertices;
 		if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_pVertexBufferLine)))
 		{
-			MessageBox(0, _T("Sprite3D.cpp バーテックスバッファーLINE 作成失敗"), NULL, MB_OK);
+			MessageBox(0, _T("Sprite3D.cpp バーテックスバッファーLINE 作成失敗"), nullptr, MB_OK);
 			return FALSE;
 		}
 	}
@@ -1189,7 +1189,7 @@ CFontTexture::CFontTexture(CShader* pShader)
 	if (AddFontResourceEx(
 	TEXT("Fonts/追加フォント名.ttf"),
 	FR_PRIVATE,
-	&design) == NULL)
+	&design) == nullptr)
 	{
 	MessageBox(0, _T("Sprite.cpp フォントの追加に失敗しました"), _T(""), MB_OK);
 	}
@@ -1214,7 +1214,7 @@ CFontTexture::~CFontTexture()
 	if (RemoveFontResourceEx(
 	TEXT("Fonts/追加フォント名.ttf"),
 	FR_PRIVATE,
-	&design) == NULL)
+	&design) == nullptr)
 	{
 	MessageBox(0, _T("Sprite.cpp フォントの解放に失敗しました"), _T(""), MB_OK);
 	}
@@ -1268,7 +1268,7 @@ void CFontTexture::CreateVB(const DWORD& dwWidth, const DWORD& dwHeight)
 	};
 
 	// バーテックスバッファがすでに作成済みかどうかチェックする
-	if (m_TextData[m_Idx].m_pVertexBufferFont == NULL)
+	if (m_TextData[m_Idx].m_pVertexBufferFont == nullptr)
 	{
 		// 新規作成する
 		D3D11_BUFFER_DESC bd;
@@ -1284,7 +1284,7 @@ void CFontTexture::CreateVB(const DWORD& dwWidth, const DWORD& dwHeight)
 		InitData.pSysMem = vertices;
 		if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_TextData[m_Idx].m_pVertexBufferFont)))
 		{
-			MessageBox(0, _T("Sprite.cpp バーテックスバッファー作成失敗"), NULL, MB_OK);
+			MessageBox(0, _T("Sprite.cpp バーテックスバッファー作成失敗"), nullptr, MB_OK);
 			return;
 		}
 	}
@@ -1354,7 +1354,7 @@ void CFontTexture::Draw(MATRIX4X4 mWorld, TCHAR* szText, int fontsize, DWORD col
 	// ②　文字列が異なる場合のみ、フォントテクスチャーの生成を行う
 	// 　　（フォントテクスチャーの生成処理は非常に重い処理なので）
 
-	if (m_TextData[m_Idx].m_szText == NULL || _tcscmp(m_TextData[m_Idx].m_szText, szText) != 0 ||
+	if (m_TextData[m_Idx].m_szText == nullptr || _tcscmp(m_TextData[m_Idx].m_szText, szText) != 0 ||
 		m_TextData[m_Idx].m_iFontsize != fontsize || m_TextData[m_Idx].m_dwColor != colorABGR || m_TextData[m_Idx].m_fAlpha != fAlpha)  // 作成済みの文字列と同一か？
 	{
 		// 文字列等に変更のあったとき
@@ -1433,8 +1433,8 @@ void CFontTexture::SetShader()
 {
 
 	//使用するシェーダーのセット
-	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pSprite3D_VS, NULL, 0);
-	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pSprite3D_PS, NULL, 0);
+	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pSprite3D_VS, nullptr, 0);
+	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pSprite3D_PS, nullptr, 0);
 
 
 	//このコンスタントバッファーをどのシェーダーで使うか
@@ -1451,7 +1451,7 @@ void CFontTexture::SetShader()
 
 	// 透過色のブレンディングを設定
 	UINT mask = 0xffffffff;
-	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, NULL, mask);
+	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 
 	//Zバッファを無効化
 	m_pD3D->SetZBuffer(FALSE);              // -- 2019.4.19
@@ -1475,7 +1475,7 @@ void CFontTexture::ResetShader()
 
 	// 通常のブレンディングに戻す
 	UINT mask = 0xffffffff;
-	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, NULL, mask);
+	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 
 
 }
@@ -1493,7 +1493,7 @@ void CFontTexture::ResetShader()
 //  const TCHAR* text         表示するテキスト
 //  const int& fontsize       フォントサイズ
 //  const DWORD& colorABGR    文字色　colorABGRは、ABGRの指定。例：白色は(0x00ffffff)
-//  const TCHAR* szFontName   フォント名（NULLでも可）
+//  const TCHAR* szFontName   フォント名（nullptrでも可）
 //
 //	戻り値  なし
 //
@@ -1522,7 +1522,7 @@ void CFontTexture::CreateTex(const DWORD&  dwKbn, const float&  fDestWidth, cons
 		//TEXT("HGP創英角ﾎﾟｯﾌﾟ体")
 		//TEXT("HGP創英角ｺﾞｼｯｸUB")
 	};
-	if (fontname != NULL) _tcscpy_s(lf.lfFaceName, sizeof(lf.lfFaceName) / sizeof(TCHAR), fontname); // フォント名を設定
+	if (fontname != nullptr) _tcscpy_s(lf.lfFaceName, sizeof(lf.lfFaceName) / sizeof(TCHAR), fontname); // フォント名を設定
 
 	HFONT hFont = CreateFontIndirect(&lf);
 	if (!(hFont))
@@ -1542,7 +1542,7 @@ void CFontTexture::CreateTex(const DWORD&  dwKbn, const float&  fDestWidth, cons
 
 	// デバイスコンテキスト取得
 	// デバイスにフォントを持たせないとGetGlyphOutline関数はエラーとなる
-	HDC   hdc = GetDC(NULL);
+	HDC   hdc = GetDC(nullptr);
 	HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
 
 
@@ -1572,10 +1572,10 @@ void CFontTexture::CreateTex(const DWORD&  dwKbn, const float&  fDestWidth, cons
 		// フォントビットマップ取得
 		GetTextMetrics(hdc, &(pFontData + i)->TM);
 		CONST MAT2 Mat = { { 0,1 },{ 0,0 },{ 0,0 },{ 0,1 } };
-		DWORD size = GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, &(pFontData + i)->GM, 0, NULL, &Mat);  // バッファサイズだけ返してもらう
+		DWORD size = GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, &(pFontData + i)->GM, 0, nullptr, &Mat);  // バッファサイズだけ返してもらう
 		if (size == 0) // フォントデータあるか  2017.4.15
 		{
-			(pFontData + i)->ptr = NULL; // フォントデータが無いとき  2017.4.15
+			(pFontData + i)->ptr = nullptr; // フォントデータが無いとき  2017.4.15
 		}
 		else {
 			(pFontData + i)->ptr = new BYTE[size];
@@ -1596,7 +1596,7 @@ void CFontTexture::CreateTex(const DWORD&  dwKbn, const float&  fDestWidth, cons
 	// デバイスコンテキストとフォントハンドルの開放
 	SelectObject(hdc, oldFont);
 	DeleteObject(hFont);
-	ReleaseDC(NULL, hdc);
+	ReleaseDC(nullptr, hdc);
 
 	// ----------------------------------------------------
     // 文字列フォントビットマップの大きさでバーテックスバッファー作成
@@ -1671,7 +1671,7 @@ void CFontTexture::CreateTex(const DWORD&  dwKbn, const float&  fDestWidth, cons
 		{
 			for (x = iOfs_x; x < iOfs_x + iBmp_w; x++)
 			{
-				if ((pFontData + i)->ptr == NULL) // フォントデータが無いとき  2017.4.15
+				if ((pFontData + i)->ptr == nullptr) // フォントデータが無いとき  2017.4.15
 				{
 					Alpha = 0; // 透明色とする
 				}
@@ -1706,7 +1706,7 @@ void CFontTexture::CreateTex(const DWORD&  dwKbn, const float&  fDestWidth, cons
 	// シェーダーリソースビューの作成
 	if (FAILED(m_pD3D->m_pDevice->CreateShaderResourceView(pTexture2D, &srvDesc, &m_TextData[m_Idx].m_pResourceView)))
 	{
-		MessageBox(0, _T("Sprite.cpp フォント用　ShaderResourceView作成に失敗しました"), NULL, MB_OK);
+		MessageBox(0, _T("Sprite.cpp フォント用　ShaderResourceView作成に失敗しました"), nullptr, MB_OK);
 	}
 
 	// 作成した一時リソースの解放
@@ -1750,7 +1750,7 @@ HRESULT CFontTexture::CreateVB3D(const float& fDestWidth, const float& fDestHeig
 	};
 
 	// バーテックスバッファがすでに作成済みかどうかチェックする
-	if (m_TextData[m_Idx].m_pVertexBufferFont == NULL)
+	if (m_TextData[m_Idx].m_pVertexBufferFont == nullptr)
 	{
 		// 新規作成する
 		D3D11_BUFFER_DESC bd;
@@ -1766,7 +1766,7 @@ HRESULT CFontTexture::CreateVB3D(const float& fDestWidth, const float& fDestHeig
 		InitData.pSysMem = vertices;
 		if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_TextData[m_Idx].m_pVertexBufferFont)))
 		{
-			MessageBox(0, _T("Sprite.cpp バーテックスバッファー3D作成失敗"), NULL, MB_OK);
+			MessageBox(0, _T("Sprite.cpp バーテックスバッファー3D作成失敗"), nullptr, MB_OK);
 			return E_FAIL;
 		}
 	}
@@ -1818,7 +1818,7 @@ BOOL CFontTexture::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MAT
 
 	DWORD fontsize = vSize.y * 100;
 
-	if (m_TextData[m_Idx].m_dwKbn != 1 || m_TextData[m_Idx].m_szText == NULL || _tcscmp(m_TextData[m_Idx].m_szText, szText) != 0 ||
+	if (m_TextData[m_Idx].m_dwKbn != 1 || m_TextData[m_Idx].m_szText == nullptr || _tcscmp(m_TextData[m_Idx].m_szText, szText) != 0 ||
 		m_TextData[m_Idx].m_iFontsize != fontsize || m_TextData[m_Idx].m_dwColor != colorABGR || m_TextData[m_Idx].m_fAlpha != fAlpha)  // 作成済みの文字列と同一か？
 	{
 		// 文字列等に変更のあったとき
@@ -1840,8 +1840,8 @@ BOOL CFontTexture::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MAT
 	MATRIX4X4 mWorld = GetLookatMatrix(vPos, vEye);
 
 	//使用するシェーダーのセット
-	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pSprite3D_VS_BILL, NULL, 0);
-	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pSprite3D_PS, NULL, 0);
+	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pSprite3D_VS_BILL, nullptr, 0);
+	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pSprite3D_PS, nullptr, 0);
 
 	//バーテックスバッファーをセット
 	UINT stride = sizeof(SpriteVertex);
@@ -1850,7 +1850,7 @@ BOOL CFontTexture::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MAT
 
 	// 透明色のブレンディングを設定
 	UINT mask = 0xffffffff;
-	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, NULL, mask);
+	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 
 	//シェーダーのコンスタントバッファーに各種データを渡す
 	D3D11_MAPPED_SUBRESOURCE pData;
@@ -1885,7 +1885,7 @@ BOOL CFontTexture::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MAT
 	m_pD3D->m_pDeviceContext->Draw(4, 0);
 
 	// 通常のブレンディングに戻す
-	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, NULL, mask);
+	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 
 	// 保存するTextData配列の添字を１増やす。
 	m_Idx++;

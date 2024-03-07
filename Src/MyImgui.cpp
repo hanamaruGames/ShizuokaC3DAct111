@@ -50,23 +50,23 @@ namespace MyImgui
 		// （注）ImGui_ImplWin32_Init()は、オリジナルの関数をカスタマイズしてある
 		if (!ImGui_ImplWin32_Init(hWnd, WidthIn, HeightIn))   // -- 2020.8.7
 		{
-			MessageBox(0, _T("imguiを初期化出来ません"), NULL, MB_OK);
+			MessageBox(0, _T("imguiを初期化出来ません"), nullptr, MB_OK);
 		}
 		if (!ImGui_ImplDX11_Init(pD3D->m_pDevice, pD3D->m_pDeviceContext))
 		{
-			MessageBox(0, _T("imguiを初期化出来ません"), NULL, MB_OK);
+			MessageBox(0, _T("imguiを初期化出来ません"), nullptr, MB_OK);
 		}
 
 		// iniファイルを生成しないように
-		io.IniFilename = NULL;
+		io.IniFilename = nullptr;
 
 		// フォントのパスを取得
 		char FontPath[MAX_PATH];  // パス取得バッファ
-		SHGetSpecialFolderPathA(NULL, FontPath, CSIDL_FONTS, 0);
+		SHGetSpecialFolderPathA(nullptr, FontPath, CSIDL_FONTS, 0);
 		strcat_s(FontPath, "\\meiryo.ttc");
 
 		// 日本語フォントに対応
-		//io.Fonts->AddFontFromFileTTF(FontPath, 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
+		//io.Fonts->AddFontFromFileTTF(FontPath, 18.0f, nullptrptr, io.Fonts->GetGlyphRangesJapanese());
 
 		// 日本語フォントに対応(ただし、半角文字はDefaultのまま表示)
 		ImFontConfig imgui_config;
@@ -400,7 +400,7 @@ namespace MyImgui
 
 		// ② Unicode 文字コード(WCHAR)を第一引数で指定した文字コードに変換する( CP_ACP は日本語WindowsではシフトJISコード )
 		char  mstr[512];
-		WideCharToMultiByte(CP_ACP, 0, wstr, -1, mstr, 512, NULL, NULL);
+		WideCharToMultiByte(CP_ACP, 0, wstr, -1, mstr, 512, nullptr, nullptr);
 		strcpy_s(tcharOut, strlen(mstr) + 1, mstr);
 
 	#endif

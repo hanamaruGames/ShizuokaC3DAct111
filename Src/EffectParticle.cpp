@@ -83,8 +83,8 @@ PARTICLEBASE* CEffectParticleProc::GetPartArrayPtr(int idx)
 {
 	if (idx < 0 || idx >= m_ParticleArray.size())
 	{
-		MessageBox(NULL, _T("■ GetPartArrayPtr( idx) ■"), _T("指定要素番号の配列がありません"), MB_OK);
-		return NULL;
+		MessageBox(nullptr, _T("■ GetPartArrayPtr( idx) ■"), _T("指定要素番号の配列がありません"), MB_OK);
+		return nullptr;
 	}
 	return &m_ParticleArray[idx];
 }
@@ -229,7 +229,7 @@ CEffectParticleObj::CEffectParticleObj(CBaseProc* pProc) : CBaseObj(pProc)
 	m_nPartIdx = 0;
 	m_MaxParticle = 0;
 	m_vEmitPos = VECTOR3(0, 0, 0);
-	m_pPtArray = NULL;
+	m_pPtArray = nullptr;
 	m_Frame = 0;
 
 	//	初期化
@@ -414,9 +414,9 @@ void CEffectParticleObj::Render()
 	if (!m_bActive)  return;
 
 	//使用するシェーダーのセット
-	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pEffect3D_VS_POINT, NULL, 0);
-	m_pD3D->m_pDeviceContext->GSSetShader(m_pShader->m_pEffect3D_GS_POINT, NULL, 0);
-	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pEffect3D_PS, NULL, 0);
+	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pEffect3D_VS_POINT, nullptr, 0);
+	m_pD3D->m_pDeviceContext->GSSetShader(m_pShader->m_pEffect3D_GS_POINT, nullptr, 0);
+	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pEffect3D_PS, nullptr, 0);
 
 	//バーテックスバッファーをセット
 	UINT stride = sizeof(PARTICLE_VERTEX);
@@ -427,7 +427,7 @@ void CEffectParticleObj::Render()
 	UINT mask = 0xffffffff;
 	if (GetPartArrayPtr()->m_nBlendFlag == 1)   // 加算合成色指定
 	{
-		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateAdd, NULL, mask);
+		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateAdd, nullptr, mask);
 	}
 
 	// パーティクル１粒を１枚ポイントスプライトとしてm_MaxParticle枚描画
@@ -445,11 +445,11 @@ void CEffectParticleObj::Render()
 	if (GetPartArrayPtr()->m_nBlendFlag == 1)   // 加算合成色指定
 	{
 		// 通常のブレンディングに戻す
-		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, NULL, mask);
+		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 	}
 
 	//ジオメトリシェーダーのリセット
-	m_pD3D->m_pDeviceContext->GSSetShader(NULL, NULL, 0);
+	m_pD3D->m_pDeviceContext->GSSetShader(nullptr, nullptr, 0);
 
 	return;
 }

@@ -36,7 +36,7 @@ struct TextureList
 	TextureList()
 	{
 		m_FName[0] = _T('\0');
-		m_pTexture = NULL;
+		m_pTexture = nullptr;
 		m_nCnt = 0;
 	}
 };
@@ -85,9 +85,9 @@ struct BONE {
 
 	BONE()
 	{
-		framePose = NULL;
+		framePose = nullptr;
 		framePoseNum = 0;
-		framePose = NULL;
+		framePose = nullptr;
 	}
 	~BONE()
 	{
@@ -137,17 +137,17 @@ struct CFbxMeshArray
 
 	CFbxMeshArray()
 	{
-		m_vStaticVerticesNormal = NULL;
-		m_vSkinVerticesNormal = NULL;
-		m_nIndices = NULL;
-		m_pVertexBuffer = NULL;
-		m_pIndexBuffer = NULL;
+		m_vStaticVerticesNormal = nullptr;
+		m_vSkinVerticesNormal = nullptr;
+		m_nIndices = nullptr;
+		m_pVertexBuffer = nullptr;
+		m_pIndexBuffer = nullptr;
 		m_dwVerticesNum = 0;
 		m_dwIndicesNum = 0;
-		m_pTexture = NULL;
-		m_pTextureNormal = NULL;
-		m_pTextureHeight = NULL;
-		m_pTextureSpecular = NULL;
+		m_pTexture = nullptr;
+		m_pTextureNormal = nullptr;
+		m_pTextureHeight = nullptr;
+		m_pTextureSpecular = nullptr;
 		m_NumBones = 0;        // É{Å[Éìêî
 		ZeroMemory(m_BoneArray, sizeof(m_BoneArray));
 		ZeroMemory(m_pBoneShader, sizeof(m_pBoneShader));

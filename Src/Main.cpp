@@ -13,7 +13,7 @@
 
 
 //グローバル変数(コールバック関数のため必要)
-static CMain*	g_pMain = NULL;		// メインクラス
+static CMain*	g_pMain = nullptr;		// メインクラス
 
 //------------------------------------------------------------------------
 //
@@ -140,10 +140,10 @@ HRESULT CMain::InitWindow(HINSTANCE hInstance,
 	wc.lpfnWndProc = WndProc;
 	wc.hInstance = hInstance;
 	wc.hIcon = LoadIcon(hInstance,  MAKEINTRESOURCE(IDI_MAIN_ICON));
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
 	wc.lpszClassName = WindowName;
-	wc.lpszMenuName = NULL;
+	wc.lpszMenuName = nullptr;
 	RegisterClassEx(&wc);
 
 	// ウィンドウの大きさを取得(メニューは含めない)
@@ -154,12 +154,12 @@ HRESULT CMain::InitWindow(HINSTANCE hInstance,
 	m_hWnd = CreateWindowEx(0, WindowName, WindowName,
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top,
-		(HWND)NULL, (HMENU)NULL,
-		hInstance, (LPVOID)NULL);
+		(HWND)nullptr, (HMENU)nullptr,
+		hInstance, (LPVOID)nullptr);
 
 	if(!m_hWnd) 
 	{
-		MessageBox(0, _T("Windowが作成できません"), NULL, MB_OK);
+		MessageBox(0, _T("Windowが作成できません"), nullptr, MB_OK);
 		return E_FAIL;
 	}
 	//ウインドウの表示
@@ -267,7 +267,7 @@ void CMain::MessageLoop()
 
 	while (msg.message != WM_QUIT && m_bLoopFlag)	// メッセージを取得している間繰り返す
 	{
-		if( PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) )
+		if( PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE) )
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
@@ -294,7 +294,7 @@ void CMain::MessageLoop()
 BOOL CMain::MessageProcess(MSG* pMsg)
 {
 	while ((pMsg->message != WM_QUIT && m_bLoopFlag) &&
-		PeekMessage(pMsg, NULL, 0, 0, PM_REMOVE))    // メッセージを取得している間繰り返す
+		PeekMessage(pMsg, nullptr, 0, 0, PM_REMOVE))    // メッセージを取得している間繰り返す
 	{
 		TranslateMessage(pMsg);
 		DispatchMessage(pMsg);

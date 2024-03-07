@@ -72,8 +72,8 @@ CFbxMesh* CBaseProc::GetMesh(int idx)
 {
 	if (idx < 0 || idx >= m_pMeshArray.size())
 	{
-		MessageBox(NULL, _T("■ GetMesh( idx) ■"), _T("指定要素番号のメッシュがありません"), MB_OK);
-		return NULL;
+		MessageBox(nullptr, _T("■ GetMesh( idx) ■"), _T("指定要素番号のメッシュがありません"), MB_OK);
+		return nullptr;
 	}
 	return m_pMeshArray[idx];
 }
@@ -87,12 +87,12 @@ CFbxMesh* CBaseProc::GetMesh(int idx)
 //============================================================================
 BASEHOLDITEM  CBaseProc::GetHoldItem(int idx)
 {
-	BASEHOLDITEM nullHI = {};
+	BASEHOLDITEM nullptrHI = {};
 
 	if (idx < 0 || idx >= m_HoldItemArray.size())
 	{
-		MessageBox(NULL, _T("■ GetHoldItem( idx) ■"), _T("指定要素番号の手に持つアイテムがありません"), MB_OK);
-		return nullHI;
+		MessageBox(nullptr, _T("■ GetHoldItem( idx) ■"), _T("指定要素番号の手に持つアイテムがありません"), MB_OK);
+		return nullptrHI;
 	}
 	return m_HoldItemArray[idx];
 }
@@ -113,7 +113,7 @@ BASEHOLDITEM  CBaseProc::GetHoldItem(int idx)
 //   判定結果　　
 //           ヒットしたときは　　　　相手と自分のオブジェクトのm_pHitObjとm_vHitPosとm_vHitNormalに値をセット
 //                                   相手と自分オブジェクトのm_dwStatusにDAMAGEを設定する
-//           ヒットしていないときは　相手と自分のオブジェクトのm_pHitObjにNULLをセット
+//           ヒットしていないときは　相手と自分のオブジェクトのm_pHitObjにnullptrをセット
 //
 //-----------------------------------------------------------------------------
 BOOL   CBaseProc::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
@@ -151,7 +151,7 @@ BOOL   CBaseProc::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 //   判定結果　　
 //           ヒットしたときは　　　　相手と自分のオブジェクトのm_pHitObjとm_vHitPosとm_vHitNormalに値をセット
 //                                   相手と自分のオブジェクトのm_dwStatusにDAMAGEを設定する
-//           ヒットしていないときは　相手と自分のオブジェクトのm_pHitObjにNULLをセット
+//           ヒットしていないときは　相手と自分のオブジェクトのm_pHitObjにnullptrをセット
 //
 //-----------------------------------------------------------------------------
 BOOL   CBaseProc::Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack)
@@ -217,7 +217,7 @@ CBaseObj::CBaseObj(CBaseProc* pProc)
 	m_dwObjID = pProc->GetProcID();		// オブジェクトＩＤ
 	m_dwObjNo = pProc->GetObjArrayPtr().size();	// オブジェクトＮＯ  プッシュバック前の配列サイズがオブジェクトＮＯとなる
 	m_nMeshIdx = 0;						// メッシュ配列の添字           // -- 2022.12.20
-	m_pBBox = NULL;						// バウンディングボックスクラス
+	m_pBBox = nullptr;						// バウンディングボックスクラス
 	m_mWorld = XMMatrixIdentity();		// ワールドマトリクス
 	m_mWorldOld = XMMatrixIdentity();	// ワールドマトリクス（一つ前）
 	m_vPosUp = VECTOR3(0, 0, 0);		// 移動増分
@@ -289,7 +289,7 @@ BASEHOLDITEM CBaseObj::GetHoldItem()
 //   判定結果　　
 //           ヒットしたときは　　　　相手と敵のオブジェクトのm_pHitObjとm_vHitPosとm_vHitNormalに値をセット
 //                                   敵オブジェクトのm_dwStatusにDAMAGEを設定する
-//           ヒットしていないときは　相手と敵のオブジェクトのm_pHitObjにNULLをセット
+//           ヒットしていないときは　相手と敵のオブジェクトのm_pHitObjにnullptrをセット
 //
 //-----------------------------------------------------------------------------
 BOOL   CBaseObj::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
@@ -328,7 +328,7 @@ BOOL   CBaseObj::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 //   判定結果　　
 //           ヒットしたときは　　　　相手と敵のオブジェクトのm_pHitObjとm_vHitPosとm_vHitNormalに値をセット
 //                                   敵オブジェクトのm_dwStatusにDAMAGEを設定する
-//           ヒットしていないときは　相手と敵のオブジェクトのm_pHitObjにNULLをセット
+//           ヒットしていないときは　相手と敵のオブジェクトのm_pHitObjにnullptrをセット
 //
 //-----------------------------------------------------------------------------
 BOOL   CBaseObj::Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack)
@@ -445,7 +445,7 @@ void CBaseObj::ResetStatus()
 //
 //	引数　	CBaseProc* pProj　対象とする基本プロシージャ
 //
-//	戻り値CBaseObj* 	オブジェクトアドレス:強制移動の相手オブジェクト　NULL:移強制動していない
+//	戻り値CBaseObj* 	オブジェクトアドレス:強制移動の相手オブジェクト　nullptr:移強制動していない
 //============================================================================
 CBaseObj*  CBaseObj::SetKeepOffset(CBaseProc* pProc)
 {
@@ -453,10 +453,10 @@ CBaseObj*  CBaseObj::SetKeepOffset(CBaseProc* pProc)
 	VECTOR3  vMy, vOther;
 	VECTOR2  vMy2, vOther2;
 	MATRIX4X4	 matWk1, matWk2;
-	CBaseObj     *pOtherObj, *pTargetObj = NULL;
+	CBaseObj     *pOtherObj, *pTargetObj = nullptr;
 	CBBox		 *pOtherBBox;
 
-	if (m_pBBox == NULL) return NULL;
+	if (m_pBBox == nullptr) return nullptr;
 	vMy = GetPositionVector(m_mWorld);
 	vMy2.x = vMy.x;
 	vMy2.y = vMy.z;
@@ -473,7 +473,7 @@ CBaseObj*  CBaseObj::SetKeepOffset(CBaseProc* pProc)
 		if (!pOtherObj->m_bActive) continue;	// 現在生きていなければ対象外
 		if (pOtherObj == this) continue;	// 自分自身は対象外
 		pOtherBBox = pOtherObj->m_pBBox;
-		if (pOtherBBox == NULL) continue;	// バウンディングボックスがなければ対象外
+		if (pOtherBBox == nullptr) continue;	// バウンディングボックスがなければ対象外
 		vOther = GetPositionVector(pOtherObj->m_mWorld);
 		vOther2.x = vOther.x;
 		vOther2.y = vOther.z;
@@ -518,7 +518,7 @@ CBaseObj*  CBaseObj::SetKeepOffset(CBaseProc* pProc)
 
 
 	// 下位のプロシージャ配列の探索
-	if (pTargetObj == NULL)
+	if (pTargetObj == nullptr)
 	{
 		for (DWORD i = 0; i < pProc->GetProcArrayPtr().size(); i++)
 		{

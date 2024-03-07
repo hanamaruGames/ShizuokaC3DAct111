@@ -58,7 +58,7 @@ public:
 public:
 	// 
 	CWave(CShader* pShader);
-	CWave(CShader* pShader, const int& iWidth, const int& iHeight, const TCHAR* FName, const TCHAR* TexName = NULL, const TCHAR* SpecName = NULL);  // -- 2021.2.4
+	CWave(CShader* pShader, const int& iWidth, const int& iHeight, const TCHAR* FName, const TCHAR* TexName = nullptr, const TCHAR* SpecName = nullptr);  // -- 2021.2.4
 	~CWave();
 
 	void Init();

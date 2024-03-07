@@ -109,13 +109,13 @@ BOOL CFbxMesh::Load(const TCHAR* FName)
 	HANDLE	hFile;
 	DWORD	dwLen, dwBufSize;
 	TCHAR  PathName[256], PathName2[256], FullName[256];
-	BYTE  *pBuf = NULL;
+	BYTE  *pBuf = nullptr;
 	BYTE  *p;
 	int   mi, ti, tnum, n;
 	int   xi;                              // -- 2021.2.4
 
-	StaticVertex*     staticvertices = NULL;  // スタティックメッシュ頂点データ
-	SkinVertex*       skinvertices = NULL;    // スキンメッシュ頂点データ
+	StaticVertex*     staticvertices = nullptr;  // スタティックメッシュ頂点データ
+	SkinVertex*       skinvertices = nullptr;    // スキンメッシュ頂点データ
 
 
 	// メッシュファイル名からパス名を得てPathNameに格納しておく
@@ -126,18 +126,18 @@ BOOL CFbxMesh::Load(const TCHAR* FName)
 
 	// ファイルのオープン処理
 	hFile = CreateFile(FName, GENERIC_READ,
-		FILE_SHARE_READ, NULL, OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL, NULL);
+		FILE_SHARE_READ, nullptr, OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (hFile != INVALID_HANDLE_VALUE)
 	{
 		// 最大値、最小値の初期設定                      // -- 2021.2.4
 		m_vMax = VECTOR3(-999999, -999999, -999999);
 		m_vMin = VECTOR3(999999, 999999, 999999);
 
-		dwBufSize = GetFileSize(hFile, NULL);     // 入力ファイルのサイズを得る。
+		dwBufSize = GetFileSize(hFile, nullptr);     // 入力ファイルのサイズを得る。
 		pBuf = new BYTE[dwBufSize];				  // 入力バッファを確保する 
 
-		ReadFile(hFile, pBuf, dwBufSize, &dwLen, NULL);		// ファイルをバッファに読み込む
+		ReadFile(hFile, pBuf, dwBufSize, &dwLen, nullptr);		// ファイルをバッファに読み込む
 
 		p = pBuf;	// バッファの先頭ポインタをセット
 
@@ -150,7 +150,7 @@ BOOL CFbxMesh::Load(const TCHAR* FName)
 			;
 		}
 		else {
-			MessageBox(NULL, FName, _T("■□■ メッシュファイル('MESH')ではありません ■□■"), MB_OK);
+			MessageBox(nullptr, FName, _T("■□■ メッシュファイル('MESH')ではありません ■□■"), MB_OK);
 			return FALSE;
 		}
 		// バージョンのチェックは行わない
@@ -172,7 +172,7 @@ BOOL CFbxMesh::Load(const TCHAR* FName)
 		}
 		else {
 			m_nMeshType = 0;
-			MessageBox(NULL, FName, _T("■□■ メッシュタイプが異なります（1,2以外不可） ■□■"), MB_OK);
+			MessageBox(nullptr, FName, _T("■□■ メッシュタイプが異なります（1,2以外不可） ■□■"), MB_OK);
 			return FALSE;
 		}
 		p += sizeof(Head);
@@ -210,7 +210,7 @@ BOOL CFbxMesh::Load(const TCHAR* FName)
 #else
 				// マルチバイト文字指定の場合、WName(WCHAR)をマルチバイトに変換してコピー
 				// Unicode 文字コード(WName)を第一引数で指定した文字コードに変換する( CP_ACP は日本語WindowsではシフトJISコード )
-				WideCharToMultiByte(CP_ACP, 0, WName, -1, TTName, sizeof(TTName), NULL, NULL);
+				WideCharToMultiByte(CP_ACP, 0, WName, -1, TTName, sizeof(TTName), nullptr, nullptr);
 #endif
 				_tcscpy_s(FullName, 256, PathName);
 				_tcscat_s(FullName, TTName);		// パス名の後ろにテクスチャー名を連結する
@@ -374,7 +374,7 @@ BOOL CFbxMesh::Load(const TCHAR* FName)
 
 	}
 	else {
-		MessageBox(NULL, FName, _T("■□■ メッシュファイル(.mesh)がありません ■□■"), MB_OK);
+		MessageBox(nullptr, FName, _T("■□■ メッシュファイル(.mesh)がありません ■□■"), MB_OK);
 	}
 
 	return FALSE;
@@ -792,11 +792,11 @@ BOOL  CFbxMesh::SetTexture(const DWORD& ti, const TCHAR* TexName)
 	m_pMaterialSpecularArray[ti] = VECTOR4(0, 0, 0, 0);     // -- 2020.12.15
 
 	//テクスチャー作成
-	m_pTextureArray[ti] = NULL;
+	m_pTextureArray[ti] = nullptr;
 	m_pTextureArray[ti] = m_pFbxMeshCtrl->SetTextureList(TexName);                     // -- 2021.2.4
-	if (m_pTextureArray[ti] == NULL)
+	if (m_pTextureArray[ti] == nullptr)
 	{
-		MessageBox(NULL, TexName, _T("■□■ テクスチャファイルがありません ■□■"), MB_OK);
+		MessageBox(nullptr, TexName, _T("■□■ テクスチャファイルがありません ■□■"), MB_OK);
 		return E_FAIL;
 	}
 
@@ -811,7 +811,7 @@ BOOL  CFbxMesh::SetTexture(const DWORD& ti, const TCHAR* TexName)
 	_tcscat_s(fullname, _T("_NM"));
 	_tcscat_s(fullname, ext);
 
-	m_pTextureNormalArray[ti] = NULL;
+	m_pTextureNormalArray[ti] = nullptr;
 	m_pTextureNormalArray[ti] = m_pFbxMeshCtrl->SetTextureList(fullname);                     // -- 2021.2.4
 
 	// ハイトテクスチャ作成                                                       // -- 2020.1.15
@@ -821,7 +821,7 @@ BOOL  CFbxMesh::SetTexture(const DWORD& ti, const TCHAR* TexName)
 	_tcscat_s(fullname, _T("_HM"));
 	_tcscat_s(fullname, ext);
 
-	m_pTextureHeightArray[ti] = NULL;
+	m_pTextureHeightArray[ti] = nullptr;
 	m_pTextureHeightArray[ti] = m_pFbxMeshCtrl->SetTextureList(fullname);                     // -- 2021.2.4
 
 	// スペキュラーテクスチャ作成
@@ -831,7 +831,7 @@ BOOL  CFbxMesh::SetTexture(const DWORD& ti, const TCHAR* TexName)
 	_tcscat_s(fullname, _T("_SM"));
 	_tcscat_s(fullname, ext);
 
-	m_pTextureSpecularArray[ti] = NULL;
+	m_pTextureSpecularArray[ti] = nullptr;
 	m_pTextureSpecularArray[ti] = m_pFbxMeshCtrl->SetTextureList(fullname);                     // -- 2021.2.4
 
 
@@ -860,10 +860,10 @@ BOOL  CFbxMesh::SetMaterial(const DWORD& ti, const TCHAR* Color)
 	m_pMaterialDiffuseArray[ti] = vDiffuse;
 	m_pMaterialSpecularArray[ti] = vSpecular;
 
-	m_pTextureArray[ti] = NULL;
-	m_pTextureNormalArray[ti] = NULL;
-	m_pTextureHeightArray[ti] = NULL;
-	m_pTextureSpecularArray[ti] = NULL;
+	m_pTextureArray[ti] = nullptr;
+	m_pTextureNormalArray[ti] = nullptr;
+	m_pTextureHeightArray[ti] = nullptr;
+	m_pTextureSpecularArray[ti] = nullptr;
 
 	return TRUE;
 }
@@ -883,15 +883,15 @@ BOOL  CFbxMesh::SetMaterial(const DWORD& ti, const TCHAR* Color)
 BOOL CFbxMesh::LoadAnimation(const TCHAR* FName, const ROOTANIMTYPE& RAType)
 {
 	// メッシュファイルが読み込まれていないとエラー
-	if (m_pMeshArray == NULL)
+	if (m_pMeshArray == nullptr)
 	{
-		MessageBox(NULL, FName, _T("■□■ 対応するスキンメッシュファイル(.mesh)が読み込まれていません ■□■"), MB_OK);
+		MessageBox(nullptr, FName, _T("■□■ 対応するスキンメッシュファイル(.mesh)が読み込まれていません ■□■"), MB_OK);
 		return FALSE;
 	}
 	// スタティックメッシュファイルのときはエラー
 	if (m_nMeshType != 2 )
 	{
-		MessageBox(NULL, FName, _T("■□■ スタティックメッシュにはアニメーションは設定できません ■□■"), MB_OK);
+		MessageBox(nullptr, FName, _T("■□■ スタティックメッシュにはアニメーションは設定できません ■□■"), MB_OK);
 		return FALSE;
 	}
 
@@ -900,21 +900,21 @@ BOOL CFbxMesh::LoadAnimation(const TCHAR* FName, const ROOTANIMTYPE& RAType)
 
 	HANDLE	hFile;
 	DWORD	dwLen, dwBufSize;
-	BYTE  *pBuf = NULL;
+	BYTE  *pBuf = nullptr;
 	BYTE  *p;
 	int   mi, bi, n;
 
 	// ファイルのオープン処理
 	hFile = CreateFile(FName, GENERIC_READ,
-		FILE_SHARE_READ, NULL, OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL, NULL);
+		FILE_SHARE_READ, nullptr, OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (hFile != INVALID_HANDLE_VALUE)
 	{
 
-		dwBufSize = GetFileSize(hFile, NULL);     // 入力ファイルのサイズを得る。
+		dwBufSize = GetFileSize(hFile, nullptr);     // 入力ファイルのサイズを得る。
 		pBuf = new BYTE[dwBufSize];				  // 入力バッファを確保する 
 
-		ReadFile(hFile, pBuf, dwBufSize, &dwLen, NULL);		// ファイルをバッファに読み込む
+		ReadFile(hFile, pBuf, dwBufSize, &dwLen, nullptr);		// ファイルをバッファに読み込む
 
 		p = pBuf;	// バッファの先頭ポインタをセット
 
@@ -927,7 +927,7 @@ BOOL CFbxMesh::LoadAnimation(const TCHAR* FName, const ROOTANIMTYPE& RAType)
 			;
 		}
 		else {
-			MessageBox(NULL, FName, _T("■□■ アニメーションファイル('ANMX')ではありません ■□■"), MB_OK);
+			MessageBox(nullptr, FName, _T("■□■ アニメーションファイル('ANMX')ではありません ■□■"), MB_OK);
 			return FALSE;
 		}
 		// バージョンのチェックは行わない
@@ -999,7 +999,7 @@ BOOL CFbxMesh::LoadAnimation(const TCHAR* FName, const ROOTANIMTYPE& RAType)
 
 	}
 	else {
-		MessageBox(NULL, FName, _T("■□■ アニメーションファイル(.anmx)がありません ■□■"), MB_OK);
+		MessageBox(nullptr, FName, _T("■□■ アニメーションファイル(.anmx)がありません ■□■"), MB_OK);
 	}
 
 	return FALSE;
@@ -1020,12 +1020,12 @@ void CFbxMesh::MakeRootAnimAndShaderMatrix(const int& animNum, ROOTANIMTYPE RATy
 
 	if (m_nMeshType != 2)
 	{
-		MessageBox(NULL, _T("MakeRootAnimAndShaderMatrix()"), _T("■□■ スタティックメッシュにルートアニメーションの設定はできません ■□■"), MB_OK);
+		MessageBox(nullptr, _T("MakeRootAnimAndShaderMatrix()"), _T("■□■ スタティックメッシュにルートアニメーションの設定はできません ■□■"), MB_OK);
 		return;
 	}
 	if (m_allAnimationCount <= animNum)
 	{
-		MessageBox(NULL, _T("■□■ MakeRootAnimAndShaderMatrix() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
+		MessageBox(nullptr, _T("■□■ MakeRootAnimAndShaderMatrix() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
 		return;
 	}
 
@@ -1038,7 +1038,7 @@ void CFbxMesh::MakeRootAnimAndShaderMatrix(const int& animNum, ROOTANIMTYPE RATy
 		}
 		else {
 			// ルートアニメ指定ができないのでエラー
-			MessageBox(NULL, _T("MakeRootAnimAndShaderMatrix()"), _T("■□■ ルートボーンが無いため、ルートアニメーションはできません ■□■"), MB_OK);
+			MessageBox(nullptr, _T("MakeRootAnimAndShaderMatrix()"), _T("■□■ ルートボーンが無いため、ルートアニメーションはできません ■□■"), MB_OK);
 			return;
 		}
 	}
@@ -1120,7 +1120,7 @@ void CFbxMesh::MakeRootAnimAndShaderMatrix(const int& animNum, ROOTANIMTYPE RATy
 				else {
 					// ルートボーンアニメをするとき
 					mFramePose = m_pMeshArray[mi].m_BoneArray[animNum][bi].framePose[n] *
-									XMMatrixInverse(NULL, m_RootBoneArray[animNum].framePose[n]);      // 各フレームポーズ行列をルートボーン行列との差分行列にする            // -- 2020.12.15 -- 3
+									XMMatrixInverse(nullptr, m_RootBoneArray[animNum].framePose[n]);      // 各フレームポーズ行列をルートボーン行列との差分行列にする            // -- 2020.12.15 -- 3
 					mFramePose = m_pMeshArray[mi].m_BoneArray[animNum][bi].bindPose * mFramePose;      // バインドボーズの逆行列とフレームポーズを掛け合わせ、バインドボーズからの差分の行列を作成する            // -- 2020.12.15 -- 3
 				}
 				// フレームポーズを転置行列にしてそのままシェーダーに渡せるようにする
@@ -1140,12 +1140,12 @@ int CFbxMesh::GetEndFrame(const int& animNum)
 {
 	if (m_nMeshType != 2)
 	{
-		MessageBox(NULL, _T("■□■ GetEndFrame() ■□■"), _T("■□■ スキンメッシュではありません ■□■"), MB_OK);
+		MessageBox(nullptr, _T("■□■ GetEndFrame() ■□■"), _T("■□■ スキンメッシュではありません ■□■"), MB_OK);
 		return 0;
 	}
 	if (m_allAnimationCount <= animNum)
 	{
-		MessageBox(NULL, _T("■□■ GetEndFrame() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
+		MessageBox(nullptr, _T("■□■ GetEndFrame() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
 		return 0;
 	}
 	return m_Animation[animNum].endFrame - m_Animation[animNum].startFrame;
@@ -1168,18 +1168,18 @@ MATRIX4X4 CFbxMesh::GetFrameMatrices(ANIMATION_STATUS& animStatus, const DWORD& 
 
 	if (m_nMeshType == 1)
 	{
-		MessageBox(NULL, _T("■□■ GetFrameMatrices() ■□■"), _T("■□■ スタティックメッシュには使用できません ■□■"), MB_OK);
+		MessageBox(nullptr, _T("■□■ GetFrameMatrices() ■□■"), _T("■□■ スタティックメッシュには使用できません ■□■"), MB_OK);
 		return XMMatrixIdentity();
 	}
 	if (nMesh >= m_dwMeshNum || nBone >= m_pMeshArray[nMesh].m_NumBones)
 	{
-		MessageBox(NULL, _T("■□■ GetFrameMatrices() ■□■"), _T("■□■ メッシュ番号不正　又は　ボーン番号不正。 ■□■"), MB_OK);
+		MessageBox(nullptr, _T("■□■ GetFrameMatrices() ■□■"), _T("■□■ メッシュ番号不正　又は　ボーン番号不正。 ■□■"), MB_OK);
 		OutputDebugString(_T("■□■ GetFrameMatrices() メッシュ番号不正　又は　ボーン番号不正 ■□■\n"));
 		return XMMatrixIdentity();
 	}
 	if (m_allAnimationCount <= animStatus.animNum)
 	{
-		MessageBox(NULL, _T("■□■ GetFrameMatrices() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
+		MessageBox(nullptr, _T("■□■ GetFrameMatrices() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
 		return XMMatrixIdentity();
 	}
 
@@ -1197,7 +1197,7 @@ MATRIX4X4 CFbxMesh::GetFrameMatrices(ANIMATION_STATUS& animStatus, const DWORD& 
 	{
 		// ルートボーンアニメ行列の逆行列を掛け合わせてマトリックスを作成する
 		mBoneWorld =
-			mBoneWorld * XMMatrixInverse(NULL, m_RootBoneArray[animStatus.animNum].framePose[animFrameW]);
+			mBoneWorld * XMMatrixInverse(nullptr, m_RootBoneArray[animStatus.animNum].framePose[animFrameW]);
 	}
 
 	// マトリックスを右手座標系から左手座標系に変換(Z軸を反転)
@@ -1229,18 +1229,18 @@ MATRIX4X4 CFbxMesh::GetFrameMatrices(ANIMATION_STATUS& animStatus, const MATRIX4
 
 	if (m_nMeshType == 1)
 	{
-		MessageBox(NULL, _T("■□■ GetFrameMatrices() ■□■"), _T("■□■ スタティックメッシュには使用できません ■□■"), MB_OK);
+		MessageBox(nullptr, _T("■□■ GetFrameMatrices() ■□■"), _T("■□■ スタティックメッシュには使用できません ■□■"), MB_OK);
 		return mWorld;
 	}
 	if (nMesh >= m_dwMeshNum || nBone >= m_pMeshArray[nMesh].m_NumBones)
 	{
-		MessageBox(NULL, _T("■□■ GetFrameMatrices() ■□■"), _T("■□■ メッシュ番号不正　又は　ボーン番号不正。 ■□■"), MB_OK);
+		MessageBox(nullptr, _T("■□■ GetFrameMatrices() ■□■"), _T("■□■ メッシュ番号不正　又は　ボーン番号不正。 ■□■"), MB_OK);
 		OutputDebugString(_T("■□■ GetFrameMatrices() メッシュ番号不正　又は　ボーン番号不正 ■□■\n"));
 		return mWorld;
 	}
 	if (m_allAnimationCount <= animStatus.animNum)
 	{
-		MessageBox(NULL, _T("■□■ GetFrameMatrices() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
+		MessageBox(nullptr, _T("■□■ GetFrameMatrices() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
 		return mWorld;
 	}
 
@@ -1258,7 +1258,7 @@ MATRIX4X4 CFbxMesh::GetFrameMatrices(ANIMATION_STATUS& animStatus, const MATRIX4
 	{
 		// ルートボーンアニメ行列の逆行列を掛け合わせてマトリックスを作成する
 		mBoneWorld =
-			mBoneWorld * XMMatrixInverse(NULL, m_RootBoneArray[animStatus.animNum].framePose[animFrameW]);
+			mBoneWorld * XMMatrixInverse(nullptr, m_RootBoneArray[animStatus.animNum].framePose[animFrameW]);
 	}
 
 	// マトリックスを右手座標系から左手座標系に変換(Z軸を反転)
@@ -1289,12 +1289,12 @@ MATRIX4X4 CFbxMesh::GetRootAnimMatrices(ANIMATION_STATUS& animStatus, const int&
 
 	if (m_nMeshType != 2)
 	{
-		MessageBox(NULL, _T("■□■ GetRootAnimMatrices() ■□■"), _T("■□■ スタティックメッシュには使用できません ■□■"), MB_OK);
+		MessageBox(nullptr, _T("■□■ GetRootAnimMatrices() ■□■"), _T("■□■ スタティックメッシュには使用できません ■□■"), MB_OK);
 		return XMMatrixIdentity();
 	}
 	if (m_allAnimationCount <= animStatus.animNum)
 	{
-		MessageBox(NULL, _T("■□■ GetRootAnimMatrices() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
+		MessageBox(nullptr, _T("■□■ GetRootAnimMatrices() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
 		return XMMatrixIdentity();
 	}
 
@@ -1339,12 +1339,12 @@ MATRIX4X4 CFbxMesh::GetRootAnimUpMatrices(ANIMATION_STATUS& animStatus, const in
 
 	if (m_nMeshType != 2)
 	{
-		MessageBox(NULL, _T("■□■ GetRootAnimUpMatrices() ■□■"), _T("■□■ スタティックメッシュには使用できません ■□■"), MB_OK);
+		MessageBox(nullptr, _T("■□■ GetRootAnimUpMatrices() ■□■"), _T("■□■ スタティックメッシュには使用できません ■□■"), MB_OK);
 		return XMMatrixIdentity();
 	}
 	if (m_allAnimationCount <= animStatus.animNum)
 	{
-		MessageBox(NULL, _T("■□■ GetRootAnimUpMatrices() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
+		MessageBox(nullptr, _T("■□■ GetRootAnimUpMatrices() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
 		return XMMatrixIdentity();
 	}
 
@@ -1379,7 +1379,7 @@ MATRIX4X4 CFbxMesh::GetRootAnimUpMatrices(ANIMATION_STATUS& animStatus, const in
 	mBoneWorldOld = m_RootBoneArray[animStatus.animNum].framePose[animFrameW-1];
 
 	// 現在値フレームマトリックスの一つ前のフレームマトリックスからの増分マトリックスを得る
-	mBoneWorld = XMMatrixInverse(NULL, mBoneWorldOld) * mBoneWorld;
+	mBoneWorld = XMMatrixInverse(nullptr, mBoneWorldOld) * mBoneWorld;
 
 	return mBoneWorld;
 }
@@ -1409,7 +1409,7 @@ void CFbxMesh::Render(const MATRIX4X4& mWorld, const MATRIX4X4& mView, const MAT
 	else  if (m_nMeshType == 2) {
 		if (m_allAnimationCount <= 0)
 		{
-			MessageBox(NULL, _T("■□■ Render() ■□■"), _T("■□■ スキンメッシュにアニメーションが読み込まれていません ■□■"), MB_OK);
+			MessageBox(nullptr, _T("■□■ Render() ■□■"), _T("■□■ スキンメッシュにアニメーションが読み込まれていません ■□■"), MB_OK);
 			return;
 		}
 		ANIMATION_STATUS animStatus;
@@ -1425,7 +1425,7 @@ void CFbxMesh::RenderDisplace(const MATRIX4X4& mWorld, const MATRIX4X4& mView, c
 	else  if (m_nMeshType == 2) {
 		if (m_allAnimationCount <= 0)
 		{
-			MessageBox(NULL, _T("■□■ RenderDisplace() ■□■"), _T("■□■ スキンメッシュにアニメーションが読み込まれていません ■□■"), MB_OK);
+			MessageBox(nullptr, _T("■□■ RenderDisplace() ■□■"), _T("■□■ スキンメッシュにアニメーションが読み込まれていません ■□■"), MB_OK);
 			return;
 		}
 		ANIMATION_STATUS animStatus;
@@ -1458,7 +1458,7 @@ void CFbxMesh::Render(ANIMATION_STATUS& animStatus, const MATRIX4X4& mWorld, con
 	else if (m_nMeshType == 2) {
 		if (m_allAnimationCount <= animStatus.animNum)
 		{
-			MessageBox(NULL, _T("■□■ Render() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
+			MessageBox(nullptr, _T("■□■ Render() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
 			return;
 		}
 		RenderSkin(animStatus, mWorld, mView, mProj, vLight, vEye);
@@ -1473,7 +1473,7 @@ void CFbxMesh::RenderDisplace(ANIMATION_STATUS& animStatus, const MATRIX4X4& mWo
 	else if (m_nMeshType == 2) {
 		if (m_allAnimationCount <= animStatus.animNum)
 		{
-			MessageBox(NULL, _T("■□■ RenderDisplace() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
+			MessageBox(nullptr, _T("■□■ RenderDisplace() ■□■"), _T("■□■ スキンメッシュに、指定されたアニメーションが読み込まれていません ■□■"), MB_OK);
 			return;
 		}
 		RenderDisplaceSkin(animStatus, mWorld, mView, mProj, vLight, vEye);
@@ -1500,8 +1500,8 @@ void CFbxMesh::RenderStatic(const MATRIX4X4& mWorld, const MATRIX4X4& mView, con
 {
 
 	//使用するシェーダーの登録	
-	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pFbxStaticMesh_VS, NULL, 0);
-	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pFbxStaticMesh_PS, NULL, 0);
+	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pFbxStaticMesh_VS, nullptr, 0);
+	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pFbxStaticMesh_PS, nullptr, 0);
 
 	//シェーダーのコンスタントバッファーに各種データを渡す	
 	D3D11_MAPPED_SUBRESOURCE pData;
@@ -1558,7 +1558,7 @@ void CFbxMesh::RenderStatic(const MATRIX4X4& mWorld, const MATRIX4X4& mView, con
 		SetShaderTexture(_T("PS"), 3, &m_pMeshArray[i].m_pTextureSpecular);     // スペキュラテクスチャ
 
 		// ディフューズテクスチャがないときのみシェーダーのコンスタントバッファーにマテリアルカラーを渡す        // -- 2020.12.15
-		if (m_pMeshArray[i].m_pTexture == NULL)
+		if (m_pMeshArray[i].m_pTexture == nullptr)
 		{
 			SetShaderMatColor(_T("PS"), 3, i);   // マテリアルカラーをPSに渡す
 		}
@@ -1600,10 +1600,10 @@ void CFbxMesh::RenderDisplaceStatic(const MATRIX4X4& mWorld, const MATRIX4X4& mV
 	//m_pD3D->m_pDeviceContext->RSSetState(m_pD3D->m_pRStateLW);  // 左回り、ワイヤーフレーム表示
 
 	//使用するシェーダーの登録	
-	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pDisplaceStaticMesh_VS, NULL, 0);
-	m_pD3D->m_pDeviceContext->HSSetShader(m_pShader->m_pDisplaceStaticMesh_HS, NULL, 0);
-	m_pD3D->m_pDeviceContext->DSSetShader(m_pShader->m_pDisplaceStaticMesh_DS, NULL, 0);
-	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pDisplaceStaticMesh_PS, NULL, 0);
+	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pDisplaceStaticMesh_VS, nullptr, 0);
+	m_pD3D->m_pDeviceContext->HSSetShader(m_pShader->m_pDisplaceStaticMesh_HS, nullptr, 0);
+	m_pD3D->m_pDeviceContext->DSSetShader(m_pShader->m_pDisplaceStaticMesh_DS, nullptr, 0);
+	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pDisplaceStaticMesh_PS, nullptr, 0);
 
 
 	// シェーダーのコンスタントバッファーに各種データを渡す	
@@ -1648,7 +1648,7 @@ void CFbxMesh::RenderDisplaceStatic(const MATRIX4X4& mWorld, const MATRIX4X4& mV
 	{
 
 		// モデルから見た視点位置（つまり、モデルの逆ワールドをかけた視点）を渡す
-		sg.vEyePosInv = XMVector3TransformCoord(vEye, XMMatrixInverse(NULL, mWorld));
+		sg.vEyePosInv = XMVector3TransformCoord(vEye, XMMatrixInverse(nullptr, mWorld));
 
 		// 最小距離(1.0以上)、最大距離
 		sg.fMinDistance = 5.0f;
@@ -1700,7 +1700,7 @@ void CFbxMesh::RenderDisplaceStatic(const MATRIX4X4& mWorld, const MATRIX4X4& mV
 		SetShaderTexture(_T("DSPS"), 3, &m_pMeshArray[i].m_pTextureSpecular);     // スペキュラテクスチャ
 
 		// ディフューズテクスチャがないときのみシェーダーのコンスタントバッファーにマテリアルカラーを渡す        // -- 2020.12.15
-		if (m_pMeshArray[i].m_pTexture == NULL)
+		if (m_pMeshArray[i].m_pTexture == nullptr)
 		{
 			SetShaderMatColor(_T("DSPS"), 3, i);   // マテリアルカラーをDSPSに渡す
 		}
@@ -1720,8 +1720,8 @@ void CFbxMesh::RenderDisplaceStatic(const MATRIX4X4& mWorld, const MATRIX4X4& mV
 	}
 
 	// ハルシェーダーとドメインシェーダーをリセットする
-	m_pD3D->m_pDeviceContext->HSSetShader(NULL, NULL, 0);
-	m_pD3D->m_pDeviceContext->DSSetShader(NULL, NULL, 0);
+	m_pD3D->m_pDeviceContext->HSSetShader(nullptr, nullptr, 0);
+	m_pD3D->m_pDeviceContext->DSSetShader(nullptr, nullptr, 0);
 
 	//m_pD3D->m_pDeviceContext->RSSetState(m_pD3D->m_pRStateL);  // 左回り通常表示
 
@@ -1791,8 +1791,8 @@ void CFbxMesh::Draw(const int& animNum, const int& frame, const MATRIX4X4& mWorl
 {
 
 	//使用するシェーダーの登録	
-	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pFbxSkinMesh_VS, NULL, 0);
-	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pFbxSkinMesh_PS, NULL, 0);
+	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pFbxSkinMesh_VS, nullptr, 0);
+	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pFbxSkinMesh_PS, nullptr, 0);
 
 	//シェーダーのコンスタントバッファーに各種データを渡す	
 	D3D11_MAPPED_SUBRESOURCE pData;
@@ -1853,7 +1853,7 @@ void CFbxMesh::Draw(const int& animNum, const int& frame, const MATRIX4X4& mWorl
 		SetShaderTexture(_T("PS"), 3, &m_pMeshArray[i].m_pTextureSpecular);     // スペキュラテクスチャ
 
 		// ディフューズテクスチャがないときのみシェーダーのコンスタントバッファーにマテリアルカラーを渡す        // -- 2020.12.15
-		if (m_pMeshArray[i].m_pTexture == NULL)
+		if (m_pMeshArray[i].m_pTexture == nullptr)
 		{
 			SetShaderMatColor(_T("PS"), 3, i);   // マテリアルカラーをPSに渡す
 		}
@@ -1956,10 +1956,10 @@ void CFbxMesh::DrawDisplace(const int& animNum, const int& frame, const MATRIX4X
 
 
 	//使用するシェーダーの登録	
-	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pDisplaceSkinMesh_VS, NULL, 0);
-	m_pD3D->m_pDeviceContext->HSSetShader(m_pShader->m_pDisplaceSkinMesh_HS, NULL, 0);
-	m_pD3D->m_pDeviceContext->DSSetShader(m_pShader->m_pDisplaceSkinMesh_DS, NULL, 0);
-	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pDisplaceSkinMesh_PS, NULL, 0);
+	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pDisplaceSkinMesh_VS, nullptr, 0);
+	m_pD3D->m_pDeviceContext->HSSetShader(m_pShader->m_pDisplaceSkinMesh_HS, nullptr, 0);
+	m_pD3D->m_pDeviceContext->DSSetShader(m_pShader->m_pDisplaceSkinMesh_DS, nullptr, 0);
+	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pDisplaceSkinMesh_PS, nullptr, 0);
 
 
 	// シェーダーのコンスタントバッファーに各種データを渡す	
@@ -2004,7 +2004,7 @@ void CFbxMesh::DrawDisplace(const int& animNum, const int& frame, const MATRIX4X
 	{
 
 		// モデルから見た視点位置（つまり、モデルの逆ワールドをかけた視点）を渡す
-		sg.vEyePosInv = XMVector3TransformCoord(vEye, XMMatrixInverse(NULL, mWorld));
+		sg.vEyePosInv = XMVector3TransformCoord(vEye, XMMatrixInverse(nullptr, mWorld));
 
 		// 最小距離(1.0以上)、最大距離
 		sg.fMinDistance = 3.0f;
@@ -2061,7 +2061,7 @@ void CFbxMesh::DrawDisplace(const int& animNum, const int& frame, const MATRIX4X
 		SetShaderTexture(_T("DSPS"), 3, &m_pMeshArray[i].m_pTextureSpecular);     // スペキュラテクスチャ
 
 		// ディフューズテクスチャがないときのみシェーダーのコンスタントバッファーにマテリアルカラーを渡す        // -- 2020.12.15
-		if (m_pMeshArray[i].m_pTexture == NULL)
+		if (m_pMeshArray[i].m_pTexture == nullptr)
 		{
 			SetShaderMatColor(_T("DSPS"), 3, i);   // マテリアルカラーをDSPSに渡す
 		}
@@ -2094,8 +2094,8 @@ void CFbxMesh::DrawDisplace(const int& animNum, const int& frame, const MATRIX4X
 	}
 
 	// ハルシェーダーとドメインシェーダーをリセットする
-	m_pD3D->m_pDeviceContext->HSSetShader(NULL, NULL, 0);
-	m_pD3D->m_pDeviceContext->DSSetShader(NULL, NULL, 0);
+	m_pD3D->m_pDeviceContext->HSSetShader(nullptr, nullptr, 0);
+	m_pD3D->m_pDeviceContext->DSSetShader(nullptr, nullptr, 0);
 
 }
 
@@ -2231,8 +2231,8 @@ ID3D11ShaderResourceView* CFbxMeshCtrl::SetTextureList(const TCHAR FName[])
 	if (FAILED(m_pD3D->CreateShaderResourceViewFromFile(FName, &tl.m_pTexture, 3)))
 	{
 		// テクスチャがなかったとき
-		//MessageBox(NULL, FName, _T("■□■ SetTextureList テクスチャファイルがありません ■□■"), MB_OK);
-		return NULL;
+		//MessageBox(nullptr, FName, _T("■□■ SetTextureList テクスチャファイルがありません ■□■"), MB_OK);
+		return nullptr;
 	}
 	// テクスチャがあったとき
 	_tcscpy_s(tl.m_FName, FName);

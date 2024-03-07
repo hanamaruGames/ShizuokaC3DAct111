@@ -185,8 +185,8 @@ protected:
 
 public:
 	void Refresh();
-	void Draw(float posX, float posY, TCHAR* text, int fontsize, DWORD colorABGR, float fAlpha = 1.0f, TCHAR* szFontName = NULL);
-	void Draw(MATRIX4X4 mWorld, TCHAR* text, int fontsize, DWORD colorABGR, float fAlpha = 1.0f, TCHAR* szFontName = NULL);
+	void Draw(float posX, float posY, TCHAR* text, int fontsize, DWORD colorABGR, float fAlpha = 1.0f, TCHAR* szFontName = nullptr);
+	void Draw(MATRIX4X4 mWorld, TCHAR* text, int fontsize, DWORD colorABGR, float fAlpha = 1.0f, TCHAR* szFontName = nullptr);
 	void SetShader();
 	void ResetShader();
 	void CreateVB(const DWORD& dwWidth, const DWORD& dwHeight);
@@ -194,7 +194,7 @@ public:
 
 	// ‚R‚cƒtƒHƒ“ƒg
 	HRESULT CreateVB3D(const float& fDestWidth, const float& fDestHeight);
-	BOOL Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const TCHAR* szText, const VECTOR2& vSize, const DWORD& colorABGR, const float& fAlpha = 1.0f, const TCHAR* szFontName = NULL);
+	BOOL Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const TCHAR* szText, const VECTOR2& vSize, const DWORD& colorABGR, const float& fAlpha = 1.0f, const TCHAR* szFontName = nullptr);
 
 	CFontTexture(CShader* pShader);
 	~CFontTexture();

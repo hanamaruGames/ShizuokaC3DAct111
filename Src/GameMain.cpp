@@ -29,12 +29,12 @@ CGameMain::CGameMain(CMain*	pMain)
 {
 	m_pMain = pMain;		// メインクラス
 
-	m_pD3D = NULL;			//	Direct3Dオブジェクト
-	m_pXAudio = NULL;		//	XAudioオブジェクト
-	m_pDI = NULL;			//	DirectInputDオブジェクト
-	m_pFont = NULL;			//	フォントテクスチャー
-	m_pShader = NULL;		//	シェーダー
-	m_pFbxMeshCtrl = NULL;	// メッシュコントロールクラス
+	m_pD3D = nullptr;			//	Direct3Dオブジェクト
+	m_pXAudio = nullptr;		//	XAudioオブジェクト
+	m_pDI = nullptr;			//	DirectInputDオブジェクト
+	m_pFont = nullptr;			//	フォントテクスチャー
+	m_pShader = nullptr;		//	シェーダー
+	m_pFbxMeshCtrl = nullptr;	// メッシュコントロールクラス
 
 	m_dwGameStatus = 0;		// ゲームステータス
 
@@ -46,19 +46,19 @@ CGameMain::CGameMain(CMain*	pMain)
 	m_vLightDir = VECTOR3(0,0,0);	// ディレクショナルライトの方向
 
 	// プロシージャ
-	m_pPcProc = NULL;
-	m_pCameraProc = NULL;
-	m_pMapProc = NULL;
-	m_pWeaponProc = NULL;
-	m_pEffectProc = NULL;
-	m_pBackForeProc = NULL;
+	m_pPcProc = nullptr;
+	m_pCameraProc = nullptr;
+	m_pMapProc = nullptr;
+	m_pWeaponProc = nullptr;
+	m_pEffectProc = nullptr;
+	m_pBackForeProc = nullptr;
 
 	// サウンド
-	m_pSeLazer = NULL;
-	m_pSeNitro = NULL;
-	m_pSeDead = NULL;
-	m_pSeFire = NULL;
-	m_pBgm1 = NULL;
+	m_pSeLazer = nullptr;
+	m_pSeNitro = nullptr;
+	m_pSeDead = nullptr;
+	m_pSeFire = nullptr;
+	m_pBgm1 = nullptr;
 
 }
 //------------------------------------------------------------------------
@@ -107,27 +107,27 @@ CGameMain::~CGameMain()
 HRESULT CGameMain::Init()
 {
 	// ＣＯＭの初期化
-	//CoInitializeEx(NULL, COINIT_MULTITHREADED);
-	CoInitialize( NULL );
+	//CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+	CoInitialize( nullptr );
 
 	// Direct3Dの初期化
 	m_pD3D = new CDirect3D;
 	if (FAILED(m_pD3D->InitD3D(m_pMain->m_hWnd, WINDOW_WIDTH, WINDOW_HEIGHT))) {
-		MessageBox(0, _T("Direct3Dを初期化出来ません"), NULL, MB_OK);
+		MessageBox(0, _T("Direct3Dを初期化出来ません"), nullptr, MB_OK);
 		return E_FAIL;
 	}
 
 	// シェーダーの初期化
 	m_pShader = new CShader(m_pD3D);
 	if (FAILED(m_pShader->InitShader())) {
-		MessageBox(0, _T("Shaderを生成・初期化出来ません"), NULL, MB_OK);
+		MessageBox(0, _T("Shaderを生成・初期化出来ません"), nullptr, MB_OK);
 		return E_FAIL;
 	}
 
 	// XAudio2の初期化
 	m_pXAudio = new CXAudio;
 	if (FAILED(m_pXAudio->InitAudio(m_pMain->m_hWnd))) {
-		MessageBox(0, _T("XAudio2を初期化出来ません"), NULL, MB_OK);
+		MessageBox(0, _T("XAudio2を初期化出来ません"), nullptr, MB_OK);
 		return E_FAIL;
 	}
 
@@ -135,7 +135,7 @@ HRESULT CGameMain::Init()
 	m_pDI = new CDirectInput;
 	if (!(m_pDI->StartDirectInput(m_pMain->m_hInstance, m_pMain->m_hWnd, 
                     INIT_KEYBOARD | INIT_MOUSE | INIT_JOYSTICK, WINDOW_WIDTH, WINDOW_HEIGHT))) {
-		MessageBox(0, _T("DirectInputを初期化出来ません"), NULL, MB_OK);
+		MessageBox(0, _T("DirectInputを初期化出来ません"), nullptr, MB_OK);
 		return E_FAIL;
 	}
 
@@ -301,23 +301,23 @@ HRESULT CGameMain::ChangeScreenMode(int nMode)
 	BOOL bFullScreen;  // フルスクリーンモードか？
 
 	//	現在のスクリーンモードを得る
-	m_pD3D->m_pSwapChain->GetFullscreenState(&bFullScreen, NULL);
+	m_pD3D->m_pSwapChain->GetFullscreenState(&bFullScreen, nullptr);
 
 	switch (nMode)
 	{
 	case 0:    // ウインドウモードにする
-		if( bFullScreen ) Ret = m_pD3D->m_pSwapChain->SetFullscreenState(false, NULL);
+		if( bFullScreen ) Ret = m_pD3D->m_pSwapChain->SetFullscreenState(false, nullptr);
 		break;
 	case 1:    // フルスクリーンモードにする
-		if( !bFullScreen ) Ret = m_pD3D->m_pSwapChain->SetFullscreenState(true, NULL);
+		if( !bFullScreen ) Ret = m_pD3D->m_pSwapChain->SetFullscreenState(true, nullptr);
 		break;
 	default:   // 現在のモードを切り替える
 		if (bFullScreen)
 		{
-			Ret = m_pD3D->m_pSwapChain->SetFullscreenState(false, NULL);
+			Ret = m_pD3D->m_pSwapChain->SetFullscreenState(false, nullptr);
 		}
 		else {
-			Ret = m_pD3D->m_pSwapChain->SetFullscreenState(true, NULL);
+			Ret = m_pD3D->m_pSwapChain->SetFullscreenState(true, nullptr);
 		}
 	}
 

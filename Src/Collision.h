@@ -108,8 +108,8 @@ struct ColMesh
 
 	ColMesh()
 	{
-		pFace		= NULL;
-		pVert		= NULL;
+		pFace		= nullptr;
+		pVert		= nullptr;
 		nNumFace	= 0;
 		nNumVert	= 0;
 	}

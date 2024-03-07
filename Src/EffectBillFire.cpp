@@ -75,8 +75,8 @@ BILLBOARDBASE* CEffectBillFireProc::GetBillArrayPtr(int idx)
 {
 	if (idx < 0 || idx >= m_BillboardArray.size())
 	{
-		MessageBox(NULL, _T("■ GetBillArrayPtr( idx) ■"), _T("指定要素番号の配列がありません"), MB_OK);
-		return NULL;
+		MessageBox(nullptr, _T("■ GetBillArrayPtr( idx) ■"), _T("指定要素番号の配列がありません"), MB_OK);
+		return nullptr;
 	}
 	return &m_BillboardArray[idx];
 }
@@ -210,7 +210,7 @@ BOOL CEffectBillFireProc::Start(int  nBillIdx, VECTOR3 vPos)
 //
 //	戻り値 CEffectBillFireObj*
 //		発生できたとき　　ビルボード　炎オブジェクトアドレス
-//		発生できないとき　NULL
+//		発生できないとき　nullptr
 //
 //------------------------------------------------------------------------
 CEffectBillFireObj* CEffectBillFireProc::Start(int  nBillIdx)
@@ -226,7 +226,7 @@ CEffectBillFireObj* CEffectBillFireProc::Start(int  nBillIdx)
 			return ((CEffectBillFireObj*)(m_pObjArray[i]));
 		}
 	}
-	return NULL;
+	return nullptr;
 };
 
 
@@ -373,8 +373,8 @@ BOOL CEffectBillFireObj::Render()
 	mWorld = mPosUp * mWorld;
 
 	//使用するシェーダーのセット
-	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pEffect3D_VS_BILL, NULL, 0);
-	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pEffect3D_PS, NULL, 0);
+	m_pD3D->m_pDeviceContext->VSSetShader(m_pShader->m_pEffect3D_VS_BILL, nullptr, 0);
+	m_pD3D->m_pDeviceContext->PSSetShader(m_pShader->m_pEffect3D_PS, nullptr, 0);
 
 	//バーテックスバッファーをセット
 	UINT stride = sizeof(BILLBOARD_VERTEX);
@@ -386,7 +386,7 @@ BOOL CEffectBillFireObj::Render()
 	if (GetBillArrayPtr()->m_nBlendFlag == 1)   // 加算合成色指定
 	{
 		// 加算合成色のブレンディングを設定
-		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateAdd, NULL, mask);
+		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateAdd, nullptr, mask);
 	}
 
 	//シェーダーのコンスタントバッファーに各種データを渡す
@@ -424,7 +424,7 @@ BOOL CEffectBillFireObj::Render()
 	if (GetBillArrayPtr()->m_nBlendFlag == 1)   // 加算合成色指定
 	{
 		// 通常のブレンディングに戻す
-		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, NULL, mask);
+		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 	}
 
 	return TRUE;

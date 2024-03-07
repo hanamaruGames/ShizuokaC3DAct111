@@ -23,7 +23,7 @@ CMapProc::CMapProc(CGameMain*	pGMain)
 	m_pGMain = pGMain;
 	m_dwMapNo = 0;
 	m_bActive = FALSE;
-	m_pColMesh   = NULL;					// コリジョンメッシュへのポインタ
+	m_pColMesh   = nullptr;					// コリジョンメッシュへのポインタ
 	m_nEvtIdx = 0;							// -- 2021.2.4
 
 }
@@ -424,7 +424,7 @@ void  CMapProc::RunEvent(EVENTMAP& EventMap)
 	{
 		if (!LoadMap(EventMap.m_nEvtNo))
 		{
-			MessageBox(NULL, _T("■□■ CMapProc::RunEvent() ■□■"), _T("■□■ マップ移動番号のマップがありません ■□■"), MB_OK);
+			MessageBox(nullptr, _T("■□■ CMapProc::RunEvent() ■□■"), _T("■□■ マップ移動番号のマップがありません ■□■"), MB_OK);
 		}
 	}
 	else if (EventMap.m_nEvtKind == eEvtMoveMap)  // 移動マップの制御のとき
@@ -464,7 +464,7 @@ void CMapProc::UpdateMoveMap()
 			{
 				MATRIX4X4 mOffset;
 				m_MoveMap[i].m_pColMesh->SetWorldMatrix(XMMatrixTranslationFromVector(m_MoveMap[i].m_vUp) * m_MoveMap[i].m_pColMesh->m_mWorld);  // 移動増分の処理   // -- 2022.11.14
-				mOffset = m_MoveMap[i].m_pColMesh->m_mWorld * XMMatrixInverse(NULL, m_MoveMap[i].m_pColMesh->m_mWorldBase);  // 移動後位置を原点を基準とした位置にする   // -- 2022.11.14
+				mOffset = m_MoveMap[i].m_pColMesh->m_mWorld * XMMatrixInverse(nullptr, m_MoveMap[i].m_pColMesh->m_mWorldBase);  // 移動後位置を原点を基準とした位置にする   // -- 2022.11.14
 				if (m_MoveMap[i].m_vUp.x != 0)  // 左右に動かす
 				{
 					if (GetPositionVector(mOffset).x < m_MoveMap[i].m_vMinOffset.x ||  // 左右に動かすため右端左端で反転
@@ -498,7 +498,7 @@ void CMapProc::UpdateMoveMap()
 				if (m_MoveMap[i].m_vUp.x != 0)  // Ｘ回転
 				{
 					m_MoveMap[i].m_pColMesh->SetWorldMatrix(XMMatrixRotationX(XMConvertToRadians(m_MoveMap[i].m_vUp.x)) * m_MoveMap[i].m_pColMesh->m_mWorld);  // 移動増分の処理   // -- 2022.11.14
-					mOffset = m_MoveMap[i].m_pColMesh->m_mWorld * XMMatrixInverse(NULL, m_MoveMap[i].m_pColMesh->m_mWorldBase);  // 回転後角度を原点を基準とした角度にする   // -- 2022.11.14
+					mOffset = m_MoveMap[i].m_pColMesh->m_mWorld * XMMatrixInverse(nullptr, m_MoveMap[i].m_pColMesh->m_mWorldBase);  // 回転後角度を原点を基準とした角度にする   // -- 2022.11.14
 
 					if (GetRotateVector3(mOffset).x < m_MoveMap[i].m_vMinOffset.x ||  // Ｘ回転するため端で反転
 						GetRotateVector3(mOffset).x > m_MoveMap[i].m_vMaxOffset.x)
@@ -510,7 +510,7 @@ void CMapProc::UpdateMoveMap()
 				else if (m_MoveMap[i].m_vUp.y != 0)  // Ｙ回転
 				{
 					m_MoveMap[i].m_pColMesh->SetWorldMatrix(XMMatrixRotationY(XMConvertToRadians(m_MoveMap[i].m_vUp.y)) * m_MoveMap[i].m_pColMesh->m_mWorld);  // 移動増分の処理   // -- 2022.11.14
-					mOffset = m_MoveMap[i].m_pColMesh->m_mWorld * XMMatrixInverse(NULL, m_MoveMap[i].m_pColMesh->m_mWorldBase);  // 回転後角度を原点を基準とした角度にする   // -- 2022.11.14
+					mOffset = m_MoveMap[i].m_pColMesh->m_mWorld * XMMatrixInverse(nullptr, m_MoveMap[i].m_pColMesh->m_mWorldBase);  // 回転後角度を原点を基準とした角度にする   // -- 2022.11.14
 
 					if (GetRotateVector3(mOffset).y < m_MoveMap[i].m_vMinOffset.y ||  // Ｙ回転するため端で反転
 						GetRotateVector3(mOffset).y > m_MoveMap[i].m_vMaxOffset.y)
@@ -522,7 +522,7 @@ void CMapProc::UpdateMoveMap()
 				else if (m_MoveMap[i].m_vUp.z != 0)  // Ｚ回転
 				{
 					m_MoveMap[i].m_pColMesh->SetWorldMatrix(XMMatrixRotationZ(XMConvertToRadians(m_MoveMap[i].m_vUp.z)) * m_MoveMap[i].m_pColMesh->m_mWorld);  // 移動増分の処理   // -- 2022.11.14
-					mOffset = m_MoveMap[i].m_pColMesh->m_mWorld * XMMatrixInverse(NULL, m_MoveMap[i].m_pColMesh->m_mWorldBase);  // 回転後角度を原点を基準とした角度にする   // -- 2022.11.14
+					mOffset = m_MoveMap[i].m_pColMesh->m_mWorld * XMMatrixInverse(nullptr, m_MoveMap[i].m_pColMesh->m_mWorldBase);  // 回転後角度を原点を基準とした角度にする   // -- 2022.11.14
 
 					if (GetRotateVector3(mOffset).z < m_MoveMap[i].m_vMinOffset.z ||  // Ｚ回転するため端で反転
 						GetRotateVector3(mOffset).z > m_MoveMap[i].m_vMaxOffset.z)
@@ -536,7 +536,7 @@ void CMapProc::UpdateMoveMap()
 				MATRIX4X4 mOffset;
 				m_MoveMap[i].m_pColMesh->SetWorldMatrix(XMMatrixScaling(m_MoveMap[i].m_vUp.x, m_MoveMap[i].m_vUp.y, m_MoveMap[i].m_vUp.z)
 					* m_MoveMap[i].m_pColMesh->m_mWorld);  // 拡大縮小増分の処理
-				mOffset = m_MoveMap[i].m_pColMesh->m_mWorld * XMMatrixInverse(NULL, m_MoveMap[i].m_pColMesh->m_mWorldBase);  // 拡大縮小を原点を基準とした拡大縮小にする   // -- 2022.11.14
+				mOffset = m_MoveMap[i].m_pColMesh->m_mWorld * XMMatrixInverse(nullptr, m_MoveMap[i].m_pColMesh->m_mWorldBase);  // 拡大縮小を原点を基準とした拡大縮小にする   // -- 2022.11.14
 
 				VECTOR3 vScaleNow = GetScaleVector(mOffset);     // 現在の拡大率を得る
 				if (vScaleNow.x < m_MoveMap[i].m_vMinOffset.x ||      // 規定の拡大縮小に達したか

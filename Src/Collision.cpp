@@ -36,7 +36,7 @@ void CCollision::ClearAll(void)
 {
 
 	// 高さ判定用の変数
-	m_pIndex = NULL;
+	m_pIndex = nullptr;
 	m_vNormalH = VECTOR3(0,0,0);
 	m_fHeight = 0;
 	m_vVertexH[0] = VECTOR3(0,0,0);
@@ -73,7 +73,7 @@ void CCollision::DeleteAll(void)
 		// 複数分割度マップの解放
 		for (i = 0; i < MESHCKTBL_FACE_MAX; i++)
 		{
-			if (m_ChkColMesh[n].ChkBlkArray[i].ppChkFace == NULL) continue;
+			if (m_ChkColMesh[n].ChkBlkArray[i].ppChkFace == nullptr) continue;
 			for (j = 0; j < m_ChkColMesh[n].ChkBlkArray[i].dwNumX
 				* m_ChkColMesh[n].ChkBlkArray[i].dwNumY * m_ChkColMesh[n].ChkBlkArray[i].dwNumZ; j++)
 			{
@@ -256,7 +256,7 @@ BOOL CCollision::AddFbxLoad(const CFbxMesh* pFbxMesh, const MATRIX4X4& mOffset)
 {
 	if (m_nNum >= MCKTBL_MAX)
 	{
-		MessageBox(0, _T("Collision.cpp : AddFbxLoad() : メッシュ接触判定用配列 MCKTBL_MAXをオーバーしました"), NULL, MB_OK);
+		MessageBox(0, _T("Collision.cpp : AddFbxLoad() : メッシュ接触判定用配列 MCKTBL_MAXをオーバーしました"), nullptr, MB_OK);
 		return  FALSE;
 	}
 
@@ -387,7 +387,7 @@ void CCollision::MakeChkColMesh( const int& nNum, const VECTOR3& vMin, const VEC
 			{
 				for (; i < MESHCKTBL_FACE_MAX; i++)  // 残りの配列の内容は全て０とする
 				{
-					m_ChkColMesh[n].ChkBlkArray[i].ppChkFace = NULL;   // 作成しない位置のポインタはNULL
+					m_ChkColMesh[n].ChkBlkArray[i].ppChkFace = nullptr;   // 作成しない位置のポインタはnullptr
 					m_ChkColMesh[n].ChkBlkArray[i].vBlksize.x = 0;
 					m_ChkColMesh[n].ChkBlkArray[i].vBlksize.y = 0;
 					m_ChkColMesh[n].ChkBlkArray[i].vBlksize.z = 0;
@@ -414,9 +414,9 @@ void CCollision::MakeChkColMesh( const int& nNum, const VECTOR3& vMin, const VEC
 		// 配列を新規生成する。なお、ppChkFaceは構造体ポインタ配列である
 		// 要素数は、全必要数なのでdwNumX*dwNumY*dwNumZ個である
 		m_ChkColMesh[n].ChkBlkArray[i].ppChkFace = new struct ChkFace*[m_ChkColMesh[n].ChkBlkArray[i].dwNumX * m_ChkColMesh[n].ChkBlkArray[i].dwNumY * m_ChkColMesh[n].ChkBlkArray[i].dwNumZ];
-		if (m_ChkColMesh[n].ChkBlkArray[i].ppChkFace == NULL) 
+		if (m_ChkColMesh[n].ChkBlkArray[i].ppChkFace == nullptr) 
 		{
-			MessageBox(0, _T("Collision.cpp : MakeChkColMesh() : m_ChkColMesh[n].ChkBlkArray[i].ppChkFace　メモリー割り当てエラー"), NULL, MB_OK);
+			MessageBox(0, _T("Collision.cpp : MakeChkColMesh() : m_ChkColMesh[n].ChkBlkArray[i].ppChkFace　メモリー割り当てエラー"), nullptr, MB_OK);
 			return;
 		}
 
@@ -438,7 +438,7 @@ void CCollision::MakeChkColMesh( const int& nNum, const VECTOR3& vMin, const VEC
 		// 三角形ポリゴンの大きさから、最適な大きさの格納配列を決定する
 		for (j = 0; j < MESHCKTBL_FACE_MAX - 1; j++) 
 		{
-			if (m_ChkColMesh[n].ChkBlkArray[j+1].ppChkFace == NULL) break;
+			if (m_ChkColMesh[n].ChkBlkArray[j+1].ppChkFace == nullptr) break;
 			// 一つ小さい[j+1]の大きさの配列に入りきらないときは、この配列に格納する大きさであるとする
 			if (m_ChkColMesh[n].ChkBlkArray[j+1].vBlksize.x < fx ||
 				m_ChkColMesh[n].ChkBlkArray[j+1].vBlksize.y < fy ||
@@ -495,7 +495,7 @@ void  CCollision::GetChkArrayIdx(const int& nNum, const int& nNo, CAABB AABB, in
 		z = (int)((vPos.z - m_ChkColMesh[n].vMin.z) / m_ChkColMesh[n].ChkBlkArray[nNo].vBlksize.z);
 		if (x >= (int)m_ChkColMesh[n].ChkBlkArray[nNo].dwNumX || y >= (int)m_ChkColMesh[n].ChkBlkArray[nNo].dwNumY
 			|| z >= (int)m_ChkColMesh[n].ChkBlkArray[nNo].dwNumZ ||	x < 0 || y < 0 || z < 0) {
-			MessageBox(0, _T("Collision.cpp : GetChkArrayIdx() : 配列オーバーエラー"), NULL, MB_OK);
+			MessageBox(0, _T("Collision.cpp : GetChkArrayIdx() : 配列オーバーエラー"), nullptr, MB_OK);
 			return;
 		}
 
@@ -543,25 +543,25 @@ void  CCollision::SetChkArray(const int& nNum, const int& nNo, const int& nIdx, 
 	struct ChkFace* p;
 	int n = nNum;
 
-	if (m_ChkColMesh[n].ChkBlkArray[nNo].ppChkFace[nIdx] == NULL)
+	if (m_ChkColMesh[n].ChkBlkArray[nNo].ppChkFace[nIdx] == nullptr)
 	{
 		// リスト構造の先頭ポインタに追加するとき
 		m_ChkColMesh[n].ChkBlkArray[nNo].ppChkFace[nIdx] = new struct ChkFace;
 		m_ChkColMesh[n].ChkBlkArray[nNo].ppChkFace[nIdx]->pFace = pFace;
-		m_ChkColMesh[n].ChkBlkArray[nNo].ppChkFace[nIdx]->pNext = NULL;
+		m_ChkColMesh[n].ChkBlkArray[nNo].ppChkFace[nIdx]->pNext = nullptr;
 	}
 	else {
 		// リスト構造の最後に追加するとき
 		p = m_ChkColMesh[n].ChkBlkArray[nNo].ppChkFace[nIdx];
 		while (1)
 		{
-			if (p->pNext == NULL)
+			if (p->pNext == nullptr)
 			{
 				// リスト構造の最後であるので、データを追加する
 				p->pNext = new struct ChkFace;
 				p = p->pNext;
 				p->pFace = pFace;
-				p->pNext = NULL;
+				p->pNext = nullptr;
 				break;
 			}
 			// 次ポインタをたどって行く
@@ -713,7 +713,7 @@ int  CCollision::isCollisionLay(const VECTOR3& vNowIn, const VECTOR3& vOldIn, VE
 		// 複数分割度配列の検索
 		for (i = 0; i < MESHCKTBL_FACE_MAX; i++)
 		{
-			if (m_ChkColMesh[n].ChkBlkArray[i].ppChkFace == NULL) break;	// 配列にデータがないとき
+			if (m_ChkColMesh[n].ChkBlkArray[i].ppChkFace == nullptr) break;	// 配列にデータがないとき
 
 			// 配列の対象とする開始点と終了点のブロック番号を求める
 			GetMeshLimit(n, i, vNow, vOld, 0, nStartX, nEndX, nStartY, nEndY, nStartZ, nEndZ);
@@ -727,7 +727,7 @@ int  CCollision::isCollisionLay(const VECTOR3& vNowIn, const VECTOR3& vOldIn, VE
 
 						p = m_ChkColMesh[n].ChkBlkArray[i].ppChkFace[m];
 
-						while (p != NULL)  // リスト構造の最後まで
+						while (p != nullptr)  // リスト構造の最後まで
 						{
 
 							// ３角形ポリゴンの値を得る
@@ -817,7 +817,7 @@ int  CCollision::isCollisionSphere(const VECTOR3& vNowIn, const VECTOR3& vOldIn,
 		// 複数分割度配列の検索
 		for (i = 0; i < MESHCKTBL_FACE_MAX; i++)
 		{
-			if (m_ChkColMesh[n].ChkBlkArray[i].ppChkFace == NULL) break;	// 配列にデータがないとき
+			if (m_ChkColMesh[n].ChkBlkArray[i].ppChkFace == nullptr) break;	// 配列にデータがないとき
 
 			// 配列の対象とする開始点と終了点のブロック番号を求める
 			// ・半径分移動させるため、判定範囲を半径の２倍とする
@@ -832,7 +832,7 @@ int  CCollision::isCollisionSphere(const VECTOR3& vNowIn, const VECTOR3& vOldIn,
 
 						p = m_ChkColMesh[n].ChkBlkArray[i].ppChkFace[m];
 
-						while (p != NULL)  // リスト構造の最後まで
+						while (p != nullptr)  // リスト構造の最後まで
 						{
 
 							// ３角形ポリゴンの値を得る
@@ -1033,7 +1033,7 @@ int CCollision::CheckCollisionMove(MATRIX4X4& mWorld, const MATRIX4X4& mWorldOld
 		// 複数分割度配列の検索
 		for (i = 0; i < MESHCKTBL_FACE_MAX; i++)
 		{
-			if (m_ChkColMesh[n].ChkBlkArray[i].ppChkFace == NULL) break;	// 配列にデータがないとき
+			if (m_ChkColMesh[n].ChkBlkArray[i].ppChkFace == nullptr) break;	// 配列にデータがないとき
 
 			// 配列の対象とする開始点と終了点のブロック番号を求める
 			GetMeshLimit(n, i, vNow, vOld, fRadius, nStartX, nEndX, nStartY, nEndY, nStartZ, nEndZ);
@@ -1047,7 +1047,7 @@ int CCollision::CheckCollisionMove(MATRIX4X4& mWorld, const MATRIX4X4& mWorldOld
 
 						p = m_ChkColMesh[n].ChkBlkArray[i].ppChkFace[m];
 
-						while (p != NULL)  // リスト構造の最後まで
+						while (p != nullptr)  // リスト構造の最後まで
 						{
 							// ３角形ポリゴンの値を得る
 							vVert[0] = m_ColArray[n].pVert[p->pFace->dwIdx[0]];
@@ -1290,7 +1290,7 @@ int CCollision::CheckWallMove(MATRIX4X4& mWorld, const MATRIX4X4& mWorldOld, VEC
 		// 複数分割度配列の検索
 		for (i = 0; i < MESHCKTBL_FACE_MAX; i++)
 		{
-			if (m_ChkColMesh[n].ChkBlkArray[i].ppChkFace == NULL) break;	// 配列にデータがないとき
+			if (m_ChkColMesh[n].ChkBlkArray[i].ppChkFace == nullptr) break;	// 配列にデータがないとき
 
 			// 配列の対象とする開始点と終了点のブロック番号を求める
 			GetMeshLimit(n, i, vNow, vOld, fRadius, nStartX, nEndX, nStartY, nEndY, nStartZ, nEndZ);
@@ -1304,7 +1304,7 @@ int CCollision::CheckWallMove(MATRIX4X4& mWorld, const MATRIX4X4& mWorldOld, VEC
 
 						p = m_ChkColMesh[n].ChkBlkArray[i].ppChkFace[m];
 
-						while (p != NULL)  // リスト構造の最後まで
+						while (p != nullptr)  // リスト構造の最後まで
 						{
 							// 壁か床かを判定し壁の場合のみ判定を行う(床の時は読み飛ばす)
 							// ただし、ジャンプ上昇中は全て壁と見なす  // -- 2019.9.3
@@ -1419,7 +1419,7 @@ void CCollision::InitHeightCheck()
 {
 	m_vVertexH[0] = VECTOR3(0.0f, 0.0f, 0.0f);
 	m_vVertexH[2] = m_vVertexH[1] = m_vVertexH[0];
-	m_pIndex = NULL;
+	m_pIndex = nullptr;
 	m_vNormalH = VECTOR3(0.0f, 1.0f, 0.0f);
 	m_fHeight = -100000000.0f;    // 最低値
 }
@@ -1454,7 +1454,7 @@ BOOL CCollision::CheckHeight(MATRIX4X4& mWorld, const MATRIX4X4&  mWorldOld, con
 	VECTOR3  vOld = GetPositionVector(mWorldOld);
 	VECTOR3  vVert[3], vFaceNorm;
 
-	struct ColFace*  pWIndex = NULL;
+	struct ColFace*  pWIndex = nullptr;
 	VECTOR3 vXP(vNow.x, 0, vNow.z);     // 移動後点のY方向ベクトルを０にして平面上の位置を得る
 	FLOAT wkHeight = m_fHeight;
 	FLOAT MaxY = max(vOld.y, vNow.y);
@@ -1471,7 +1471,7 @@ BOOL CCollision::CheckHeight(MATRIX4X4& mWorld, const MATRIX4X4&  mWorldOld, con
 		// 複数分割度配列の検索
 		for (i = 0; i < MESHCKTBL_FACE_MAX; i++)
 		{
-			if (m_ChkColMesh[n].ChkBlkArray[i].ppChkFace == NULL) break;	// 配列にデータがないとき
+			if (m_ChkColMesh[n].ChkBlkArray[i].ppChkFace == nullptr) break;	// 配列にデータがないとき
 
 			// 配列の対象とする開始点と終了点のブロック番号を求める
 			GetMeshLimit(n, i, vNow, vOld, fRadius, nStartX, nEndX, nStartY, nEndY, nStartZ, nEndZ);
@@ -1488,7 +1488,7 @@ BOOL CCollision::CheckHeight(MATRIX4X4& mWorld, const MATRIX4X4&  mWorldOld, con
 
 						p = m_ChkColMesh[n].ChkBlkArray[i].ppChkFace[m];
 
-						while (p != NULL)  // リスト構造の最後まで
+						while (p != nullptr)  // リスト構造の最後まで
 						{
 							// 壁か床かを判定し、床の場合のみチェックする(壁の時は読み飛ばす)
 							if (p->pFace->vNormal.y <= GROUND)
@@ -1542,7 +1542,7 @@ BOOL CCollision::CheckHeight(MATRIX4X4& mWorld, const MATRIX4X4&  mWorldOld, con
 		}
 	}
 
-	if (pWIndex != NULL)
+	if (pWIndex != nullptr)
 	{
 		//	見つかった現在の高さより低くて最大高さの面を記憶する
 		m_pIndex = pWIndex;			// 面データのアドレス
@@ -1611,12 +1611,12 @@ int CCollision::CheckFloorMove(MATRIX4X4& mWorld, const MATRIX4X4&  mWorldOld)
 			// ジャンプ上昇中でなくて、床が移動前と移動後の高さの間にあるとき。または、床が足下LOWFLOORLIMIT(-0.2m)以内の時
 			vNow.y = m_fHeight;	// 移動後の高さを床の高さに補正する
 			nRet = 2;
-			//MessageBox(0, _T("CheckFloorMove()   nRet=2") , NULL, MB_OK);
+			//MessageBox(0, _T("CheckFloorMove()   nRet=2") , nullptr, MB_OK);
 		}
 		else {
 			// ジャンプ上昇中または、落下中のとき
 			nRet = 3;
-			//MessageBox(0, _T("CheckFloorMove()   nRet=3") , NULL, MB_OK);
+			//MessageBox(0, _T("CheckFloorMove()   nRet=3") , nullptr, MB_OK);
 		}
 	}
 
@@ -1758,7 +1758,7 @@ void CCollision::InitWorldMatrix(const MATRIX4X4& mWorld)
 	m_mWorldBase = mWorld;
 	m_mWorldOld  = mWorld;
 	m_mWorld     = mWorld;
-	m_mWorldInv  = XMMatrixInverse(NULL, m_mWorld);
+	m_mWorldInv  = XMMatrixInverse(nullptr, m_mWorld);
 	m_bMoveFlag  = TRUE;
 }
 
@@ -1773,7 +1773,7 @@ void CCollision::InitWorldMatrix(const MATRIX4X4& mWorld)
 void CCollision::SetWorldMatrix(const MATRIX4X4& mWorld)
 {
 	m_mWorld = mWorld;
-	m_mWorldInv = XMMatrixInverse(NULL, m_mWorld);
+	m_mWorldInv = XMMatrixInverse(nullptr, m_mWorld);
 	m_bMoveFlag = TRUE;
 }
 
