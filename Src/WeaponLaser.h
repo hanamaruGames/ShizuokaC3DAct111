@@ -14,6 +14,14 @@
 // --------------------------------------------------------------------
 class CWeaponLaserObj : public CBaseObj
 {
+public:
+	// オブジェクト区分
+	enum OwnerID {
+		PC = 0x00000001,
+		NPC = 0x00000002,
+		ENM = 0x00000004,
+		OTHER = 0,
+	};
 protected:
 	// 定数定義  ------------------------------------------
 	static const int WEAPON_ATC = 10;       // 攻撃力
@@ -24,10 +32,10 @@ protected:
 	VECTOR3                  m_vTarget;			// ターゲット
 	VECTOR3                  m_vStart;			// 発射位置
 	VECTOR3                  m_vEnd;			// 最終到達点
-	DWORD                    m_dwOwner;			// 武器を発射したキャラ区分（PC:PC　ENM:敵）
+	OwnerID m_dwOwner;			// 武器を発射したキャラ区分（PC:PC　ENM:敵）
 
 public:
-	bool Start(MATRIX4X4, DWORD dwOwner) override;
+	bool Start(MATRIX4X4, OwnerID dwOwner);
 	void Update() override;
 	void Draw() override;
 
@@ -48,7 +56,7 @@ protected:
 
 public:
 	bool Start(MATRIX4X4, DWORD dwOwner);  //武器　レーザーの発射
-	bool Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWorld, DWORD dwOwner);
+	bool Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWorld, CWeaponLaserObj::OwnerID dwOwner);
 
 	CWeaponLaserProc();	// コンストラクタ
 	virtual	~CWeaponLaserProc();

@@ -28,6 +28,9 @@ protected:
 	VECTOR3 m_vLocalLookat;                // ローカル注視点ベクトル
 	VECTOR3 m_vLocalEye;                   // ローカル視点ベクトル
 
+	VECTOR3			m_vPosUp;			// 移動増分
+	VECTOR3			m_vRotUp;			// 回転増分
+
 public:
 	void Update() override;
 	void InitCam(int ctrl, VECTOR3 lookat, VECTOR3 eye, float rot, float dist);

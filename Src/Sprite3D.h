@@ -48,6 +48,8 @@ public:
 	DWORD          m_dwImageWidth;
 	DWORD          m_dwImageHeight;
 
+	CSpriteImage();
+	CSpriteImage(const TCHAR* TName);
 	CSpriteImage(CShader* pShader);
 	CSpriteImage(CShader* pShader, const TCHAR* TName);
 	~CSpriteImage();
@@ -87,6 +89,7 @@ public:
 	int             m_nBlend;     // ブレンドステート  0:通常 1:透過色（初期値） 2:加算合成     // -- 2019.8.18
 
 public:
+	CSprite();
 	CSprite(CShader* pShader);
 	CSprite(CSpriteImage* pImage);    // -- 2017.10.9
 	CSprite(CSpriteImage* pImage, const DWORD& srcX, const DWORD& srcY, const DWORD& srcwidth, const DWORD& srcheight);

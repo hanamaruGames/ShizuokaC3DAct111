@@ -112,18 +112,15 @@ CCameraObj::~CCameraObj()
 //-----------------------------------------------------------------------------
 void	CCameraObj::Update()
 {
-	// プロシージャで指定したオブジェクトＮＯのオブジェクトのみ処理を行う
-	if (((CCameraProc*)m_pProc)->GetCamObjNo() != m_dwObjNo) return;
-
 	// 注視点・視点の基点となる基点ワールドマトリックスの設定
 	if (m_nCtrl == 0)  // TPS
 	{
 		// TPSは、ＰＣのローカル軸マトリックスを設定する
-		m_mBaseWorld = ObjectManager::FindGameObject<CPcProc>()->GetPcObjPtr()->GetLocalMatrix();
+		m_mBaseWorld = ObjectManager::FindGameObject<CPcProc>()->Obj()->GetLocalMatrix();
 	}
 	else if (m_nCtrl == 1) {  // FPS
 		// FPSは、ＰＣのワールドマトリックスを設定する
-		m_mBaseWorld = ObjectManager::FindGameObject<CPcProc>()->GetPcObjPtr()->GetWorld();
+		m_mBaseWorld = ObjectManager::FindGameObject<CPcProc>()->Obj()->GetWorld();
 	}
 	else {  // 固定カメラ
 		// 固定カメラは絶対座標の原点を設定する

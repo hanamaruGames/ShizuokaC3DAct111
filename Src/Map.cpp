@@ -379,14 +379,14 @@ void  CMapProc::UpdateEvent()
 	for (int i = 0; i < m_EventMap.size(); i++)
 	{
 		// PCのバウンディングボックスに接触しているかの判定
-		if (m_EventMap[i].m_pBBox && m_EventMap[i].m_pBBox->OBBCollisionDetection(pPc->GetPcObjPtr()->GetBBox(), &vHit, &vNrm))
+		if (m_EventMap[i].m_pBBox && m_EventMap[i].m_pBBox->OBBCollisionDetection(pPc->Obj()->GetBBox(), &vHit, &vNrm))
 		{
 			// PCのバウンディングボックスに接触しているとき
 			if (m_EventMap[i].m_nEvtCycle == 0)  // イベントサイクルが０のとき(まだ接触していなかったとき)
 			{
 				if (m_EventMap[i].m_nEvtKeyPush == 1 && !(GameDevice()->m_pDI->CheckKey(KD_DAT, DIK_RETURN) || GameDevice()->m_pDI->CheckJoy(KD_DAT, DIJ_A)))  // Enterキープッシュが必要なとき
 				{
-					VECTOR3 vPc = GetPositionVector(pPc->GetPcObjPtr()->GetWorld());
+					VECTOR3 vPc = GetPositionVector(pPc->Obj()->GetWorld());
 					vPc.y += 2.0f;
 					// PCの頭上に、Enterキープッシュが行われていない事の表示をする
 					GameDevice()->m_pFont->Draw3D(vPc, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vEyePt, _T("Push Enter Key!"), VECTOR2(0.8f, 0.2f), RGB(255, 0, 0), 1.0f, _T("HGP創英角ｺﾞｼｯｸUB"));

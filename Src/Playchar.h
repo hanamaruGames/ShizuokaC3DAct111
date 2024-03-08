@@ -7,12 +7,6 @@
 #include "GameMain.h"
 #include "Object3D.h"
 
-// ---------------------------------------------------------------------
-// プロシージャID
-// ---------------------------------------------------------------------
-#define  PC_ID				100
-
-
 //======================================================================
 // プレイキャラクター　オブジェクトクラス
 //======================================================================
@@ -21,19 +15,6 @@ class CPcObj : public CBaseObj
 protected:
 	// アニメーション番号 ---------------------------------
 	const enum PCANIMNUM { eAnimNum_Idle = 0, eAnimNum_Walk = 1, eAnimNum_Run = 2, eAnimNum_Attack = 3, eAnimNum_Die = 4 };
-
-	// 定数定義  ----------------------------------------
-	static const int PC_DEADTIME = 200;				// 死亡中の時間
-	static const int PC_FLASHTIME = 5;				// ダメージ後の無敵時間
-	static const int PC_DEADFLASHTIME = 400;		// 死亡後復帰したときの無敵時間
-	static const int PC_MAXHP = 1000;				// 最大体力
-	static const int PC_ATC = 50;					// 体の攻撃力
-	static const int PC_MOVE_FWDPOWER = 2;			// 前進移動速度倍率     // -- 2023.1.31
-	static const int PC_ROT_SPEED = 8;				// 回転速度             // -- 2023.1.31
-	static const int PC_ROT_LOWSPEED = 1;			// 低速回転速度         // -- 2023.1.31
-	static const int PC_MOVE_BASESPEED_X100 = 16;	// 移動基本速度の100倍  // -- 2023.1.31
-	static const int PC_JUMP_SPEED_X100 = 20;		// ジャンプ速度の100倍  // -- 2023.1.31
-
 
 	// -------------------------------------------------
 	float				m_fLocalRotY;		// ローカル軸(Y軸)
@@ -45,18 +26,45 @@ public:
 	virtual	~CPcObj();
 	void Update() override;
 	void Draw() override;
+	void OnCollision(CBaseObj* other) override;
 private:
-	void UpdateNormal();       // -- 2019.3.5
-	void UpdateNormalMove();   // -- 2019.3.5
 	MATRIX4X4 UpdateNormalMoveKeystate(DWORD DIKey);  // -- 2021.1.10
-	void UpdateNormalAttack(); // -- 2019.3.5
-	void UpdateDamage();       // -- 2019.3.5
-	void UpdateDead();         // -- 2019.3.5
 public:
 	MATRIX4X4  GetLocalMatrix();			// ローカル軸マトリックスを得る
 	void SetLocalRotY(float fRotY) { m_fLocalRotY = fRotY; }   // ローカル軸(Y軸)をセットする
+	int Remain() { return m_remain;	}
+	int HpMax() { return hp.max; }
+	int HpNow() { return hp.current; }
 private:
-	CXAudioSource* m_seLaser;
+	int m_remain; // 残機
+	struct Hp {
+		int current;
+		int max;
+		Hp() {
+			max = 1; // 分母に使われることがあるので、0にはしない
+			current = max;
+		}
+	};
+	Hp hp;
+	CXAudioSource* m_seLaser; // 発射音（武器の方に持たせた方がよい）
+	float m_jumpY;
+	float m_jumpVelocity;
+	float m_vRotY;
+
+	float m_recoverTimer;
+	// ステートパターン
+	enum Status {
+		eNormal = 0,
+		eAttack,
+		eDead,
+		eFlash,
+	};
+	Status m_status;
+	void UpdateNormal();       // -- 2019.3.5
+	void UpdateNormalMove();   // -- 2019.3.5
+	void UpdateNormalAttack(); // -- 2019.3.5
+	void UpdateDamage();       // -- 2019.3.5
+	void UpdateDead();         // -- 2019.3.5
 };
 
 //======================================================================
@@ -64,15 +72,9 @@ private:
 //======================================================================
 class CPcProc : public Object3D
 {
-protected:
-	// 定数定義  ------------------------------------------
-	static const int PC_ALLMAX = 3;      // PCの最大出現数
-
+private:
 public:
-	CPcObj*			    GetPcObjPtr() { return (CPcObj*)GetObjArrayPtr()[0]; }
-	
-	// コンストラクタ
 	CPcProc();
 	virtual	~CPcProc();
+	CPcObj* Obj() { return dynamic_cast<CPcObj*>(GetObj()); }
 };
-

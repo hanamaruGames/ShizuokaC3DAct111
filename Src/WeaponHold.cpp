@@ -127,6 +127,7 @@ int CWeaponHoldProc::GetKind(BASEHOLDITEM HoldItem)
 // ---------------------------------------------------------------------------
 CWeaponHoldObj::CWeaponHoldObj(CBaseProc* pProc) : CBaseObj(pProc)
 {
+	m_dwObjNo = (DWORD)pProc->GetObjArrayPtr().size();	// オブジェクトＮＯ  プッシュバック前の配列サイズがオブジェクトＮＯとなる
 	m_nKindNo = 0;
 	m_pMesh = nullptr;
 	m_vOffset = VECTOR3(0.0f, 0.0f, 0.0f);   // オフセットの設定
@@ -206,8 +207,6 @@ void CWeaponHoldObj::Init()
 	}
 
 	m_bActive = false;
-	m_dwStatus = NORMAL;
-
 }
 // ---------------------------------------------------------------------------
 //

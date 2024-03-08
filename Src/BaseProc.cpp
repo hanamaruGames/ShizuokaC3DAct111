@@ -11,6 +11,12 @@
 #include "FbxMeshAnim.h"
 #include "GameMain.h"
 
+CBaseProc::CBaseProc()
+{
+	m_pMeshArray.clear();
+	m_pObjArray.clear();
+}
+
 //------------------------------------------------------------------------
 //
 //	基本プロシージャクラスのデストラクタ	
@@ -26,11 +32,6 @@ CBaseProc::~CBaseProc()
 	{
 		SAFE_DELETE(m_pMeshArray[i]);
 	}
-	// プロシージャポインタ配列の削除
-//	for (DWORD i = 0; i < m_pProcArray.size(); i++)
-//	{
-//		SAFE_DELETE(m_pProcArray[i]);
-//	}
 	// オブジェクトポインタ配列の削除
 	for (DWORD i = 0; i < m_pObjArray.size(); i++)
 	{
@@ -58,20 +59,12 @@ void CBaseProc::UpdateAll()
 {
 
 //	Update();                              // プロシージャの更新処理
-	if (m_nWaitTime > 0) m_nWaitTime--;    // ウェイトタイマーのカウントダウン
 
 	// オブジェクトポインタ配列の更新
 	for (DWORD i = 0; i < m_pObjArray.size(); i++)
 	{
 		m_pObjArray[i]->Update();          // オブジェクトの更新処理
 	}
-
-	// 下位のプロシージャポインタ配列の更新
-//	for (DWORD i = 0; i < m_pProcArray.size(); i++)
-//	{
-//		m_pProcArray[i]->UpdateAll();      // 下位のプロシージャの全体更新処理（再帰処理）
-//	}
-
 }
 //============================================================================   // -- 2022.12.20
 //   
@@ -139,13 +132,6 @@ bool   CBaseProc::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 		bRet = m_pObjArray[i]->Hitcheck(pOtherObj, vNow, vOld);  // 相手オブジェクトとのあたり判定
 		if (bRet) return bRet;
 	}
-
-//	for (DWORD i = 0; i < m_pProcArray.size(); i++)  // 下位の相手プロシージャ
-//	{
-//		bRet = m_pProcArray[i]->Hitcheck(pOtherObj, vNow, vOld);  // 相手プロシージャとのあたり判定
-//		if (bRet) return bRet;
-//	}
-
 	return bRet;
 }
 
@@ -202,15 +188,7 @@ void  CBaseProc::SetNonActive()
 	for (DWORD i = 0; i < m_pObjArray.size(); i++)
 	{
 		m_pObjArray[i]->SetActive(false);   // アクティブフラグをfalseに
-		m_pObjArray[i]->ResetStatus();      // 各種ステータスをリセット
 	}
-
-	// 下位のプロシージャポインタ配列の探索
-//	for (DWORD i = 0; i < m_pProcArray.size(); i++)
-//	{
-//		m_pProcArray[i]->SetMaxWaitTime();    // ウェイトタイムをセットする
-//		m_pProcArray[i]->SetNonActive();      // 下位のプロシージャの処理（再帰処理）
-//	}
 }
 
 
@@ -224,26 +202,14 @@ void  CBaseProc::SetNonActive()
 CBaseObj::CBaseObj(CBaseProc* pProc)
 {
 	m_pProc  = pProc;					// 親のプロシージャ
-	ResetStatus();						// 各種ステータスをリセット
 	m_bActive = false;					// true:表示  false:非表示
-	m_dwObjID = pProc->GetProcID();		// オブジェクトＩＤ
-	m_dwObjNo = (DWORD)pProc->GetObjArrayPtr().size();	// オブジェクトＮＯ  プッシュバック前の配列サイズがオブジェクトＮＯとなる
 	m_nMeshIdx = 0;						// メッシュ配列の添字           // -- 2022.12.20
 	m_pBBox = nullptr;						// バウンディングボックスクラス
 	m_mWorld = XMMatrixIdentity();		// ワールドマトリクス
 	m_mWorldOld = XMMatrixIdentity();	// ワールドマトリクス（一つ前）
-	m_vPosUp = VECTOR3(0, 0, 0);		// 移動増分
-	m_vRotUp = VECTOR3(0, 0, 0);		// 回転増分
-	m_fJumpY = 0.0f;					// ジャンプ高さ
-	m_fJumpTime = 0.0f;					// ジャンプ時間
-	m_pOyaObj = 0;						// 親オブジェクト（武器オブジェ等）
 	m_pHitObj = 0;						// 当たった相手のオブジェクト
 	m_vHitPos = VECTOR3(0, 0, 0);		// 当たった場所の座標
 	m_vHitNormal = VECTOR3(0, 0, 0);	// 当たった場所の法線座標
-	m_nCnt1 = 0;						// カウンター１
-	m_nCnt2 = 0;						// カウンター２
-	m_nMaxHp = 0;						// 最大体力
-	m_nHp = 0;							// 体力
 	m_nAtc = 0;							// 攻撃力
 
 	m_AnimStatus.playAnim = true;		// アニメーションを動作させる
@@ -310,7 +276,7 @@ bool   CBaseObj::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 	VECTOR3 vHit = VECTOR3(0.0f, 0.0f, 0.0f), vNrm = VECTOR3(0.0f, 1.0f, 0.0f);
 
 	// バウンディングボックスと移動直線（Lay）による判定
-	if ((m_bActive && m_dwStatus != DAMAGE && m_dwStatus != DEAD && m_dwStatus != FLASH && this != pOtherObj) &&
+	if ((m_bActive && this != pOtherObj) &&
 		m_pBBox->OBBCollisionLay(vNow, vOld, &vHit, &vNrm))
 	{
 		m_pHitObj = pOtherObj;
@@ -319,8 +285,8 @@ bool   CBaseObj::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 		m_vHitNormal = vNrm;
 		pOtherObj->m_vHitPos = vHit;
 		pOtherObj->m_vHitNormal = vNrm;
-		m_dwStatus = DAMAGE;
-		pOtherObj->m_dwStatus = DAMAGE;
+		OnCollision(pOtherObj);
+		pOtherObj->OnCollision(this);
 		bRet = true;
 	}
 	return bRet;
@@ -349,7 +315,7 @@ bool   CBaseObj::Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack)
 	VECTOR3 vHit = VECTOR3(0.0f, 0.0f, 0.0f), vNrm = VECTOR3(0.0f, 1.0f, 0.0f);
 
 	// バウンディングボックス同士による判定
-	if ((m_bActive && m_dwStatus != DAMAGE && m_dwStatus != DEAD && m_dwStatus != FLASH && this != pOtherObj) &&
+	if ((m_bActive && this != pOtherObj) &&
 		m_pBBox->OBBCollisionDetection(pBBoxAtack, &vHit, &vNrm))
 	{
 		m_pHitObj = pOtherObj;
@@ -358,74 +324,13 @@ bool   CBaseObj::Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack)
 		m_vHitNormal = vNrm;
 		pOtherObj->m_vHitPos = vHit;
 		pOtherObj->m_vHitNormal = vNrm;
-		m_dwStatus = DAMAGE;
-		pOtherObj->m_dwStatus = DAMAGE;
+		OnCollision(pOtherObj);
+		pOtherObj->OnCollision(this);
 		bRet = true;
 	}
 	return bRet;
 }
 
-//-----------------------------------------------------------------------------  // -- 2023.1.14
-// 目的地（vTargetX,Z）への移動処理  汎用関数
-//
-//   引数
-//               VECTOR3           :vTarget :行き先
-//               float fSpeedIn    :一回の移動量
-//               float fRotSpeed   :一回の回転スピード。大きいほど鋭角で曲がる(省略値は3.0f)
-//               float fNearLimit  :目的地との近接リミット。この半径範囲内に入ったとき到着とする(省略値は0.1f)
-//
-//   戻り値　：　true：目的地に達した　　false:まだ目的地に達していない
-//               処理後、m_vPosUp, m_vRotUpに移動量が設定される
-//-----------------------------------------------------------------------------
-bool CBaseObj::TargetMove(VECTOR3 vTarget, float fSpeedIn, float fRotSpeed, float fNearLimit)
-{
-	bool ret = false;
-	VECTOR3 vMove, vObjPos, vObjPosOld;
-	float fLen, fSpeed;
-
-	vObjPos = GetPositionVector(m_mWorld);
-	vObjPosOld = GetPositionVector(m_mWorldOld);
-
-	vTarget.y = m_mWorld._42;		// ターゲットはオブジェクトと同一高さとする
-
-	if ((vObjPos.x <= vTarget.x + fNearLimit && vObjPos.x >= vTarget.x - fNearLimit) &&		// 目的地に近接したとき
-		(vObjPos.z <= vTarget.z + fNearLimit && vObjPos.z >= vTarget.z - fNearLimit))
-	{  // 目的地に達したとき
-		m_vPosUp.x = 0;
-		m_vPosUp.y = 0;
-		m_vPosUp.z = 0;
-		m_vRotUp = VECTOR3(0, 0, 0);
-		ret = true; // 目的地に達した
-
-	}
-	else {    // 目的地への移動処理
-
-		vMove = vTarget - vObjPos;
-		fLen = magnitude(vMove);
-		if (fLen < fSpeedIn)
-		{
-			fSpeed = fSpeedIn - fLen;
-		}
-		else {
-			fSpeed = fSpeedIn;
-		}
-
-		m_vRotUp.y = GetTargetRotateVector(m_mWorld, vTarget).y;	// ターゲットの方向を向かせるY軸角度を求める
-		if (m_vRotUp.y >= 180) m_vRotUp.y -= 360;
-		if (m_vRotUp.y <= -180) m_vRotUp.y += 360;
-		if (m_vRotUp.y >  fRotSpeed) m_vRotUp.y = fRotSpeed;		// fRotSpeed度以上の方向変換は行わない
-		if (m_vRotUp.y < -fRotSpeed) m_vRotUp.y = -fRotSpeed;		// fRotSpeed度以上の方向変換は行わない
-
-		m_vPosUp.x = 0;
-		//m_vPosUp.y = -0.01f;		// 下方向へ重力
-		m_vPosUp.y = 0;
-		m_vPosUp.z = fSpeed;
-
-		ret = false;    // まだ目的地に達していない
-	}
-
-	return ret;
-}
 //-----------------------------------------------------------------------------  // -- 2018.8.2
 // オブジェクトのmWorldと引数位置との距離を求める
 //
@@ -438,18 +343,6 @@ float CBaseObj::GetDistance(VECTOR3 vPos)
 	vVec = vPos - GetPositionVector(m_mWorld);
 
 	return  magnitude(vVec);
-}
-//-----------------------------------------------------------------------------  // -- 2019.6.8
-// ステータスをリセットする
-//
-//   引数　　：　なし
-//   戻り値　：　なし
-//-----------------------------------------------------------------------------
-void CBaseObj::ResetStatus()
-{
-	m_dwStatus = NORMAL;			// ステータス
-	m_dwStatusSub = ATTACKNONE;		// ステータスサブ
-	m_dwStatusPhase = 0;			// ステータスフェーズ
 }
 
 //============================================================================

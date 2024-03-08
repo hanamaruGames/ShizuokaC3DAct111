@@ -47,7 +47,7 @@ CWeaponLaserProc::~CWeaponLaserProc()
 //  DWORD       dwOwner      ：武器を発射したキャラ区分（PC:PC(省略値)　ENM:敵）
 //
 // ---------------------------------------------------------------------------
-bool CWeaponLaserProc::Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWorld, DWORD dwOwner)
+bool CWeaponLaserProc::Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWorld, CWeaponLaserObj::OwnerID dwOwner)
 {
 	// レーザーの発射
 	MATRIX4X4 mLay, mOwnerRot, mOffset;
@@ -103,11 +103,10 @@ CWeaponLaserObj::CWeaponLaserObj(CBaseProc* pProc) : CBaseObj(pProc)
 	m_vEnd = VECTOR3(0, 0, 0);			// 最終到達点
 
 	m_bActive = false;
-	m_dwStatus = NORMAL;
 
 	m_nAtc = WEAPON_ATC;
 
-	m_dwOwner = 0;
+	m_dwOwner = OwnerID::OTHER;
 
 	m_pSeDead = new CXAudioSource(_T("Data/Sound/Dead.wav"), 10);
 }
@@ -130,7 +129,7 @@ CWeaponLaserObj::~CWeaponLaserObj()
 //
 //     戻り値　　なし
 // ---------------------------------------------------------------------------
-bool CWeaponLaserObj::Start(MATRIX4X4 mStartWorld, DWORD dwOwner)
+bool CWeaponLaserObj::Start(MATRIX4X4 mStartWorld, OwnerID dwOwner)
 {
 
 	if (m_bActive) return false;
@@ -167,7 +166,7 @@ void CWeaponLaserObj::Update()
 	{
 		CPcProc* pPc = ObjectManager::FindGameObject<CPcProc>();
 		// 敵やＰＣとのあたり判定
-		if ((m_dwOwner != PC && pPc->Hitcheck(this, m_vEnd, m_vStart)))
+		if ((m_dwOwner != OwnerID::PC && pPc->Hitcheck(this, m_vEnd, m_vStart)))
 		{
 			ObjectManager::FindGameObject<CEffectParticleProc>()->Start(m_vHitPos, m_vHitNormal);	// パーティクルの発生
 			//GameDevice()->m_pEffectProc->m_pEffectBillProc->Start(m_vHitPos);	// 爆発ビルボードの発生

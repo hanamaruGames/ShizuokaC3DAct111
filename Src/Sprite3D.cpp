@@ -9,7 +9,16 @@
 // ========================================================================================
 
 #include "Sprite3D.h"
+#include "GameMain.h"
 #pragma warning(disable : 6387)
+
+CSpriteImage::CSpriteImage() : CSpriteImage(GameDevice()->m_pShader)
+{
+}
+
+CSpriteImage::CSpriteImage(const TCHAR* TName) : CSpriteImage(GameDevice()->m_pShader, TName)
+{
+}
 
 //------------------------------------------------------------------------
 //
@@ -68,6 +77,10 @@ HRESULT CSpriteImage::Load(const TCHAR* TName)
 		return E_FAIL;
 	}
 	return S_OK;
+}
+
+CSprite::CSprite() : CSprite(GameDevice()->m_pShader)
+{
 }
 
 //------------------------------------------------------------------------

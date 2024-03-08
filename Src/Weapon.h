@@ -18,8 +18,8 @@
 class CWeaponProc : public Object3D
 {
 public:
-	CWeaponLaserProc*     m_pWeaponLaserProc;
-	CWeaponHoldProc*      m_pWeaponHoldProc;
+//	CWeaponLaserProc*     m_pWeaponLaserProc;
+//	CWeaponHoldProc*      m_pWeaponHoldProc;
 
 public:
 	CWeaponProc();	// コンストラクタ

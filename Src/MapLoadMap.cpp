@@ -63,9 +63,9 @@ void CMapProc::MakeMap1()
 	CPcProc* pPc = ObjectManager::FindGameObject<CPcProc>();
 
 	// ＰＣを(0,0,-20)の位置に置く -------------------------------------
-	pPc->GetPcObjPtr()->SetWorld(XMMatrixTranslation(0.0f, 0.05f, -20.0f));
-	pPc->GetPcObjPtr()->SetWorldOld(pPc->GetPcObjPtr()->GetWorld());
-	pPc->GetPcObjPtr()->SetLocalRotY(0.0f);  // ローカル軸(Y軸)を0度にする
+	pPc->Obj()->SetWorld(XMMatrixTranslation(0.0f, 0.05f, -20.0f));
+	pPc->Obj()->SetWorldOld(pPc->Obj()->GetWorld());
+	pPc->Obj()->SetLocalRotY(0.0f);  // ローカル軸(Y軸)を0度にする
 
 	// ステージマップの設定・コリジョンマップの設定 -----------------------------------------
 	m_pColMesh = new CCollision(GameDevice()->m_pFbxMeshCtrl);     // コリジョンマップの生成

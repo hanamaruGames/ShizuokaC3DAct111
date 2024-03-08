@@ -11,6 +11,24 @@
 #include  "Weapon.h"
 #include  "Map.h"
 #include  "Effect.h"
+#include "Time.h"
+
+namespace {
+	// 定数定義  ----------------------------------------
+	const float DEADTIME = 3.0f;				// 死亡中の時間
+	const float FLASHTIME = 0.1f;				// ダメージ後の無敵時間
+	const float DEADFLASHTIME = 7.0f;		// 死亡後復帰したときの無敵時間
+	const int PC_MAXHP = 1000;				// 最大体力
+	const int PC_ATC = 50;					// 体の攻撃力
+	const int PC_MOVE_FWDPOWER = 2;			// 前進移動速度倍率     // -- 2023.1.31
+	const float ROT_SPEED = 360.0f;		// 回転速度（秒）             // -- 2023.1.31
+	const float ROT_LOWSPEED = 60.0f;	// 低速回転速度（秒）         // -- 2023.1.31
+	const float MOVE_BASESPEED = 10.0f;     // 移動速度（１秒あたり）
+	const int REMAIN_MAX = 3;                // PCの最大出現数
+	const float GAMEGRAVITY = -9.8f / 2.0f; // 重力加速度（１秒あたり）
+	const float JUMP_POWER = 0.5f;
+};
+
 
 //============================================================================
 //
@@ -141,9 +159,6 @@ CPcProc::CPcProc()
 
 	// -------------------------------------------------------------------------  // -- 2022.2.16
 	// ＰＣプロシージャの初期化処理
-	m_dwProcID = PC_ID;       // PCのID
-	m_nNum = PC_ALLMAX;       // 最大出現数
-
 }
 
 // ---------------------------------------------------------------------------
@@ -174,13 +189,14 @@ CPcObj::CPcObj(CBaseProc* pProc) : CBaseObj(pProc)
 	m_pBBox = new CBBox(GameDevice()->m_pShader, VECTOR3(-0.25f, -0.05f, -0.25f), VECTOR3(0.25f, 2.0f, 0.25f));
 	m_pBBox->m_mWorld = m_mWorld;                            // -- 2021.1.11
 
-	m_nMaxHp = PC_MAXHP;
+	hp.max = PC_MAXHP;
+	hp.current = hp.max;
+
 	m_nAtc = PC_ATC;
 
 	// -----------------------------------------------------------------------  // -- 2022.2.16
 	// ＰＣオブジェクトの初期化処理
 	m_bActive = true;
-	ResetStatus();
 
 	m_AnimStatus.playAnim = true;
 	m_AnimStatus.SetNum(eAnimNum_Idle);
@@ -189,10 +205,16 @@ CPcObj::CPcObj(CBaseProc* pProc) : CBaseObj(pProc)
 	// 前進移動速度倍率(初期値は１倍)
 	m_nMoveFwdPower = 1;
 
-	m_nHp = m_nMaxHp;
-
 	m_seLaser = new CXAudioSource(_T("Data/Sound/Lazer.wav"), 10);
 
+	m_jumpY = 0.0f;
+	m_jumpVelocity = 0.0f;
+
+	m_vRotY = 0.0f;
+
+	m_remain = REMAIN_MAX;
+	m_status = Status::eNormal;
+	m_recoverTimer = 1.0f;
 }
 // ---------------------------------------------------------------------------
 //
@@ -240,36 +262,39 @@ void	CPcObj::Update()
 	m_mWorldOld = m_mWorld;
 
 	// 各状態に応じた処理
-	switch (m_dwStatus) {
-	case  FLASH:  // ＰＣがダメージから復帰したときの処理
-	case  NORMAL: // ＰＣが通常状態のときの処理
+	switch (m_status) {
+	case Status::eFlash:  // ＰＣがダメージから復帰したときの処理
+	case Status::eNormal: // ＰＣが通常状態のときの処理
 		UpdateNormal();  // ＰＣオブジェクトの更新 通常状態（NORMAL）
 		break;
-
-	case  DAMAGE: // ＰＣがダメージ状態のときの処理
-		UpdateDamage();  // ＰＣオブジェクトの更新 ダメージ状態（DAMAGE）
-		break;
-
-	case  DEAD:	// ＰＣが死亡状態のときの処理
+	case Status::eDead:	// ＰＣが死亡状態のときの処理
 		UpdateDead();  // ＰＣオブジェクトの更新 死亡状態（DEAD）
 		break;
 
 	}
 
 	// マップコリジョンと自然落下
-	m_fJumpY += GAMEGRAVITY * m_fJumpTime;	// 自然落下
-	m_fJumpTime += 1.0f;
-	if (ObjectManager::FindGameObject<CMapProc>()->isCollisionMoveGravity(&m_mWorld, m_mWorldOld) != 3)  // マップコリジョン
-	{
-		m_fJumpY = 0.0f;  // 自然落下の停止
-		m_fJumpTime = 0.0f;
+	m_jumpY += m_jumpVelocity;	// 自然落下
+	m_jumpVelocity += GAMEGRAVITY * Time::DeltaTime();
+	if (m_jumpVelocity <= 0.0f) {
+		if (ObjectManager::FindGameObject<CMapProc>()->isCollisionMoveGravity(&m_mWorld, m_mWorldOld) != 3)  // マップコリジョン
+		{
+			m_jumpY = 0.0f;  // 自然落下の停止
+			m_jumpVelocity = 0.0f;
+		}
 	}
-
 	// バウンディングボックス
 	m_pBBox->m_mWorld = m_mWorld;
+
+}
+
+void CPcObj::Draw()
+{
+	//レンダリング
+	GetMesh()->Render(m_AnimStatus, m_mWorld);
+
 	//m_pBBox->m_mWorld = GetMesh()->GetFrameMatrices(m_AnimStatus, m_mWorld, 0);  // ルートボーン
 	//m_pBBox->Render( GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
-
 
 	// 手に持つ武器やアイテムの表示をする     // -- 2021.2.4
 	if (GetHoldItem().m_nHoldObjNo != 0) // 手に持つ武器やアイテムがあるとき
@@ -281,17 +306,39 @@ void	CPcObj::Update()
 
 	// ＰＣの頭上の名前表示
 	VECTOR3 vPcPos = GetPositionVector(m_mWorld);
-	//vPcPos.y += 2.0f;
-	//GameDevice()->m_pFont->Draw3D(vPcPos, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vEyePt, _T("プレイキャラクター"), VECTOR2(0.5f, 0.2f), RGB(0, 0, 255), 1.0f, _T("HGP創英角ﾎﾟｯﾌﾟ体"));
-
-
+	vPcPos.y += 2.0f;
+	GameDevice()->m_pFont->Draw3D(vPcPos, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vEyePt, _T("プレイキャラクター"), VECTOR2(0.5f, 0.2f), RGB(0, 0, 255), 1.0f, _T("HGP創英角ﾎﾟｯﾌﾟ体"));
 }
 
-void CPcObj::Draw()
+void CPcObj::OnCollision(CBaseObj* other)
 {
-	//レンダリング
-	GetMesh()->Render(m_AnimStatus, m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
-	//GetMesh()->RenderDisplace(m_AnimStatus, m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
+	switch (m_status) { // この時はダメージを受けない
+	case Status::eDead:
+	case Status::eFlash:
+		return;
+	}
+	if (other == nullptr && dynamic_cast<CWeaponLaserObj*>(other) == nullptr)
+		return;
+
+	MATRIX4X4 mTemp;
+
+	ObjectManager::FindGameObject<CBackForeProc>()->GetSprite()->DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, RGB(255, 255, 255), 1.0f); // 画面を一瞬白くフラッシュ
+
+	mTemp = XMMatrixTranslation(0, 0, -0.25f);	// バックする
+	m_mWorld = mTemp * m_mWorld;
+
+	hp.current -= other->GetAtc();	// 攻撃を受けたダメージ
+	if (hp.current <= 0)		// HPが０なので死亡へ
+	{
+		hp.current = 0;
+		m_status = Status::eDead;		// HPが０なので死亡へ
+		m_AnimStatus.SetNum(eAnimNum_Die);	// 死亡モーションにする
+		m_recoverTimer = DEADTIME;		// 死亡時間の設定
+	}
+	else {
+		m_recoverTimer = FLASHTIME;   // 無敵状態の時間
+		m_status = Status::eFlash;     // ダメージからの復帰処理を行う
+	}
 }
 
 //-----------------------------------------------------------------------------   // -- 2019.3.5
@@ -309,10 +356,10 @@ void CPcObj::Draw()
 void	CPcObj::UpdateNormal()
 {
 
-	if (m_dwStatus == FLASH) // ＰＣがダメージから復帰したときの処理
+	if (m_status == Status::eFlash) // ＰＣがダメージから復帰したときの処理
 	{
-		m_nCnt1--;
-		if (m_nCnt1 <= 0) m_dwStatus = NORMAL;
+		m_recoverTimer -= Time::DeltaTime();
+		if (m_recoverTimer <= 0) m_status = Status::eNormal;
 		//GameDevice()->m_pRenderBufProc->SetDrawFont(300, 10, _T("** 無敵状態 **"), 16, RGB(255, 0, 0));
 	}
 	UpdateNormalMove();      // ＰＣオブジェクトの移動処理
@@ -333,7 +380,6 @@ void	CPcObj::UpdateNormal()
 void	CPcObj::UpdateNormalMove()
 {
 	CDirectInput* pDI = GameDevice()->m_pDI;
-	const float PC_JUMP_SPEED = PC_JUMP_SPEED_X100 / 100.0f;  // ジャンプスピード
 
 	MATRIX4X4 mYaw;  // ＰＣＹ軸回転マトリックス
 	MATRIX4X4 mPos;  // ＰＣ移動マトリックス
@@ -342,13 +388,13 @@ void	CPcObj::UpdateNormalMove()
 	// キーボード、マウス、ジョイスティック操作
 
 	// ジャンプ   ------------------------------------------------
-	if ((pDI->CheckKey(KD_TRG, DIK_J) || pDI->CheckJoy(KD_TRG, DIJ_Z)) && m_fJumpY == 0.0f) {
+	if ((pDI->CheckKey(KD_TRG, DIK_J) || pDI->CheckJoy(KD_TRG, DIJ_Z)) && m_jumpY == 0.0f) {
 		bKeyPush = true;
-		m_fJumpY = PC_JUMP_SPEED;
-		m_fJumpTime = 1.0f;
+		m_jumpY = 0.0f;
+		m_jumpVelocity = JUMP_POWER;
 	}
 	// 自然落下の初期値
-	mPos = XMMatrixTranslation(0.0f, m_fJumpY, 0.0f);
+	mPos = XMMatrixTranslation(0.0f, m_jumpY, 0.0f);
 
 	// サイドモードの切り替え  -------------------------------------
 	// (左右移動の時、方向を変えるかどうか)
@@ -366,13 +412,13 @@ void	CPcObj::UpdateNormalMove()
 	// ローカル軸（Ｙ軸）の回転処理  --------------------------------
 	if (pDI->CheckKey(KD_DAT, DIK_RIGHT) || pDI->CheckMouse(KD_DAT, DIM_RIGHT) || pDI->CheckJoy(KD_DAT, DIJ_R)) //	→キー
 	{
-		m_fLocalRotY += PC_ROT_LOWSPEED;
+		m_fLocalRotY += ROT_LOWSPEED * Time::DeltaTime();
 		if (m_fLocalRotY >= 360.0f) m_fLocalRotY -= 360.0f;
 	}
 
 	if (pDI->CheckKey(KD_DAT, DIK_LEFT) || pDI->CheckMouse(KD_DAT, DIM_LEFT) || pDI->CheckJoy(KD_DAT, DIJ_L)) //	←キー
 	{
-		m_fLocalRotY -= PC_ROT_LOWSPEED;
+		m_fLocalRotY -= ROT_LOWSPEED * Time::DeltaTime();
 		if (m_fLocalRotY < 0.0f) m_fLocalRotY += 360.0f;
 	}
 
@@ -409,7 +455,7 @@ void	CPcObj::UpdateNormalMove()
 	}
 
 	// ローカル軸を基準として、ＰＣを移動させるワールドマトリックスを設定
-	mYaw = XMMatrixRotationY(XMConvertToRadians(m_vRotUp.y));
+	mYaw = XMMatrixRotationY(XMConvertToRadians(m_vRotY));
 	m_mWorld = mPos * mYaw * GetLocalMatrix();
 
 }
@@ -423,9 +469,7 @@ void	CPcObj::UpdateNormalMove()
 //-----------------------------------------------------------------------------
 MATRIX4X4 CPcObj::UpdateNormalMoveKeystate(DWORD DIKey)
 {
-	const float PC_MOVE_BASESPEED = PC_MOVE_BASESPEED_X100 / 100.0f;  // 移動基本スピード
-
-	MATRIX4X4 mPos = XMMatrixTranslation(0.0f, m_fJumpY, 0.0f);
+	MATRIX4X4 mPos = XMMatrixTranslation(0.0f, m_jumpY, 0.0f);
 
 	if (m_AnimStatus.animNum == eAnimNum_Idle) m_AnimStatus.SetNum(eAnimNum_Walk);  // アイドル中のときは、歩行アニメーションにする
 	if (m_AnimStatus.isEnd(eAnimNum_Walk))  m_AnimStatus.SetNum(eAnimNum_Run);  // 歩行アニメーションが終わったとき、走りのアニメーションにする
@@ -436,15 +480,15 @@ MATRIX4X4 CPcObj::UpdateNormalMoveKeystate(DWORD DIKey)
 		{
 		case DIK_S:    // 後退
 			// 方向を変えずに後退
-			mPos = XMMatrixTranslation(0.0f, m_fJumpY, -PC_MOVE_BASESPEED);
+			mPos = XMMatrixTranslation(0.0f, m_jumpY, -MOVE_BASESPEED*Time::DeltaTime());
 			break;
 		case DIK_D:    // 右
 			// 方向を変えずに右移動
-			mPos = XMMatrixTranslation(PC_MOVE_BASESPEED, m_fJumpY, 0.0f);
+			mPos = XMMatrixTranslation(MOVE_BASESPEED * Time::DeltaTime(), m_jumpY, 0.0f);
 			break;
 		case DIK_A:    // 左
 			// 方向を変えずに左移動
-			mPos = XMMatrixTranslation(-PC_MOVE_BASESPEED, m_fJumpY, 0.0f);
+			mPos = XMMatrixTranslation(-MOVE_BASESPEED * Time::DeltaTime(), m_jumpY, 0.0f);
 			break;
 		}
 	}
@@ -455,20 +499,20 @@ MATRIX4X4 CPcObj::UpdateNormalMoveKeystate(DWORD DIKey)
 		if (GetMesh()->GetRootAnimType(m_AnimStatus.animNum) == eRootAnimNone)
 		{
 			// ルートボーンアニメーションを行わず固定の前進移動値
-			mPos = XMMatrixTranslation(0.0f, m_fJumpY, PC_MOVE_BASESPEED * m_nMoveFwdPower);  // 基本速度に前進速度倍率を掛ける // -- 2022.12.20
+			mPos = XMMatrixTranslation(0.0f, m_jumpY, MOVE_BASESPEED * Time::DeltaTime() * m_nMoveFwdPower);  // 基本速度に前進速度倍率を掛ける // -- 2022.12.20
 		}
 		else {
 			// ルートボーンアニメーションでの前進移動値
 			MATRIX4X4 mWork = GetMesh()->GetRootAnimUpMatrices(m_AnimStatus);      // -- 2022.12.20
 			mWork._43 *= m_nMoveFwdPower;    // Ｚ方向に前進速度倍率を掛ける       // -- 2022.12.20
-			mPos = XMMatrixTranslation(0.0f, m_fJumpY, 0.0f) * mWork;
+			mPos = XMMatrixTranslation(0.0f, m_jumpY, 0.0f) * mWork;
 		}
 
 		// 進行方向に回転する処理
-		// ・回転角度はm_vRotUp.yにある。-180～180度
+		// ・回転角度はm_vRotYにある。-180～180度
 		// ・１回の回転速度はPC_ROTSPEED
-		if (m_vRotUp.y > 180.0f)  m_vRotUp.y -= 360.0f;
-		if (m_vRotUp.y < -180.0f) m_vRotUp.y += 360.0f;
+		if (m_vRotY > 180.0f)  m_vRotY -= 360.0f;
+		if (m_vRotY < -180.0f) m_vRotY += 360.0f;
 
 		float fAngle = 0.0f;  // 目標回転角度
 		switch (DIKey)
@@ -477,7 +521,7 @@ MATRIX4X4 CPcObj::UpdateNormalMoveKeystate(DWORD DIKey)
 			fAngle = 0.0f;
 			break;
 		case DIK_S:    // 後退
-			if (m_vRotUp.y >= 0)  // 最小回転になるように方向を合わせる
+			if (m_vRotY >= 0)  // 最小回転になるように方向を合わせる
 			{
 				fAngle = 180.0f;
 			}
@@ -487,23 +531,23 @@ MATRIX4X4 CPcObj::UpdateNormalMoveKeystate(DWORD DIKey)
 			break;
 		case DIK_D:    // 右
 			fAngle = 90.0f;
-			if (m_vRotUp.y == -180.0f) m_vRotUp.y = 180.0f;  // 最小回転になるように方向を合わせる
+			if (m_vRotY == -180.0f) m_vRotY = 180.0f;  // 最小回転になるように方向を合わせる
 			break;
 		case DIK_A:    // 左
 			fAngle = -90.0f;
-			if (m_vRotUp.y == 180.0f) m_vRotUp.y = -180.0f;  // 最小回転になるように方向を合わせる
+			if (m_vRotY == 180.0f) m_vRotY = -180.0f;  // 最小回転になるように方向を合わせる
 			break;
 		}
 
-		if (m_vRotUp.y > fAngle)  // 左回転
+		if (m_vRotY > fAngle)  // 左回転
 		{
-			m_vRotUp.y -= PC_ROT_SPEED;
-			if (m_vRotUp.y < fAngle) m_vRotUp.y = fAngle;
+			m_vRotY -= ROT_SPEED * Time::DeltaTime();
+			if (m_vRotY < fAngle) m_vRotY = fAngle;
 		}
-		if (m_vRotUp.y < fAngle)  // 右回転
+		if (m_vRotY < fAngle)  // 右回転
 		{
-			m_vRotUp.y += PC_ROT_SPEED;
-			if (m_vRotUp.y > fAngle) m_vRotUp.y = fAngle;
+			m_vRotY += ROT_SPEED * Time::DeltaTime();
+			if (m_vRotY > fAngle) m_vRotY = fAngle;
 		}
 
 	}
@@ -539,43 +583,13 @@ void	CPcObj::UpdateNormalAttack()
 			vOffset.z = 0.8f;   // とりあえず前方に0.8
 		}
 		CWeaponLaserProc* pLaser = ObjectManager::FindGameObject<CWeaponLaserProc>();
-		pLaser->Start(mGun, vOffset, m_mWorld, PC); // レーザー発射
+		pLaser->Start(mGun, vOffset, m_mWorld, CWeaponLaserObj::OwnerID::PC); // レーザー発射
 		m_seLaser->Play(); // レーザー発射効果音
 
 	}
 
 }
-//-----------------------------------------------------------------------------   // -- 2019.3.5
-// ＰＣオブジェクトの更新 ダメージ状態（DAMAGE）
-//
-//　ダメージを受けたときの処理
-//
-//
-//   引数　なし
-//
-//-----------------------------------------------------------------------------
-void	CPcObj::UpdateDamage()
-{
-	MATRIX4X4 mTemp;
 
-	ObjectManager::FindGameObject<CBackForeProc>()->GetSprite()->DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, RGB(255, 255, 255), 1.0f); // 画面を一瞬白くフラッシュ
-
-	mTemp = XMMatrixTranslation(0, 0, -0.25f);	// バックする
-	m_mWorld = mTemp * m_mWorld;
-
-	m_nHp -= m_pHitObj->GetAtc();	// 攻撃を受けたダメージ
-	if (m_nHp <= 0)		// HPが０なので死亡へ
-	{
-		m_nHp = 0;
-		m_dwStatus = DEAD;		// HPが０なので死亡へ
-		m_AnimStatus.SetNum(eAnimNum_Die);	// 死亡モーションにする
-		m_nCnt1 = PC_DEADTIME;		// 死亡時間の設定
-	}
-	else {
-		m_nCnt1 = PC_FLASHTIME;   // 無敵状態の時間
-		m_dwStatus = FLASH;     // ダメージからの復帰処理を行う
-	}
-}
 //-----------------------------------------------------------------------------   // -- 2019.3.5
 // ＰＣオブジェクトの更新 死亡状態（DEAD）
 //
@@ -594,21 +608,23 @@ void	CPcObj::UpdateDead()
 		m_AnimStatus.playAnim = false;	// 一旦、アニメーションを止める
 		m_AnimStatus.animFrame = m_AnimStatus.endFrame - 1; // フレームエンドの一つ手前にする
 	}
-	if (--m_nCnt1 <= 0) // 死亡時間が終わったとき
+	m_recoverTimer -= Time::DeltaTime();
+	if (m_recoverTimer <= 0) // 死亡時間が終わったとき
 	{
-		m_pProc->AddNum(-1);	// ＰＣを一つ減らす
-		if (m_pProc->GetNum() <= 0)
+		m_remain--;
+		if (m_remain <= 0)
 		{
 			m_AnimStatus.playAnim = true;	// アニメーションを復活させる
-			GameDevice()->m_dwGameStatus = GAMEOVER;	// ゲームオーバーへ
+			SceneManager::ChangeScene("TitleScene");
+//			GameDevice()->m_dwGameStatus = GAMEOVER;	// ゲームオーバーへ
 		}
 		else {
 			// ゲームオーバーでないとき
 			m_AnimStatus.SetNum(eAnimNum_Idle);	// アニメーションをアイドル状態に戻す
 			m_AnimStatus.playAnim = true;	// アニメーションを復活させる
-			m_nHp = m_nMaxHp;
-			m_dwStatus = FLASH;     // 死亡からの復帰処理
-			m_nCnt1 = PC_DEADFLASHTIME;   // 無敵状態の時間
+			hp.current = hp.max;
+			m_status = Status::eFlash;     // 死亡からの復帰処理
+			m_recoverTimer = DEADFLASHTIME;   // 無敵状態の時間
 		}
 	}
 }

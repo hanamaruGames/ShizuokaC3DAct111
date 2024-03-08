@@ -23,39 +23,6 @@
 #include "MyImgui.h"
 #include "Macro.h"
 
-
-// ステータスタイプ
-#define  NONE				0x00000000
-#define  TITLE				0x00000001
-#define  STAGEDEMO  		0x00000002
-#define  GAMEMAIN			0x00000004
-#define  GAMEOVER			0x00000008
-#define  GAMECLEAR			0x00000010
-#define  GAMEEND			0x00000020
-
-#define  NORMAL				0x00000001
-#define  WAIT				0x00000002
-#define  DAMAGE				0x00000004
-#define  FLASH				0x00000008
-#define  DEAD				0x00000010
-
-// ステータスサブ
-#define  ATTACKNONE			0x00000001
-#define  ATTACKMOVE			0x00000002
-#define  ATTACKLASER		0x00000004
-#define  ATTACKCANNON		0x00000008
-#define  ATTACKBOM			0x00000010
-#define  ATTACKEARTH		0x00000020
-#define  ATTACKSWORD		0x00000040
-#define  ATTACKFLAME		0x00000080
-#define  ATTACKWAIT			0x00000100
-
-// オブジェクト区分
-#define  PC					0x00000001
-#define  NPC				0x00000002
-#define  ENM				0x00000004
-
-
 // --------------------------------------------
 class CMain;
 class CDirect3D;

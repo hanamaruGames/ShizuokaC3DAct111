@@ -13,8 +13,8 @@
 // ---------------------------------------------------------------------------
 CBackForeProc::CBackForeProc()
 {
-	m_pImageForegrd = new CSpriteImage(GameDevice()->m_pShader, _T("Data/Image/foregrd3.png")); // スプライトイメージのロード
-	m_pSprite       = new CSprite(GameDevice()->m_pShader); // スプライトの生成
+	m_pImageForegrd = new CSpriteImage(_T("Data/Image/foregrd3.png")); // スプライトイメージのロード
+	m_pSprite       = new CSprite(); // スプライトの生成
 
 }
 // ---------------------------------------------------------------------------
@@ -36,24 +36,20 @@ CBackForeProc::~CBackForeProc()
 //------------------------------------------------------------------------
 void CBackForeProc::Draw()
 {
-	float h = 0;
-	TCHAR str[256] = { 0 };
-	int   DestX, DestY;
+	int DestX = 10;
+	int DestY = 10;
 
 	CPcProc* pPc = ObjectManager::FindGameObject<CPcProc>();
 	// ステータスバーの表示
-	h = (float)pPc->GetPcObjPtr()->GetHp() / pPc->GetPcObjPtr()->GetMaxHp();
+	float h = (float)pPc->Obj()->HpNow() / pPc->Obj()->HpMax();
 	if (h < 0) h = 0;
-
-	DestX = 10;
-	DestY = 10;
 	m_pSprite->Draw(m_pImageForegrd, DestX, DestY, 0, 0, 213, 31);
 	m_pSprite->Draw(m_pImageForegrd, DestX + 59, DestY + 6, 59, 32, (DWORD)(144 * h), 6);
 
 	// ＨＰとＰＣ残数の表示
-	_stprintf_s(str, _T("%d"), pPc->GetNum());
+	char str[256] = { 0 };
+	sprintf_s<256>(str, "%d", pPc->Obj()->Remain());
 	GameDevice()->m_pFont->Draw(DestX + 6, DestY + 15, str, 16, RGB(255, 0, 0));
-	_stprintf_s(str, _T("%06d"), pPc->GetPcObjPtr()->GetHp());
+	sprintf_s<256>(str, "%06d", pPc->Obj()->HpNow());
 	GameDevice()->m_pFont->Draw(DestX + 26, DestY + 16, str, 12, RGB(0, 0, 0));
-
 };

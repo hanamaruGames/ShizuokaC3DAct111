@@ -86,7 +86,7 @@ HRESULT CGameMain::Init()
 {
 	// ＣＯＭの初期化
 	//CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-	CoInitialize( NULL );
+	CoInitialize(nullptr);
 
 	// Direct3Dの初期化
 	m_pD3D = new CDirect3D;
@@ -128,7 +128,6 @@ HRESULT CGameMain::Init()
 
 	// ----------------------------------------------------------------------------------------
 	// 変数の初期化
-	m_dwGameStatus = GAMEMAIN;
 	m_vLightDir = normalize( VECTOR3(0.8f, 1, -1) );  // 光源座標の初期値。正規化する
 
 	// プロジェクショントランスフォーム（射影変換）の初期値
@@ -161,13 +160,12 @@ void CGameMain::Update()
 
 	if (m_pDI->CheckKey(KD_TRG, DIK_F4))  ChangeScreenMode();   // フルスクリーンの切り替え       // -- 2018.12.14
 
-	switch (m_dwGameStatus)
-	{
-	case GAMEEND:			// ゲーム終了
-		PostQuitMessage(0);
-		break;
-
-	}
+//	switch (m_dwGameStatus)
+//	{
+//	case GAMEEND:			// ゲーム終了
+//		PostQuitMessage(0);
+//		break;
+//	}
 	SceneManager::Update();
 	ObjectManager::Update();
 }

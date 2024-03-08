@@ -9,6 +9,7 @@
 //																	FbxMesh.cpp
 //=============================================================================
 #include "FbxMesh.h"
+#include "GameMain.h"
 
 //------------------------------------------------------------------------
 //
@@ -1436,6 +1437,11 @@ void CFbxMesh::RenderDisplace(const MATRIX4X4& mWorld, const MATRIX4X4& mView, c
 		ANIMATION_STATUS animStatus;
 		RenderDisplaceSkin(animStatus, mWorld, mView, mProj, vLight, vEye);
 	}
+}
+
+void CFbxMesh::Render(ANIMATION_STATUS& animStatus, const MATRIX4X4& mWorld)
+{
+	Render(animStatus, mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
 }
 
 //------------------------------------------------------------------------

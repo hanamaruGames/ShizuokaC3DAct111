@@ -19,6 +19,7 @@ protected:
 	int                      m_nKindNo;			// 手に持つアイテムの種類(1:剣　2:銃)
 	CFbxMesh* m_pMesh;			// Fbxメッシュ(プロシージャではなくオブジェクトにメッシュを持たせる)
 	VECTOR3                  m_vOffset;			// 銃口までのオフセット（銃のみ）
+	int m_dwObjNo;
 public:
 	void Init();
 	bool Disp(MATRIX4X4 mHold, BASEHOLDITEM HoldItem);
