@@ -20,11 +20,8 @@
 #include "XAudio.h"
 #include "Dinput.h"
 #include "Sprite3D.h"
-#include "Collision.h"
-#include "Displace.h"
-#include "BBox.h"
-#include "BaseProc.h"
 #include "MyImgui.h"
+#include "Macro.h"
 
 
 // ステータスタイプ
@@ -61,19 +58,12 @@
 
 // --------------------------------------------
 class CMain;
-class CShader;
-class CSpriteImage;
-class CSprite;
+class CDirect3D;
+class CXAudio;
+class CDirectInput;
 class CFontTexture;
-class CCollision;
-class CWave;
-class CBBox;
+class CShader;
 class CFbxMeshCtrl;
-
-class CBaseObj;
-class CBaseProc;
-
-CGameMain* GameDevice();
 
 // --------------------------------------------------------------------------------------------------
 //  ゲームメインクラス
@@ -98,14 +88,6 @@ public:
 	MATRIX4X4       m_mView;
 	MATRIX4X4       m_mProj;
 	VECTOR3         m_vLightDir;	//ディレクショナルライトの方向
-
-	// サウンド
-	CXAudioSource*   m_pSeLazer;
-	CXAudioSource*   m_pSeNitro;
-	CXAudioSource*   m_pSeDead;
-	CXAudioSource*   m_pSeFire;
-	CXAudioSource*   m_pBgm1;
-
 public:
 	// メソッド
 	CGameMain(CMain* pMain);
@@ -121,4 +103,4 @@ public:
 
 };
 
-
+CGameMain* GameDevice();

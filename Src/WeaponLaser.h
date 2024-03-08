@@ -29,11 +29,13 @@ protected:
 public:
 	bool Start(MATRIX4X4, DWORD dwOwner) override;
 	void Update() override;
-	void Render();
+	void Draw() override;
 
 	// アクセス関数
 	CWeaponLaserObj(CBaseProc* pProc);	// コンストラクタ        // -- 2022.2.16
 	virtual	~CWeaponLaserObj();
+
+	CXAudioSource* m_pSeDead;
 };
 // --------------------------------------------------------------------
 //武器　レーザー　プロシージャクラス

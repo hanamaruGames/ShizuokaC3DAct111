@@ -8,8 +8,9 @@
 #define _CRTDBG_MAPALLOC
 #include <crtdbg.h>
 #include <locale.h>
+#pragma warning(disable : 28251)
 
-#include "Main.h"
+#include "GameMain.h"
 
 
 //グローバル変数(コールバック関数のため必要)
@@ -95,7 +96,7 @@ CMain::CMain()
 {
 	ZeroMemory(this, sizeof(CMain));
 
-	m_bLoopFlag = true;		// FALSEになると、ループを抜けてプログラム終了
+	m_bLoopFlag = true;		// falseになると、ループを抜けてプログラム終了
 	m_MainLoopTime = 1000000.0 / 60;  // ループスピード 1/60Sec(マイクロ秒1000000.0/60)
 	//m_MainLoopTime = 0;  // ループスピード 1/60Sec(マイクロ秒1000000.0/60)
 
@@ -148,7 +149,7 @@ HRESULT CMain::InitWindow(HINSTANCE hInstance,
 
 	// ウィンドウの大きさを取得(メニューは含めない)
 	RECT rc = { 0, 0, iWidth, iHeight };
-	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, false);
 
 	// ウィンドウの作成(ウィンドウモード)
 	m_hWnd = CreateWindowEx(0, WindowName, WindowName,
@@ -250,7 +251,7 @@ void CMain::MessageLoop()
 		do {										// ループ時間待機（最低一度は通る）
 			if (!MessageProcess(&msg))				// メッセージの処理
 			{
-				m_bLoopFlag = FALSE;				// WM_QUIT メッセージを取得した場合
+				m_bLoopFlag = false;				// WM_QUIT メッセージを取得した場合
 				break;
 			}
 			QueryPerformanceCounter(&EndTime);		// ループ終了時間
@@ -288,7 +289,7 @@ void CMain::MessageLoop()
 //
 //	戻り値 bool
 //     WM_QUIT 以外のメッセージを取得した場合:true
-//     WM_QUIT メッセージを取得した場合      :FALSE
+//     WM_QUIT メッセージを取得した場合      :false
 //
 //------------------------------------------------------------------------
 bool CMain::MessageProcess(MSG* pMsg)
@@ -300,9 +301,9 @@ bool CMain::MessageProcess(MSG* pMsg)
 		DispatchMessage(pMsg);
 	}
 
-	if (pMsg->message == WM_QUIT || m_bLoopFlag == FALSE)
+	if (pMsg->message == WM_QUIT || m_bLoopFlag == false)
 	{
-		return FALSE;
+		return false;
 	}
 	else {
 		return true;

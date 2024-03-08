@@ -3,9 +3,8 @@
 //		ÇbÇRÇcÇ`ÇÉÇîÇPÇPÇPÅ@Å@Å@Å@Å@Å@                 ver 3.2        2023.1.31
 //		ëOåiÅEîwåi							                   BackFore.cpp
 //=============================================================================
-#include  "BackFore.h"
-#include  "Playchar.h"
-
+#include "BackFore.h"
+#include "Playchar.h"
 
 //============================================================================
 //
@@ -35,7 +34,7 @@ CBackForeProc::~CBackForeProc()
 //	ëOåiÅEîwåiÉvÉçÉVÅ[ÉWÉÉÇÃçXêV	
 //
 //------------------------------------------------------------------------
-void CBackForeProc::Update()
+void CBackForeProc::Draw()
 {
 	float h = 0;
 	TCHAR str[256] = { 0 };

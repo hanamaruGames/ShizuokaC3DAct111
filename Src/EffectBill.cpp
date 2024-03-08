@@ -187,7 +187,7 @@ HRESULT CEffectBillProc::SetSrc(BILLBOARDBASE* pBillBase)
 //
 //	戻り値 bool
 //		true	= 正常
-//		FALSE	= 異常
+//		false	= 異常
 //
 //------------------------------------------------------------------------
 bool CEffectBillProc::Start(VECTOR3 vPos)
@@ -205,7 +205,7 @@ bool CEffectBillProc::Start(VECTOR3 vPos)
 //
 //	戻り値 bool
 //		true	= 正常
-//		FALSE	= 異常
+//		false	= 異常
 //
 //------------------------------------------------------------------------
 bool CEffectBillProc::Start(int nBillIdx, VECTOR3 vPos)
@@ -218,7 +218,7 @@ bool CEffectBillProc::Start(int nBillIdx, VECTOR3 vPos)
 			return true;
 		}
 	}
-	return FALSE;
+	return false;
 };
 
 
@@ -266,7 +266,7 @@ CEffectBillObj::~CEffectBillObj()
 //------------------------------------------------------------------------
 void CEffectBillObj::Init()
 {
-	m_bActive = FALSE;
+	m_bActive = false;
 }
 
 //------------------------------------------------------------------------
@@ -290,12 +290,12 @@ BILLBOARDBASE* CEffectBillObj::GetBillArrayPtr()
 //
 //	戻り値 bool
 //		true      表示継続
-//		FALSE     表示終了
+//		false     表示終了
 //
 //------------------------------------------------------------------------
 bool CEffectBillObj::Start(int nBillIdx, VECTOR3 vPos)
 {
-	if (m_bActive) return FALSE;  // すでに開始中
+	if (m_bActive) return false;  // すでに開始中
 
 	m_bActive = true;
 	m_nBillIdx = nBillIdx;   // ビルボード構造体配列の要素番号
@@ -323,14 +323,17 @@ void CEffectBillObj::Update()
 
 	if (dwIdx >= GetBillArrayPtr()->m_dwNumX * GetBillArrayPtr()->m_dwNumY)	// パターンの最後に達したとき
 	{
-		m_bActive = FALSE;
+		m_bActive = false;
 		return;
 	}
 
 	// アニメーションのためのテクスチャオフセットを設定する
 	m_vUVOffset.x = (float)(dwIdx % GetBillArrayPtr()->m_dwNumX * GetBillArrayPtr()->m_dwSrcWidth);   // Ｘ方向の変位
 	m_vUVOffset.y = (float)(dwIdx / GetBillArrayPtr()->m_dwNumX * GetBillArrayPtr()->m_dwSrcHeight);  // Ｙ方向の変位
+}
 
+void CEffectBillObj::Draw()
+{
 	// レンダリング
 	if (GetBillArrayPtr()->m_nDrawFlag == 0)
 	{
@@ -342,19 +345,20 @@ void CEffectBillObj::Update()
 		RenderMesh();
 	}
 }
+
 //------------------------------------------------------------------------
 //
 //	ビルボードオブジェクトを画面にレンダリング	
 //
 //	戻り値 bool
 //		true      表示継続
-//		FALSE     表示終了
+//		false     表示終了
 //
 //------------------------------------------------------------------------
 bool CEffectBillObj::Render()
 {
 
-	if (!m_bActive) return FALSE;
+	if (!m_bActive) return false;
 
 	//ビルボードの、視点を向くワールドトランスフォームを求める
 	MATRIX4X4 mWorld = GetLookatMatrix(m_vPos, GameDevice()->m_vEyePt);

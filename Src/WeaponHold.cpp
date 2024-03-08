@@ -205,7 +205,7 @@ void CWeaponHoldObj::Init()
 		break;
 	}
 
-	m_bActive = FALSE;
+	m_bActive = false;
 	m_dwStatus = NORMAL;
 
 }
@@ -352,10 +352,7 @@ bool CWeaponHoldObj::Disp(MATRIX4X4 mHold, BASEHOLDITEM HoldItem)
 	m_mWorld = mOffset * mHold;     // 剣の位置のワールドマトリックス
 	if (m_pBBox) m_pBBox->m_mWorld = m_mWorld;   // バウンディングボックスのワールドマトリックスをセット
 
-	// レンダリング
-	Render();
-
-	m_bActive = FALSE;  // １回処理したら、消す
+	m_bActive = false;  // １回処理したら、消す
 
 	return true;
 }
@@ -378,8 +375,10 @@ void CWeaponHoldObj::Update()
 //     引数　　　なし
 //     戻り値　　なし
 // ---------------------------------------------------------------------------
-void CWeaponHoldObj::Render()
+void CWeaponHoldObj::Draw()
 {
+	if (!m_bActive)
+		return;
 
 	// 手に持つアイテムのレンダリング
 	if (m_pMesh) m_pMesh->Render(m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);

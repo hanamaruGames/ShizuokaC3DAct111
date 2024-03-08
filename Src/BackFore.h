@@ -6,7 +6,7 @@
 #pragma once
 #include "GameMain.h"
 #include "Object3D.h"
-
+#include "Sprite3D.h"
 
 // --------------------------------------------------------------------
 // 前景・背景　プロシージャクラス
@@ -20,7 +20,7 @@ protected:
 	CSprite*        m_pSprite;
 
 public:
-	void			Update() override;
+	void			Draw() override;
 	CSpriteImage*   GetImage() { return m_pImageForegrd; }
 	CSprite*        GetSprite() { return m_pSprite; }
 	CBackForeProc();	// コンストラクタ

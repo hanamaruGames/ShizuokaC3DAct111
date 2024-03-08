@@ -14,7 +14,9 @@
 //-----------------------------------------------------------------------------
 
 #include "Direct3D.h"
+#include "Macro.h"
 
+#pragma warning(disable : 6387)
 //------------------------------------------------------------------------
 //
 //	Direct3Dのコンストラクタ	
@@ -269,8 +271,8 @@ HRESULT CDirect3D::InitBlendState()
 	//pngファイル内にアルファ情報がある。アルファにより透過するよう指定している
 	D3D11_BLEND_DESC bd;
 	ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
-	bd.IndependentBlendEnable = FALSE;
-	bd.AlphaToCoverageEnable = FALSE;
+	bd.IndependentBlendEnable = false;
+	bd.AlphaToCoverageEnable = false;
 
 	bd.RenderTarget[0].BlendEnable = true;
 	bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
@@ -290,8 +292,8 @@ HRESULT CDirect3D::InitBlendState()
 
 	// 加算合成用ブレンドステート作成
 	ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
-	bd.IndependentBlendEnable = FALSE;
-	bd.AlphaToCoverageEnable = FALSE;
+	bd.IndependentBlendEnable = false;
+	bd.AlphaToCoverageEnable = false;
 
 	bd.RenderTarget[0].BlendEnable = true;
 	bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
@@ -370,7 +372,7 @@ void   CDirect3D::ClearRenderTarget(float ClearColor[])
 //	(設定したレンダーターゲットテクスチャ情報でＺバッファをＯＮ／ＯＦＦする)
 //
 //	引数
-//		bool bZbuf;    true:ＺバッファＯＮ  FALSE:ＺバッファＯＦＦ
+//		bool bZbuf;    true:ＺバッファＯＮ  false:ＺバッファＯＦＦ
 //
 //	戻り値
 //		なし

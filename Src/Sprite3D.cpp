@@ -9,7 +9,7 @@
 // ========================================================================================
 
 #include "Sprite3D.h"
-
+#pragma warning(disable : 6387)
 
 //------------------------------------------------------------------------
 //
@@ -445,8 +445,8 @@ void CSprite::Draw(const MATRIX4X4& mWorld)
 		cb.mW = XMMatrixTranspose(mWorld);
 
 		//ビューポートサイズを渡す（クライアント領域の横と縦）
-		cb.ViewPortWidth = m_pD3D->m_dwWindowWidth;
-		cb.ViewPortHeight = m_pD3D->m_dwWindowHeight;
+		cb.ViewPortWidth = (float)m_pD3D->m_dwWindowWidth;
+		cb.ViewPortHeight = (float)m_pD3D->m_dwWindowHeight;
 		cb.vUVOffset.x = (float)m_ofX / m_pImage->m_dwImageWidth;
 		cb.vUVOffset.y = (float)m_ofY / m_pImage->m_dwImageHeight;
 		cb.vColor = m_vDiffuse;                                         // -- 2020.1.24
@@ -578,12 +578,12 @@ void CSprite::DrawLine(const float& StartX, const float& StartY, const float& En
 		// 線の太さ分づらして表示するための処理
 		if (i % 2 == 0)
 		{
-			mWorld._41 = vNrm.x*0.8*i*0.5;
-			mWorld._42 = vNrm.y*0.8*i*0.5;
+			mWorld._41 = vNrm.x * 0.8f * i * 0.5f;
+			mWorld._42 = vNrm.y * 0.8f * i * 0.5f;
 		}
 		else {
-			mWorld._41 = -vNrm.x*0.8*i*0.5;
-			mWorld._42 = -vNrm.y*0.8*i*0.5;
+			mWorld._41 = -vNrm.x * 0.8f * i * 0.5f;
+			mWorld._42 = -vNrm.y * 0.8f * i * 0.5f;
 		}
 
 		//シェーダーのコンスタントバッファーに各種データを渡す
@@ -595,8 +595,8 @@ void CSprite::DrawLine(const float& StartX, const float& StartY, const float& En
 			cb.mW = XMMatrixTranspose(mWorld);
 
 			//ビューポートサイズを渡す（クライアント領域の横と縦）
-			cb.ViewPortWidth = m_pD3D->m_dwWindowWidth;
-			cb.ViewPortHeight = m_pD3D->m_dwWindowHeight;
+			cb.ViewPortWidth = (float)m_pD3D->m_dwWindowWidth;
+			cb.ViewPortHeight = (float)m_pD3D->m_dwWindowHeight;
 			cb.vUVOffset.x = 0;
 			cb.vUVOffset.y = 0;
 			cb.vColor = color;
@@ -707,8 +707,8 @@ void  CSprite::DrawRect(const float& posX, const float& posY, const DWORD& width
 		cb.mW = XMMatrixTranspose(XMMatrixTranslation(posX, posY, 0.0f));
 
 		//ビューポートサイズを渡す（クライアント領域の横と縦）
-		cb.ViewPortWidth = m_pD3D->m_dwWindowWidth;
-		cb.ViewPortHeight = m_pD3D->m_dwWindowHeight;
+		cb.ViewPortWidth = (float)m_pD3D->m_dwWindowWidth;
+		cb.ViewPortHeight = (float)m_pD3D->m_dwWindowHeight;
 		cb.vUVOffset.x = 0;
 		cb.vUVOffset.y = 0;
 		cb.vColor = color;
@@ -768,7 +768,7 @@ void CSprite::SetShader()
 	}
 
 	//Zバッファを無効化
-	m_pD3D->SetZBuffer(FALSE);              // -- 2019.4.19
+	m_pD3D->SetZBuffer(false);              // -- 2019.4.19
 
 }
 //------------------------------------------------------------------------
@@ -908,7 +908,7 @@ HRESULT CSprite::SetSrc3D(const float& fDestWidth, const float& fDestHeight, con
 //
 //	戻り値 bool
 //		true      表示継続
-//		FALSE     表示終了
+//		false     表示終了
 //
 //------------------------------------------------------------------------
 bool CSprite::Draw3D(CSpriteImage* pImage, const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const VECTOR2& vSize, const VECTOR2& vSrcPos, const VECTOR2& vSrcSize, const float& fAlpha)
@@ -936,13 +936,13 @@ bool CSprite::Draw3D(CSpriteImage* pImage, const VECTOR3& vPos, const MATRIX4X4&
 //
 //	戻り値 bool
 //		true      表示継続
-//		FALSE     表示終了
+//		false     表示終了
 //
 //------------------------------------------------------------------------
 bool CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const VECTOR2& vSize, const VECTOR2& vSrcPos, const VECTOR2& vSrcSize, const float& fAlpha)
 {
 	// イメージがないときは描画しない
-	if (m_pImage == nullptr ) return FALSE;
+	if (m_pImage == nullptr ) return false;
 
 	// 表示ビルボードの大きさのバーテックスバッファを作成する
 	SetSrc3D( vSize.x, vSize.y, (DWORD)vSrcPos.x, (DWORD)vSrcPos.y, (DWORD)vSrcSize.x, (DWORD)vSrcSize.y);
@@ -966,13 +966,13 @@ bool CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X
 //
 //	戻り値 bool
 //		true      表示継続
-//		FALSE     表示終了
+//		false     表示終了
 //
 //------------------------------------------------------------------------
 bool CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye)
 {
 	// イメージがなかったりバーテックスバッファが作成されていないときは描画しない
-	if (m_pImage == nullptr || m_pVertexBufferBillSprite == nullptr) return FALSE;
+	if (m_pImage == nullptr || m_pVertexBufferBillSprite == nullptr) return false;
 
 	//ビルボードの、視点を向くワールドトランスフォームを求める
 	MATRIX4X4 mWorld = GetLookatMatrix(vPos, vEye);
@@ -1056,7 +1056,7 @@ bool CSprite::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X
 //
 //	戻り値 bool
 //		true      表示継続
-//		FALSE     表示終了
+//		false     表示終了
 //
 //------------------------------------------------------------------------
 bool CSprite::DrawLine3D(const VECTOR3& vStart, const VECTOR3& vEnd, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const DWORD& colorABGR, const float& fAlpha)
@@ -1091,7 +1091,7 @@ bool CSprite::DrawLine3D(const VECTOR3& vStart, const VECTOR3& vEnd, const MATRI
 		if (FAILED(m_pD3D->m_pDevice->CreateBuffer(&bd, &InitData, &m_pVertexBufferLine)))
 		{
 			MessageBox(0, _T("Sprite3D.cpp バーテックスバッファーLINE 作成失敗"), nullptr, MB_OK);
-			return FALSE;
+			return false;
 		}
 	}
 	else {
@@ -1390,8 +1390,8 @@ void CFontTexture::Draw(MATRIX4X4 mWorld, TCHAR* szText, int fontsize, DWORD col
 		cb.mW = XMMatrixTranspose(mWorld);
 
 		//ビューポートサイズを渡す（クライアント領域の横と縦）
-		cb.ViewPortWidth = m_pD3D->m_dwWindowWidth;
-		cb.ViewPortHeight = m_pD3D->m_dwWindowHeight;
+		cb.ViewPortWidth = (float)m_pD3D->m_dwWindowWidth;
+		cb.ViewPortHeight = (float)m_pD3D->m_dwWindowHeight;
 		cb.vUVOffset.x = 0;
 		cb.vUVOffset.y = 0;
 		cb.vColor = VECTOR4(1, 1, 1, 1);                    // -- 2020.1.24
@@ -1454,7 +1454,7 @@ void CFontTexture::SetShader()
 	m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 
 	//Zバッファを無効化
-	m_pD3D->SetZBuffer(FALSE);              // -- 2019.4.19
+	m_pD3D->SetZBuffer(false);              // -- 2019.4.19
 
 }
 //------------------------------------------------------------------------
@@ -1533,7 +1533,7 @@ void CFontTexture::CreateTex(const DWORD&  dwKbn, const float&  fDestWidth, cons
 
 	// 文字列グラフィックの生成
 
-	DWORD     dwTextlen = _tcslen(text);    // 文字数（バイト数ではない）  // -- 2018.12.28
+	DWORD     dwTextlen = (DWORD)_tcslen(text);    // 文字数（バイト数ではない）  // -- 2018.12.28
 	DWORD     dwTextHeight = 0;
 	DWORD     dwTextWidth = 0;
 	DWORD     dwAllWidth = 0;
@@ -1581,9 +1581,9 @@ void CFontTexture::CreateTex(const DWORD&  dwKbn, const float&  fDestWidth, cons
 			(pFontData + i)->ptr = new BYTE[size];
 			GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, &(pFontData + i)->GM, size, (pFontData + i)->ptr, &Mat);
 		}
-		if (dwTextWidth < (pFontData + i)->GM.gmCellIncX) dwTextWidth = (pFontData + i)->GM.gmCellIncX;  // １文字の幅
-		if (dwTextHeight < (pFontData + i)->TM.tmHeight) dwTextHeight = (pFontData + i)->TM.tmHeight;    // １文字の高さ
-		if (dwTextHeight < (pFontData + i)->GM.gmBlackBoxY) dwTextHeight = (pFontData + i)->GM.gmBlackBoxY;    // １文字の高さとフォントビットマップの高さの大きい方    // -- 2022.11.8
+		if ((int)dwTextWidth < (pFontData + i)->GM.gmCellIncX) dwTextWidth = (pFontData + i)->GM.gmCellIncX;  // １文字の幅
+		if ((int)dwTextHeight < (pFontData + i)->TM.tmHeight) dwTextHeight = (pFontData + i)->TM.tmHeight;    // １文字の高さ
+		if ((int)dwTextHeight < (pFontData + i)->GM.gmBlackBoxY) dwTextHeight = (pFontData + i)->GM.gmBlackBoxY;    // １文字の高さとフォントビットマップの高さの大きい方    // -- 2022.11.8
 		dwAllWidth += (pFontData + i)->GM.gmCellIncX;				// 文字列全体の長さ（ドット長）
 		dwAllWidth2 += (pFontData + i)->GM.gmBlackBoxX + (4 - ((pFontData + i)->GM.gmBlackBoxX % 4)) % 4; // フォントビットマップの幅  // -- 2022.11.8
 	}
@@ -1800,13 +1800,13 @@ HRESULT CFontTexture::CreateVB3D(const float& fDestWidth, const float& fDestHeig
 //
 //	戻り値 bool
 //		true      表示継続
-//		FALSE     表示終了
+//		false     表示終了
 //
 //------------------------------------------------------------------------
 bool CFontTexture::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MATRIX4X4& mProj, const VECTOR3& vEye, const TCHAR* szText, const VECTOR2& vSize, const DWORD& colorABGR, const float& fAlpha, const TCHAR* szFontName)
 {
 
-	if (szText[0] == _T('\0')) return FALSE;  // 文字列がないときは描画しない
+	if (szText[0] == _T('\0')) return false;  // 文字列がないときは描画しない
 
 	//
 	// 前回までの「文字列や色、サイズ」が１画面分・発生順にm_TextData配列に入っているので
@@ -1816,7 +1816,7 @@ bool CFontTexture::Draw3D(const VECTOR3& vPos, const MATRIX4X4& mView, const MAT
 	// ②　文字列が異なる場合のみ、フォントテクスチャーの生成を行う
 	// 　　（フォントテクスチャーの生成処理は非常に重い処理なので）
 
-	DWORD fontsize = vSize.y * 100;
+	DWORD fontsize = (DWORD)vSize.y * 100;
 
 	if (m_TextData[m_Idx].m_dwKbn != 1 || m_TextData[m_Idx].m_szText == nullptr || _tcscmp(m_TextData[m_Idx].m_szText, szText) != 0 ||
 		m_TextData[m_Idx].m_iFontsize != fontsize || m_TextData[m_Idx].m_dwColor != colorABGR || m_TextData[m_Idx].m_fAlpha != fAlpha)  // 作成済みの文字列と同一か？

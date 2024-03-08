@@ -20,17 +20,19 @@ PlayScene::PlayScene()
 	pMap->LoadMap(1);
 
 	// ‚a‚f‚l‚ÌÄ¶
-	GameDevice()->m_pBgm1->Play(AUDIO_LOOP);
+	m_bgm = new CXAudioSource(_T("Data/Sound/DO_HT204.WAV"));
+	m_bgm->Play(AUDIO_LOOP);
 }
 
 PlayScene::~PlayScene()
 {
+	SAFE_DELETE(m_bgm);
 }
 
 void PlayScene::Update()
 {
 	if (GameDevice()->m_pDI->CheckKey(KD_TRG, DIK_T)) {
-		GameDevice()->m_pBgm1->Stop();
+		m_bgm->Stop();
 		SceneManager::ChangeScene("TitleScene");
 	}
 }

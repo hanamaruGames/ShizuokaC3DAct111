@@ -40,7 +40,7 @@ public:
 
 	bool Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal);
 	void Update() override;
-	void Render();
+	void Draw() override;
 	void RenderParticle(MATRIX4X4 W, MATRIX4X4 V, MATRIX4X4 P);
 
 	PARTICLEBASE* GetPartArrayPtr();

@@ -39,7 +39,7 @@ public:
 
 	bool Start(int BillIdx, VECTOR3 vPos);
 	void Update() override;
-	bool Render();
+	void Draw() override;
 
 	BILLBOARDBASE* GetBillArrayPtr();
 

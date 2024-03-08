@@ -15,4 +15,5 @@ void Object3D::Update()
 
 void Object3D::Draw()
 {
+	CBaseProc::Draw();
 }

@@ -191,6 +191,8 @@ CPcObj::CPcObj(CBaseProc* pProc) : CBaseObj(pProc)
 
 	m_nHp = m_nMaxHp;
 
+	m_seLaser = new CXAudioSource(_T("Data/Sound/Lazer.wav"), 10);
+
 }
 // ---------------------------------------------------------------------------
 //
@@ -199,7 +201,7 @@ CPcObj::CPcObj(CBaseProc* pProc) : CBaseObj(pProc)
 // ---------------------------------------------------------------------------
 CPcObj::~CPcObj() 
 {
-	;
+	SAFE_DELETE(m_seLaser);
 }
 
 // ---------------------------------------------------------------------------
@@ -263,10 +265,6 @@ void	CPcObj::Update()
 		m_fJumpTime = 0.0f;
 	}
 
-	//レンダリング
-	GetMesh()->Render(m_AnimStatus, m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
-	//GetMesh()->RenderDisplace(m_AnimStatus, m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
-
 	// バウンディングボックス
 	m_pBBox->m_mWorld = m_mWorld;
 	//m_pBBox->m_mWorld = GetMesh()->GetFrameMatrices(m_AnimStatus, m_mWorld, 0);  // ルートボーン
@@ -287,6 +285,13 @@ void	CPcObj::Update()
 	//GameDevice()->m_pFont->Draw3D(vPcPos, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vEyePt, _T("プレイキャラクター"), VECTOR2(0.5f, 0.2f), RGB(0, 0, 255), 1.0f, _T("HGP創英角ﾎﾟｯﾌﾟ体"));
 
 
+}
+
+void CPcObj::Draw()
+{
+	//レンダリング
+	GetMesh()->Render(m_AnimStatus, m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
+	//GetMesh()->RenderDisplace(m_AnimStatus, m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, GameDevice()->m_vLightDir, GameDevice()->m_vEyePt);
 }
 
 //-----------------------------------------------------------------------------   // -- 2019.3.5
@@ -332,7 +337,7 @@ void	CPcObj::UpdateNormalMove()
 
 	MATRIX4X4 mYaw;  // ＰＣＹ軸回転マトリックス
 	MATRIX4X4 mPos;  // ＰＣ移動マトリックス
-	bool	  bKeyPush = FALSE;// キーを押したかどうかのチェック
+	bool	  bKeyPush = false;// キーを押したかどうかのチェック
 
 	// キーボード、マウス、ジョイスティック操作
 
@@ -351,7 +356,7 @@ void	CPcObj::UpdateNormalMove()
 	{
 		if (m_bSide)
 		{
-			m_bSide = FALSE;   // 左右移動の時、方向を変える
+			m_bSide = false;   // 左右移動の時、方向を変える
 		}
 		else {
 			m_bSide = true;    // 左右移動の時、方向を変えない
@@ -535,7 +540,7 @@ void	CPcObj::UpdateNormalAttack()
 		}
 		CWeaponLaserProc* pLaser = ObjectManager::FindGameObject<CWeaponLaserProc>();
 		pLaser->Start(mGun, vOffset, m_mWorld, PC); // レーザー発射
-		GameDevice()->m_pSeLazer->Play(); // レーザー発射効果音
+		m_seLaser->Play(); // レーザー発射効果音
 
 	}
 

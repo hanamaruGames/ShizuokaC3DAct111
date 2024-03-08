@@ -317,6 +317,9 @@
     <ClInclude Include="Src\Object3D.h">
       <Filter>ソースファイル\05_FrameWork</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Macro.h">
+      <Filter>ソースファイル\01_ゲームメイン</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Main.cpp">

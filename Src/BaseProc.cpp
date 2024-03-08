@@ -5,7 +5,11 @@
 //		基本プロシージャ・基本オブジェクトクラス処理
 //																BaseProc.cpp
 //=============================================================================
-#include  "BaseProc.h"
+#include "BaseProc.h"
+#include "BBox.h"
+#include "FbxMesh.h"
+#include "FbxMeshAnim.h"
+#include "GameMain.h"
 
 //------------------------------------------------------------------------
 //
@@ -23,15 +27,24 @@ CBaseProc::~CBaseProc()
 		SAFE_DELETE(m_pMeshArray[i]);
 	}
 	// プロシージャポインタ配列の削除
-	for (DWORD i = 0; i < m_pProcArray.size(); i++)
-	{
-		SAFE_DELETE(m_pProcArray[i]);
-	}
+//	for (DWORD i = 0; i < m_pProcArray.size(); i++)
+//	{
+//		SAFE_DELETE(m_pProcArray[i]);
+//	}
 	// オブジェクトポインタ配列の削除
 	for (DWORD i = 0; i < m_pObjArray.size(); i++)
 	{
 		SAFE_DELETE(m_pObjArray[i]);
 	}
+}
+void CBaseProc::Draw()
+{
+	for (DWORD i = 0; i < m_pObjArray.size(); i++)
+	{
+		m_pObjArray[i]->Draw();          // オブジェクトの更新処理
+	}
+
+
 }
 //------------------------------------------------------------------------
 //
@@ -54,10 +67,10 @@ void CBaseProc::UpdateAll()
 	}
 
 	// 下位のプロシージャポインタ配列の更新
-	for (DWORD i = 0; i < m_pProcArray.size(); i++)
-	{
-		m_pProcArray[i]->UpdateAll();      // 下位のプロシージャの全体更新処理（再帰処理）
-	}
+//	for (DWORD i = 0; i < m_pProcArray.size(); i++)
+//	{
+//		m_pProcArray[i]->UpdateAll();      // 下位のプロシージャの全体更新処理（再帰処理）
+//	}
 
 }
 //============================================================================   // -- 2022.12.20
@@ -108,7 +121,7 @@ BASEHOLDITEM  CBaseProc::GetHoldItem(int idx)
 //   VECTOR3 vOld       相手の一つ前の位置
 //
 //   戻り値　bool
-//           true:ヒットしたとき       FALSE：ヒットしていないとき
+//           true:ヒットしたとき       false：ヒットしていないとき
 //
 //   判定結果　　
 //           ヒットしたときは　　　　相手と自分のオブジェクトのm_pHitObjとm_vHitPosとm_vHitNormalに値をセット
@@ -118,7 +131,7 @@ BASEHOLDITEM  CBaseProc::GetHoldItem(int idx)
 //-----------------------------------------------------------------------------
 bool   CBaseProc::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 {
-	bool  bRet = FALSE;
+	bool  bRet = false;
 
 	// 全ての相手とのあたり判定
 	for (DWORD i = 0; i < m_pObjArray.size(); i++)  // 全ての相手オブジェクト
@@ -127,11 +140,11 @@ bool   CBaseProc::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 		if (bRet) return bRet;
 	}
 
-	for (DWORD i = 0; i < m_pProcArray.size(); i++)  // 下位の相手プロシージャ
-	{
-		bRet = m_pProcArray[i]->Hitcheck(pOtherObj, vNow, vOld);  // 相手プロシージャとのあたり判定
-		if (bRet) return bRet;
-	}
+//	for (DWORD i = 0; i < m_pProcArray.size(); i++)  // 下位の相手プロシージャ
+//	{
+//		bRet = m_pProcArray[i]->Hitcheck(pOtherObj, vNow, vOld);  // 相手プロシージャとのあたり判定
+//		if (bRet) return bRet;
+//	}
 
 	return bRet;
 }
@@ -146,7 +159,7 @@ bool   CBaseProc::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 //   CBBox*    pAttackBBox    対象となるバウンディングボックス
 //
 //   戻り値　bool
-//           true:ヒットしたとき       FALSE：ヒットしていないとき
+//           true:ヒットしたとき       false：ヒットしていないとき
 //
 //   判定結果　　
 //           ヒットしたときは　　　　相手と自分のオブジェクトのm_pHitObjとm_vHitPosとm_vHitNormalに値をセット
@@ -156,7 +169,7 @@ bool   CBaseProc::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 //-----------------------------------------------------------------------------
 bool   CBaseProc::Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack)
 {
-	bool  bRet = FALSE;
+	bool  bRet = false;
 
 	// 全ての相手とのあたり判定
 	for (DWORD i = 0; i < m_pObjArray.size(); i++)  // 全ての相手オブジェクト
@@ -165,11 +178,11 @@ bool   CBaseProc::Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack)
 		if (bRet) return bRet;
 	}
 
-	for (DWORD i = 0; i < m_pProcArray.size(); i++)  // 下位の相手プロシージャ
-	{
-		bRet = m_pProcArray[i]->Hitcheck(pOtherObj, pBBoxAtack);  // 相手プロシージャとのあたり判定
-		if (bRet) return bRet;
-	}
+//	for (DWORD i = 0; i < m_pProcArray.size(); i++)  // 下位の相手プロシージャ
+//	{
+//		bRet = m_pProcArray[i]->Hitcheck(pOtherObj, pBBoxAtack);  // 相手プロシージャとのあたり判定
+//		if (bRet) return bRet;
+//	}
 
 	return bRet;
 }
@@ -188,16 +201,16 @@ void  CBaseProc::SetNonActive()
 	// 敵のオブジェクトポインタ配列の探索
 	for (DWORD i = 0; i < m_pObjArray.size(); i++)
 	{
-		m_pObjArray[i]->SetActive(FALSE);   // アクティブフラグをFALSEに
+		m_pObjArray[i]->SetActive(false);   // アクティブフラグをfalseに
 		m_pObjArray[i]->ResetStatus();      // 各種ステータスをリセット
 	}
 
 	// 下位のプロシージャポインタ配列の探索
-	for (DWORD i = 0; i < m_pProcArray.size(); i++)
-	{
-		m_pProcArray[i]->SetMaxWaitTime();    // ウェイトタイムをセットする
-		m_pProcArray[i]->SetNonActive();      // 下位のプロシージャの処理（再帰処理）
-	}
+//	for (DWORD i = 0; i < m_pProcArray.size(); i++)
+//	{
+//		m_pProcArray[i]->SetMaxWaitTime();    // ウェイトタイムをセットする
+//		m_pProcArray[i]->SetNonActive();      // 下位のプロシージャの処理（再帰処理）
+//	}
 }
 
 
@@ -212,7 +225,7 @@ CBaseObj::CBaseObj(CBaseProc* pProc)
 {
 	m_pProc  = pProc;					// 親のプロシージャ
 	ResetStatus();						// 各種ステータスをリセット
-	m_bActive = FALSE;					// true:表示  FALSE:非表示
+	m_bActive = false;					// true:表示  false:非表示
 	m_dwObjID = pProc->GetProcID();		// オブジェクトＩＤ
 	m_dwObjNo = (DWORD)pProc->GetObjArrayPtr().size();	// オブジェクトＮＯ  プッシュバック前の配列サイズがオブジェクトＮＯとなる
 	m_nMeshIdx = 0;						// メッシュ配列の添字           // -- 2022.12.20
@@ -283,7 +296,7 @@ BASEHOLDITEM CBaseObj::GetHoldItem()
 //   VECTOR3 vOld     相手の一つ前の位置
 //
 //   戻り値　bool
-//           true:ヒットしたとき       FALSE：ヒットしていないとき
+//           true:ヒットしたとき       false：ヒットしていないとき
 //
 //   判定結果　　
 //           ヒットしたときは　　　　相手と敵のオブジェクトのm_pHitObjとm_vHitPosとm_vHitNormalに値をセット
@@ -293,7 +306,7 @@ BASEHOLDITEM CBaseObj::GetHoldItem()
 //-----------------------------------------------------------------------------
 bool   CBaseObj::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 {
-	bool bRet = FALSE;
+	bool bRet = false;
 	VECTOR3 vHit = VECTOR3(0.0f, 0.0f, 0.0f), vNrm = VECTOR3(0.0f, 1.0f, 0.0f);
 
 	// バウンディングボックスと移動直線（Lay）による判定
@@ -322,7 +335,7 @@ bool   CBaseObj::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 //   CBBox*      pBBoxAtack   バウンディングボックスの判定をするとき
 //
 //   戻り値　bool
-//           true:ヒットしたとき       FALSE：ヒットしていないとき
+//           true:ヒットしたとき       false：ヒットしていないとき
 //
 //   判定結果　　
 //           ヒットしたときは　　　　相手と敵のオブジェクトのm_pHitObjとm_vHitPosとm_vHitNormalに値をセット
@@ -332,7 +345,7 @@ bool   CBaseObj::Hitcheck(CBaseObj* pOtherObj, VECTOR3 vNow, VECTOR3 vOld)
 //-----------------------------------------------------------------------------
 bool   CBaseObj::Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack)
 {
-	bool bRet = FALSE;
+	bool bRet = false;
 	VECTOR3 vHit = VECTOR3(0.0f, 0.0f, 0.0f), vNrm = VECTOR3(0.0f, 1.0f, 0.0f);
 
 	// バウンディングボックス同士による判定
@@ -361,12 +374,12 @@ bool   CBaseObj::Hitcheck(CBaseObj* pOtherObj, CBBox* pBBoxAtack)
 //               float fRotSpeed   :一回の回転スピード。大きいほど鋭角で曲がる(省略値は3.0f)
 //               float fNearLimit  :目的地との近接リミット。この半径範囲内に入ったとき到着とする(省略値は0.1f)
 //
-//   戻り値　：　true：目的地に達した　　FALSE:まだ目的地に達していない
+//   戻り値　：　true：目的地に達した　　false:まだ目的地に達していない
 //               処理後、m_vPosUp, m_vRotUpに移動量が設定される
 //-----------------------------------------------------------------------------
 bool CBaseObj::TargetMove(VECTOR3 vTarget, float fSpeedIn, float fRotSpeed, float fNearLimit)
 {
-	bool ret = FALSE;
+	bool ret = false;
 	VECTOR3 vMove, vObjPos, vObjPosOld;
 	float fLen, fSpeed;
 
@@ -408,7 +421,7 @@ bool CBaseObj::TargetMove(VECTOR3 vTarget, float fSpeedIn, float fRotSpeed, floa
 		m_vPosUp.y = 0;
 		m_vPosUp.z = fSpeed;
 
-		ret = FALSE;    // まだ目的地に達していない
+		ret = false;    // まだ目的地に達していない
 	}
 
 	return ret;
@@ -517,14 +530,14 @@ CBaseObj*  CBaseObj::SetKeepOffset(CBaseProc* pProc)
 
 
 	// 下位のプロシージャ配列の探索
-	if (pTargetObj == nullptr)
-	{
-		for (DWORD i = 0; i < pProc->GetProcArrayPtr().size(); i++)
-		{
-			pTargetObj = SetKeepOffset(pProc->GetProcArrayPtr()[i]);      // 下位のプロシージャの処理（再帰処理）
-			if (pTargetObj) break;
-		}
-	}
+//	if (pTargetObj == nullptr)
+//	{
+//		for (DWORD i = 0; i < pProc->GetProcArrayPtr().size(); i++)
+//		{
+//			pTargetObj = SetKeepOffset(pProc->GetProcArrayPtr()[i]);      // 下位のプロシージャの処理（再帰処理）
+//			if (pTargetObj) break;
+//		}
+//	}
 
 	return pTargetObj;
 }

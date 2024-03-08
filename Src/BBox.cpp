@@ -448,7 +448,7 @@ bool CBBox::OBBCollisionLay( const VECTOR3&  vNow, const VECTOR3& vOld, VECTOR3*
 	bool	ret = false;
 	int		i;
 
-	VECTOR3  vVert[3], vFaceNorm;
+	VECTOR3 vFaceNorm;
 	float    fNowDist, fOldDist, fLayDist;
 	float    fLenMin = 9999999.0f;				// 交点と移動前点との距離の最小値
 
@@ -478,6 +478,7 @@ bool CBBox::OBBCollisionLay( const VECTOR3&  vNow, const VECTOR3& vOld, VECTOR3*
 	// バウンディングボックスの６面１２ポリゴンと直線との交差判定を行う
 	for (i = 0; i<12; i++)
 	{
+		VECTOR3 vVert[3] = { VECTOR3(0,0,0) };
 		// ３角形ポリゴンの頂点の値を得る
 		vVert[0] = pVertex[pIndex[i * 3 + 0]];
 		vVert[1] = pVertex[pIndex[i * 3 + 1]];
@@ -533,7 +534,7 @@ bool CBBox::OBBCollisionLay( const VECTOR3&  vNow, const VECTOR3& vOld, VECTOR3*
 //------------------------------------------------------------------------
 bool CBBox::OBBCollisionTri(const VECTOR3* pTri, const MATRIX4X4& mWorld, VECTOR3* vhit)
 {
-	VECTOR3 vTri[3];
+	VECTOR3 vTri[3] = { VECTOR3(0,0,0) };
 
 	// 三角形の頂点をワールド座標変換する
 	vTri[0] = XMVector3TransformCoord(*(pTri + 0), mWorld);
@@ -570,7 +571,7 @@ bool CBBox::OBBCollisionTri(const VECTOR3* pTri, VECTOR3* vhit)
 	MATRIX4X4 mWorldInv = XMMatrixInverse(nullptr, m_mWorld);
 
 	// 三角形にOBBのワールドマトリックスの逆行列を掛け合わせ、OBBのローカル座標系に変換する
-	VECTOR3 vT[3];
+	VECTOR3 vT[3] = { VECTOR3(0,0,0) };
 	vT[0] = XMVector3TransformCoord(*(pTri + 0), mWorldInv);
 	vT[1] = XMVector3TransformCoord(*(pTri + 1), mWorldInv);
 	vT[2] = XMVector3TransformCoord(*(pTri + 2), mWorldInv);
@@ -592,63 +593,63 @@ bool CBBox::OBBCollisionTri(const VECTOR3* pTri, VECTOR3* vhit)
 	// ＯＢＢのＸ軸（ワールド座標のＸ軸）と三角形の頂点０－頂点２軸で生成される外積を分離軸とする判定（a00）
 	p0 = vT[0].z * vT[1].y - vT[0].y * vT[1].z;
 	p2 = vT[2].z * (vT[1].y - vT[0].y) - vT[2].y * (vT[1].z - vT[0].z);
-	r = eY * fabs(f0.z) + eZ * fabs(f0.y);
+	r = eY * fabsf(f0.z) + eZ * fabsf(f0.y);
 	if (max(-max(p0, p2), min(p0, p2)) > r)
 		return  false;
 
 	// ＯＢＢのＸ軸（ワールド座標のＸ軸）と三角形の頂点０－頂点１軸で生成される外積を分離軸とする判定（a01）
 	p0 = vT[0].z * (vT[2].y - vT[1].y) - vT[0].y * (vT[2].z - vT[1].z);
 	p1 = vT[1].z * vT[2].y - vT[1].y * vT[2].z;
-	r = eY * fabs(f1.z) + eZ * fabs(f1.y);
+	r = eY * fabsf(f1.z) + eZ * fabsf(f1.y);
 	if (max(-max(p0, p1), min(p0, p1)) > r)
 		return  false;
 
 	// ＯＢＢのＸ軸（ワールド座標のＸ軸）と三角形の頂点１－頂点２軸で生成される外積を分離軸とする判定（a02）
 	p1 = vT[1].z * (vT[0].y - vT[2].y) - vT[1].y * (vT[0].z - vT[2].z);
 	p2 = vT[2].z * vT[0].y - vT[2].y * vT[0].z;
-	r = eY * fabs(f2.z) + eZ * fabs(f2.y);
+	r = eY * fabsf(f2.z) + eZ * fabsf(f2.y);
 	if (max(-max(p1, p2), min(p1, p2)) > r)
 		return  false;
 
 	// ＯＢＢのＹ軸（ワールド座標のＹ軸）と三角形の頂点０－頂点２軸で生成される外積を分離軸とする判定（a10）
 	p0 = vT[0].x * vT[1].z - vT[0].z * vT[1].x;
 	p2 = vT[2].x * (vT[1].z - vT[0].z) - vT[2].z * (vT[1].x - vT[0].x);
-	r = eZ * fabs(f0.x) + eX * fabs(f0.z);
+	r = eZ * fabsf(f0.x) + eX * fabsf(f0.z);
 	if (max(-max(p0, p2), min(p0, p2)) > r)
 		return  false;
 
 	// ＯＢＢのＹ軸（ワールド座標のＹ軸）と三角形の頂点０－頂点１軸で生成される外積を分離軸とする判定（a11）
 	p0 = vT[0].x * (vT[2].z - vT[1].z) - vT[0].z * (vT[2].x - vT[1].x);
 	p1 = vT[1].x * vT[2].z - vT[1].z * vT[2].x;
-	r = eZ * fabs(f1.x) + eX * fabs(f1.z);
+	r = eZ * fabsf(f1.x) + eX * fabsf(f1.z);
 	if (max(-max(p0, p1), min(p0, p1)) > r)
 		return  false;
 
 	// ＯＢＢのＹ軸（ワールド座標のＹ軸）と三角形の頂点１－頂点２軸で生成される外積を分離軸とする判定（a12）
 	p1 = vT[1].x * (vT[0].z - vT[2].z) - vT[1].z * (vT[0].x - vT[2].x);
 	p2 = vT[2].x * vT[0].z - vT[2].z * vT[0].x;
-	r = eZ * fabs(f2.x) + eX * fabs(f2.z);
+	r = eZ * fabsf(f2.x) + eX * fabsf(f2.z);
 	if (max(-max(p1, p2), min(p1, p2)) > r)
 		return  false;
 
 	// ＯＢＢのＺ軸（ワールド座標のＺ軸）と三角形の頂点０－頂点２軸で生成される外積を分離軸とする判定（a20）
 	p0 = vT[0].y * vT[1].x - vT[0].x * vT[1].y;
 	p2 = vT[2].y * (vT[1].x - vT[0].x) - vT[2].x * (vT[1].y - vT[0].y);
-	r = eX * fabs(f0.y) + eY * fabs(f0.x);
+	r = eX * fabsf(f0.y) + eY * fabsf(f0.x);
 	if (max(-max(p0, p2), min(p0, p2)) > r)
 		return  false;
 
 	// ＯＢＢのＺ軸（ワールド座標のＺ軸）と三角形の頂点０－頂点１軸で生成される外積を分離軸とする判定（a21）
 	p0 = vT[0].y * (vT[2].x - vT[1].x) - vT[0].x * (vT[2].y - vT[1].y);
 	p1 = vT[1].y * vT[2].x - vT[1].x * vT[2].y;
-	r = eX * fabs(f1.y) + eY * fabs(f1.x);
+	r = eX * fabsf(f1.y) + eY * fabsf(f1.x);
 	if (max(-max(p0, p1), min(p0, p1)) > r)
 		return  false;
 
 	// ＯＢＢのＺ軸（ワールド座標のＺ軸）と三角形の頂点１－頂点２軸で生成される外積を分離軸とする判定（a22）
 	p1 = vT[1].y * (vT[0].x - vT[2].x) - vT[1].x * (vT[0].y - vT[2].y);
 	p2 = vT[2].y * vT[0].x - vT[2].x * vT[0].y;
-	r = eX * fabs(f2.y) + eY * fabs(f2.x);
+	r = eX * fabsf(f2.y) + eY * fabsf(f2.x);
 	if (max(-max(p1, p2), min(p1, p2)) > r)
 		return  false;
 
@@ -668,7 +669,7 @@ bool CBBox::OBBCollisionTri(const VECTOR3* pTri, VECTOR3* vhit)
 	vNormal = cross(f0, f1);
 
 	p0 = LenSegOnSeparateAxis(&vNormal, &AeX, &AeY, &AeZ);
-	r = fabs(dot(vNormal, vT[0]));
+	r = fabsf(dot(vNormal, vT[0]));
 
 	if (r > p0)
 		return  false;
@@ -698,9 +699,9 @@ bool CBBox::OBBCollisionTri(const VECTOR3* pTri, VECTOR3* vhit)
 //------------------------------------------------------------------------
 float CBBox::LenSegOnSeparateAxis(const VECTOR3 *Sep, const VECTOR3 *e1, const VECTOR3 *e2, const VECTOR3 *e3)
 {
-	float r1 = fabs(dot(*Sep, *e1));
-	float r2 = fabs(dot(*Sep, *e2));
-	float r3 = e3 ? (fabs(dot(*Sep, *e3))) : 0;
+	float r1 = fabsf(dot(*Sep, *e1));
+	float r2 = fabsf(dot(*Sep, *e2));
+	float r3 = e3 ? (fabsf(dot(*Sep, *e3))) : 0;
 	return r1 + r2 + r3;
 }
 

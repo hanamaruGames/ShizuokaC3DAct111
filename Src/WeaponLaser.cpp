@@ -67,7 +67,7 @@ bool CWeaponLaserProc::Start(MATRIX4X4 mGun, VECTOR3 vOffset, MATRIX4X4 mOwnerWo
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 // ---------------------------------------------------------------------------
@@ -88,7 +88,7 @@ bool CWeaponLaserProc::Start(MATRIX4X4 mWorld, DWORD dwOwner)
 			return true;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 // ---------------------------------------------------------------------------
@@ -102,14 +102,14 @@ CWeaponLaserObj::CWeaponLaserObj(CBaseProc* pProc) : CBaseObj(pProc)
 	m_vStart = VECTOR3(0, 0, 0);		// 発射位置
 	m_vEnd = VECTOR3(0, 0, 0);			// 最終到達点
 
-	m_bActive = FALSE;
+	m_bActive = false;
 	m_dwStatus = NORMAL;
 
 	m_nAtc = WEAPON_ATC;
 
 	m_dwOwner = 0;
 
-
+	m_pSeDead = new CXAudioSource(_T("Data/Sound/Dead.wav"), 10);
 }
 // ---------------------------------------------------------------------------
 //
@@ -118,7 +118,7 @@ CWeaponLaserObj::CWeaponLaserObj(CBaseProc* pProc) : CBaseObj(pProc)
 // ---------------------------------------------------------------------------
 CWeaponLaserObj::~CWeaponLaserObj()
 {
-	;
+	SAFE_DELETE(m_pSeDead);
 }
 
 // ---------------------------------------------------------------------------
@@ -133,7 +133,7 @@ CWeaponLaserObj::~CWeaponLaserObj()
 bool CWeaponLaserObj::Start(MATRIX4X4 mStartWorld, DWORD dwOwner)
 {
 
-	if (m_bActive) return FALSE;
+	if (m_bActive) return false;
 
 	m_bActive = true;
 	m_mWorldOld = mStartWorld;  // レーザーの発射位置のマトリックスを保存しておく
@@ -163,7 +163,6 @@ bool CWeaponLaserObj::Start(MATRIX4X4 mStartWorld, DWORD dwOwner)
 // ---------------------------------------------------------------------------
 void CWeaponLaserObj::Update()
 {
-
 	if (m_bActive)
 	{
 		CPcProc* pPc = ObjectManager::FindGameObject<CPcProc>();
@@ -172,7 +171,7 @@ void CWeaponLaserObj::Update()
 		{
 			ObjectManager::FindGameObject<CEffectParticleProc>()->Start(m_vHitPos, m_vHitNormal);	// パーティクルの発生
 			//GameDevice()->m_pEffectProc->m_pEffectBillProc->Start(m_vHitPos);	// 爆発ビルボードの発生
-			GameDevice()->m_pSeDead->Play();// 爆発効果音
+			m_pSeDead->Play();// 爆発効果音
 
 		}
 		else {
@@ -182,16 +181,10 @@ void CWeaponLaserObj::Update()
 			{
 				ObjectManager::FindGameObject<CEffectParticleProc>()->Start(vHit, vNormal);	// パーティクルの発生
 				//GameDevice()->m_pEffectProc->m_pEffectBillProc->Start(vHit);	// 爆発ビルボードの発生
-				GameDevice()->m_pSeDead->Play();// 爆発効果音
+				m_pSeDead->Play();// 爆発効果音
 			}
 		}
-
-		// レンダリング
-		Render();
-
 	}
-
-	m_bActive = FALSE;	// １回ですぐ消す
 
 }
 
@@ -204,15 +197,18 @@ void CWeaponLaserObj::Update()
 //     引数　　　なし
 //     戻り値　　なし
 // ---------------------------------------------------------------------------
-void CWeaponLaserObj::Render()
+void CWeaponLaserObj::Draw()
 {
+	if (m_bActive)
+	{
 
-	// 加算合成色のブレンディングを設定
-	UINT mask = 0xffffffff;
-	GameDevice()->m_pD3D->m_pDeviceContext->OMSetBlendState(GameDevice()->m_pD3D->m_pBlendStateAdd, nullptr, mask);
-	GetMesh()->Render(m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, VECTOR3(0, 0, 0), GameDevice()->m_vEyePt);        // -- 2022.2.16
+		// 加算合成色のブレンディングを設定
+		UINT mask = 0xffffffff;
+		GameDevice()->m_pD3D->m_pDeviceContext->OMSetBlendState(GameDevice()->m_pD3D->m_pBlendStateAdd, nullptr, mask);
+		GetMesh()->Render(m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, VECTOR3(0, 0, 0), GameDevice()->m_vEyePt);        // -- 2022.2.16
 
-	// 通常のブレンディングを設定
-	GameDevice()->m_pD3D->m_pDeviceContext->OMSetBlendState(GameDevice()->m_pD3D->m_pBlendStateTrapen, nullptr, mask);
-
+		// 通常のブレンディングを設定
+		GameDevice()->m_pD3D->m_pDeviceContext->OMSetBlendState(GameDevice()->m_pD3D->m_pBlendStateTrapen, nullptr, mask);
+	}
+	m_bActive = false;	// １回ですぐ消す
 }

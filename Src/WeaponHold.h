@@ -8,6 +8,7 @@
 #pragma once
 #include "GameMain.h"
 #include "Object3D.h"
+#include "BBox.h"
 
 // --------------------------------------------------------------------
 //武器　手に持つアイテム　オブジェクトクラス
@@ -26,7 +27,7 @@ public:
 	CBBox* GetBBox(MATRIX4X4 mHold, BASEHOLDITEM HoldItem);
 
 	void Update() override;
-	void Render();
+	void Draw() override;
 
 	int GetKind() { return m_nKindNo; }
 

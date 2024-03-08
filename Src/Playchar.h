@@ -41,18 +41,22 @@ protected:
 	int					m_nMoveFwdPower;	// 前進移動速度倍率
 
 public:
+	CPcObj(CBaseProc* pProc);	// コンストラクタ        // -- 2022.2.16
+	virtual	~CPcObj();
 	void Update() override;
+	void Draw() override;
+private:
 	void UpdateNormal();       // -- 2019.3.5
 	void UpdateNormalMove();   // -- 2019.3.5
 	MATRIX4X4 UpdateNormalMoveKeystate(DWORD DIKey);  // -- 2021.1.10
 	void UpdateNormalAttack(); // -- 2019.3.5
 	void UpdateDamage();       // -- 2019.3.5
 	void UpdateDead();         // -- 2019.3.5
+public:
 	MATRIX4X4  GetLocalMatrix();			// ローカル軸マトリックスを得る
 	void SetLocalRotY(float fRotY) { m_fLocalRotY = fRotY; }   // ローカル軸(Y軸)をセットする
-
-	CPcObj(CBaseProc* pProc);	// コンストラクタ        // -- 2022.2.16
-	virtual	~CPcObj();
+private:
+	CXAudioSource* m_seLaser;
 };
 
 //======================================================================

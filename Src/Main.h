@@ -13,8 +13,7 @@
 #include <windows.h>
 
 #include "resource.h"
-#include "GameMain.h"
-
+//#include "GameMain.h"
 
 //定数定義
 //#define WINDOW_WIDTH   1920 //ウィンドウ幅
@@ -37,7 +36,7 @@ public:
 	CGameMain*	   m_pGMain;		  // ゲームメインクラス
 	HINSTANCE      m_hInstance;
 	HWND           m_hWnd;
-	bool           m_bLoopFlag;       // ループフラグ　true:ループ　FALSE:ループ終了
+	bool           m_bLoopFlag;       // ループフラグ　true:ループ　false:ループ終了
 	double         m_MainLoopTime;    // ループスピード　1/60Sec
 
 public:

@@ -6,6 +6,8 @@
 #pragma once
 #include "GameMain.h"
 #include "Object3D.h"
+#include "Displace.h"
+#include "Collision.h"
 
 // ゲームの中で使用する重力の加速度   // -- 2023.1.31
 #define  GAMEGRAVITY  (0.5f * GRAVITY * 0.00005f)
@@ -49,7 +51,7 @@ struct MOVEMAP
 	CFbxMesh*				m_pMesh;			// スタティックメッシュへのポインタ
 	int						m_nMaterialFlag;	// マテリアルフラグ　0:通常　1:透明色　2:ディスプレイスメントマッピング
 	CCollision*				m_pColMesh;			// 移動コリジョンメッシュへのポインタ
-	bool					m_bMoveOn;			// 移動ON      FALSE:移動停止　true:移動実行          // -- 2022.11.14
+	bool					m_bMoveOn;			// 移動ON      false:移動停止　true:移動実行          // -- 2022.11.14
 	int						m_nMoveFlag;		// 移動区分    1:平行移動　2:回転　3:拡大縮小         // -- 2022.11.14
 	VECTOR3					m_vUp;				// 移動増分
 	VECTOR3					m_vMinOffset;		// 移動増分最小値                                     // -- 2022.11.14
@@ -67,7 +69,7 @@ struct MOVEMAP
 	}
 	void Init()
 	{
-		m_bActive = FALSE;
+		m_bActive = false;
 		m_pMesh = nullptr;
 		m_nMaterialFlag = 0;
 		m_pColMesh = nullptr;
@@ -185,7 +187,7 @@ protected:
 public:
 	// メンバー関数
 	void Update() override;
-	void Render();
+	void Draw() override;
 	void DestroyAll();
 	bool LoadMap(int mapbo);
 

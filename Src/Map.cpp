@@ -22,7 +22,7 @@ CMapProc::CMapProc()
 	// (vectorクラスは初期化不要)
 //	GameDevice() = pGMain;
 	m_dwMapNo = 0;
-	m_bActive = FALSE;
+	m_bActive = false;
 	m_pColMesh   = nullptr;					// コリジョンメッシュへのポインタ
 	m_nEvtIdx = 0;							// -- 2021.2.4
 
@@ -46,7 +46,7 @@ CMapProc::~CMapProc()
 void CMapProc::DestroyAll()
 {
 	m_dwMapNo = 0;
-	m_bActive = FALSE;
+	m_bActive = false;
 	m_nEvtIdx = 0;							// -- 2021.2.4
 
 	// メッシュのデリート
@@ -96,7 +96,7 @@ void CMapProc::DestroyAll()
 
 //
 //   戻り値　bool
-//           true:ヒットしたとき       FALSE：ヒットしていないとき
+//           true:ヒットしたとき       false：ヒットしていないとき
 //
 //-----------------------------------------------------------------------------
 bool   CMapProc::Hitcheck(CBaseObj* pObj, VECTOR3* pHit, VECTOR3* pNormal)
@@ -114,7 +114,7 @@ bool   CMapProc::Hitcheck(CBaseObj* pObj, VECTOR3* pHit, VECTOR3* pNormal)
 //   VECTOR3* vNormal	接触点の法線ベクトル（出力）
 //
 //   戻り値　bool
-//           true:ヒットしたとき       FALSE：ヒットしていないとき
+//           true:ヒットしたとき       false：ヒットしていないとき
 //
 //-----------------------------------------------------------------------------
 bool   CMapProc::Hitcheck(VECTOR3 vNow, VECTOR3 vOld, VECTOR3* pHit, VECTOR3* pNormal)
@@ -134,7 +134,7 @@ bool   CMapProc::Hitcheck(VECTOR3 vNow, VECTOR3 vOld, VECTOR3* pHit, VECTOR3* pN
 		return true;
 	}
 	else {
-		return FALSE;
+		return false;
 	}
 
 }
@@ -150,7 +150,7 @@ bool   CMapProc::Hitcheck(VECTOR3 vNow, VECTOR3 vOld, VECTOR3* pHit, VECTOR3* pN
 //   VECTOR3 &vNormal   接触点の法線ベクトル（出力）
 //
 //   戻り値　bool
-//           true:ヒットしたとき       FALSE：ヒットしていないとき
+//           true:ヒットしたとき       false：ヒットしていないとき
 //
 //-----------------------------------------------------------------------------
 bool   CMapProc::Hitcheck(VECTOR3 vNow, VECTOR3 vOld, float fRadius, VECTOR3* pHit, VECTOR3* pNormal)
@@ -170,7 +170,7 @@ bool   CMapProc::Hitcheck(VECTOR3 vNow, VECTOR3 vOld, float fRadius, VECTOR3* pH
 		return true;
 	}
 	else {
-		return FALSE;
+		return false;
 	}
 
 }
@@ -324,9 +324,6 @@ void CMapProc::Update()
 
 	// 移動マップ更新処理
 	UpdateMoveMap();
-
-	//レンダリング
-	Render();
 
 }
 //-----------------------------------------------------------------------------   // -- 2021.2.4
@@ -556,7 +553,7 @@ void CMapProc::UpdateMoveMap()
 			// ループをしないときの停止判断。反転のタイミングで停止する
 			if (m_MoveMap[i].m_nLoop == 0 && m_MoveMap[i].m_nChangeFlag == 1)
 			{
-				m_MoveMap[i].m_bMoveOn = FALSE;    // 移動しない    // -- 2022.11.14
+				m_MoveMap[i].m_bMoveOn = false;    // 移動しない    // -- 2022.11.14
 			}
 		}
 	}
@@ -569,7 +566,7 @@ void CMapProc::UpdateMoveMap()
 // 
 //    戻り値　なし
 //============================================================================
-void  CMapProc::Render(void)
+void  CMapProc::Draw()
 {
 	if (m_bActive) {
 
@@ -578,7 +575,7 @@ void  CMapProc::Render(void)
 		{
 			// 空のレンダリング   陰影をつけないレンダリング 
 			// Zバッファを無効化
-			GameDevice()->m_pD3D->SetZBuffer(FALSE);
+			GameDevice()->m_pD3D->SetZBuffer(false);
 			m_SkyMap[0].m_pMesh->Render(m_SkyMap[0].m_mWorld, GameDevice()->m_mView, GameDevice()->m_mProj, VECTOR3(0, 0, 0), GameDevice()->m_vEyePt);  // 陰影をつけないレンダリング 
 			// Zバッファを有効化
 			GameDevice()->m_pD3D->SetZBuffer(true);

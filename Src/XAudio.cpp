@@ -6,6 +6,7 @@
 
 //ヘッダーファイルのインクルード
 #include "XAudio.h"
+#include "GameMain.h"
 
 
 //------------------------------------------------------------------------
@@ -144,13 +145,13 @@ HRESULT CXAudioSource::Load(TCHAR* szFileName, DWORD dwNum)
 	// なお、各項目の長さとは、バイト数ではなく文字数である
 	_tsplitpath_s(szFileName, NULL, NULL, NULL, NULL, NULL, NULL, ext, sizeof(ext)/sizeof(TCHAR));
 
-	if ( m_pXAudio->m_pXAudio2 && ( _tcscmp(ext, _T(".wav")) == 0 || _tcscmp(ext, _T(".WAV")) == 0 ) ) // -- 2018.7.8 XAudioが初期化されていて、ＷＡＶ形式のとき
+	if ( m_pXAudio->XAudio2() && ( _tcscmp(ext, _T(".wav")) == 0 || _tcscmp(ext, _T(".WAV")) == 0 ) ) // -- 2018.7.8 XAudioが初期化されていて、ＷＡＶ形式のとき
 	{
 		m_bWav = true;				// WAVファイルのときはXAudio2を使用する
 		LoadAudio(szFileName, dwNum);
 	}
 	else {
-		m_bWav = FALSE;				// WAVファイル以外のときはMciを使用する
+		m_bWav = false;				// WAVファイル以外のときはMciを使用する
 		LoadMci(szFileName);
 	}
 	return S_OK;
@@ -200,7 +201,7 @@ HRESULT CXAudioSource::LoadAudioSub(TCHAR* szFileName, DWORD dwIndex)
 	DWORD            dwWavSize = 0; //WAVファイル内　WAVデータのサイズ（WAVファイルはWAVデータで占められているので、ほぼファイルサイズと同一）
 	WAVEFORMATEX*    pwfex;         //WAVのフォーマット 例）16ビット、44100Hz、ステレオなど
 	MMCKINFO         ckInfo;        //　チャンク情報
-	MMCKINFO         riffckInfo;    // 最上部チャンク（RIFFチャンク）保存用
+	MMCKINFO         riffckInfo = { 0 };    // 最上部チャンク（RIFFチャンク）保存用
 	PCMWAVEFORMAT    pcmWaveForm;
 	MMIOINFO         mmioInfo;
 
@@ -236,7 +237,7 @@ HRESULT CXAudioSource::LoadAudioSub(TCHAR* szFileName, DWORD dwIndex)
 	mmioRead(hMmio, (HPSTR)m_pWavBuffer[dwIndex], dwWavSize);
 
 	//ソースボイスにデータを入れる	
-	if (FAILED(m_pXAudio->m_pXAudio2->CreateSourceVoice(&m_pSourceVoice[dwIndex], pwfex)))
+	if (FAILED(m_pXAudio->XAudio2()->CreateSourceVoice(&m_pSourceVoice[dwIndex], pwfex)))
 	{
 		MessageBox(0, _T("XAudio2 ソースボイス作成失敗"), 0, MB_OK);
 		return E_FAIL;
@@ -511,3 +512,7 @@ void  CXAudioSource::VolumeMci(int nVol)
 	mciSendString( str , nullptr, 0, nullptr);
 
 }
+
+CXAudioSource::CXAudioSource() : CXAudioSource(GameDevice()->m_pXAudio) {}
+
+CXAudioSource::CXAudioSource(TCHAR* szFileName, DWORD dwNum) : CXAudioSource(GameDevice()->m_pXAudio, szFileName, dwNum) {}

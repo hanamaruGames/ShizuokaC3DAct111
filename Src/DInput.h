@@ -119,7 +119,7 @@
 // ÇcÇâÇíÇÖÇÉÇîÇhÇéÇêÇïÇîÉNÉâÉX
 class CDirectInput
 {
-protected:
+private:
 	//-----------------------------------------------------------------------------
 	// common
 	//-----------------------------------------------------------------------------
@@ -211,6 +211,7 @@ public:
 	bool PlayJoyEffect(int, int nNum=1, int nSum=JOY_PLAYER1);
 	bool CreateJoyEffectStandard(void);
 	bool ReadJoyEffect(TCHAR* szFName, int &nEffectNo, int &nNum);
+
 	//-----------------------------------------------------------------------------
 	// CALLBACK
 	//-----------------------------------------------------------------------------

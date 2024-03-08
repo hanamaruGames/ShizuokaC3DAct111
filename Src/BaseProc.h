@@ -6,7 +6,9 @@
 //																BaseProc.h
 //=============================================================================
 #pragma once
-#include "GameMain.h"
+#include <vector>
+#include "MyMath.h"
+#include "FbxMesh.h"
 
 // -------------------------------------------------------------------------------------------------  // -- 2021.2.4
 // 
@@ -31,9 +33,8 @@ struct BASEHOLDITEM
 };
 
 class CBBox;
-class CShader;
-class CGameMain;
 class CBaseProc;
+
 // --------------------------------------------------------------------------------------------------
 // 基本オブジェクトクラス
 // 
@@ -48,7 +49,7 @@ protected:
 	DWORD			m_dwStatus;			// ステータス
 	DWORD			m_dwStatusSub;		// ステータスサブ
 	DWORD			m_dwStatusPhase;	// ステータスフェーズ
-	bool			m_bActive;			// true:表示  FALSE:非表示
+	bool			m_bActive;			// true:表示  false:非表示
 	DWORD			m_dwObjID;			// オブジェクトＩＤ
 	DWORD			m_dwObjNo;			// オブジェクトＮＯ
 	int				m_nMeshIdx;			// メッシュ配列の添字                   // -- 2022.12.20
@@ -86,6 +87,7 @@ public:
 
 	// 更新処理
 	virtual	void    Update() { ; }
+	virtual void    Draw() {}
 
 	// 目的地（vTargetX,Z）への移動処理               // -- 2023.1.14
 	// (なお、回転スピードの省略値は3.0f度、近接リミットの省略値は0.1fとする)
@@ -142,7 +144,7 @@ protected:
 	// オブジェクトポインタ配列は、プロシージャの中にオブジェクトを配置して管理するときに使用する
 	// 一般的には、どちらか片方のみを使用すること
 	// 
-	std::vector<CBaseProc*>  m_pProcArray;  // 下位のプロシージャポインタ配列
+//	std::vector<CBaseProc*>  m_pProcArray;  // 下位のプロシージャポインタ配列
 	std::vector<CBaseObj*>   m_pObjArray;	// オブジェクトポインタ配列
 	std::vector<CFbxMesh*>   m_pMeshArray;	// メッシュポインタ配列   // -- 2022.12.20
 	std::vector<BASEHOLDITEM> m_HoldItemArray;		// 手に持つ武器   // -- 2022.12.20
@@ -173,7 +175,7 @@ public:
 	virtual void	SetMaxWaitTime() { m_nWaitTime = m_nMaxwaitTime; }
 
 	// アクセス関数
-	virtual std::vector<CBaseProc*> GetProcArrayPtr() { return m_pProcArray; } // 下位のプロシージャポインタ配列のアドレスを返す
+//	virtual std::vector<CBaseProc*> GetProcArrayPtr() { return m_pProcArray; } // 下位のプロシージャポインタ配列のアドレスを返す
 	virtual std::vector<CBaseObj*>  GetObjArrayPtr() { return m_pObjArray; }  // オブジェクトポインタ配列のアドレスを返す
 	virtual std::vector<CFbxMesh*>   GetMeshArrayPtr() { return m_pMeshArray; }	// メッシュポインタ配列   // -- 2022.2.16
 	virtual std::vector<BASEHOLDITEM> GetHoldItemArrayPtr() { return m_HoldItemArray; }		// 手に持つ武器   // -- 2022.2.16
@@ -203,6 +205,7 @@ public:
 	}
 	// デストラクタ（プロシージャとオブジェクトの解放）
 	virtual		~CBaseProc();
+	virtual void Draw();
 };
 
 

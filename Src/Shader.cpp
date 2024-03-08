@@ -19,6 +19,7 @@
 // ========================================================================================
 
 #include "Shader.h"
+#include "FbxMesh.h"
 
 //------------------------------------------------------------------------
 //
@@ -424,7 +425,7 @@ HRESULT CShader::MakeShader(TCHAR ProfileName[], TCHAR FileName[], void** ppShad
 			if (FAILED(m_pD3D->m_pDevice->CreateInputLayout(Fluid_layout, numElements, pCso, dwCsoSize, ppInputLayout)))
 			{
 				MessageBox(0, _T("インプット レイアウト作成失敗"), FileName, MB_OK);
-				return FALSE;
+				return E_FAIL;
 			}
 		}
 	}

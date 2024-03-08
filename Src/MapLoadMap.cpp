@@ -20,7 +20,7 @@
 // 　この関数から呼び出されなければならない
 //
 // 引数   int mapno : ロードするマップの番号
-// 戻り値 bool  true:マップ有り   FALSE:マップなし
+// 戻り値 bool  true:マップ有り   false:マップなし
 //
 //-----------------------------------------------------------------------------
 bool CMapProc::LoadMap(int mapno)
@@ -34,7 +34,7 @@ bool CMapProc::LoadMap(int mapno)
 
 	default:
 		// 該当番号のマップ無し
-		return FALSE;
+		return false;
 	}
 
 	m_dwMapNo = mapno;    // マップＮＯの設定

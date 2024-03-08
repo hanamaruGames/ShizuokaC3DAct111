@@ -20,10 +20,10 @@
 #include <windows.h>
 #include <d3d11.h>
 #include <d3dCompiler.h>
-
 #include <d2d1.h>
 #include <wincodec.h>
 
+#include "Macro.h"
 #include "MyMath.h"
 
 //必要なライブラリファイルのロード
@@ -32,11 +32,6 @@
 //#pragma comment(lib,"windowscodecs.lib")
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"d3dCompiler.lib")
-
-//マクロ定義
-#define SAFE_RELEASE(x) if(x){x->Release(); x=0;}
-#define SAFE_DELETE(x) if(x){delete x; x=0;}
-#define SAFE_DELETE_ARRAY(p){ if(p){ delete[] (p);   (p)=nullptr;}}
 
 //マクロ
 #define ALIGN16 _declspec(align(16))

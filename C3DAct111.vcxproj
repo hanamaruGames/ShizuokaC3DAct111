@@ -557,6 +557,7 @@
     <ClInclude Include="Src\FbxMeshAnim.h" />
     <ClInclude Include="Src\GameMain.h" />
     <ClInclude Include="Src\GameObject.h" />
+    <ClInclude Include="Src\Macro.h" />
     <ClInclude Include="Src\Main.h" />
     <ClInclude Include="Src\Map.h" />
     <ClInclude Include="Src\MyImgui.h" />

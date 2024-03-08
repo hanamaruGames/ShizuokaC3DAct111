@@ -165,7 +165,7 @@ HRESULT CEffectBillFireProc::SetSrc(BILLBOARDBASE* pBillBase)
 //
 //	戻り値 bool
 //		true	= 正常
-//		FALSE	= 異常
+//		false	= 異常
 //
 //------------------------------------------------------------------------
 bool CEffectBillFireProc::Start(VECTOR3 vPos)
@@ -183,7 +183,7 @@ bool CEffectBillFireProc::Start(VECTOR3 vPos)
 //
 //	戻り値 bool
 //		true	= 正常
-//		FALSE	= 異常
+//		false	= 異常
 //
 //------------------------------------------------------------------------
 bool CEffectBillFireProc::Start(int  nBillIdx, VECTOR3 vPos)
@@ -196,7 +196,7 @@ bool CEffectBillFireProc::Start(int  nBillIdx, VECTOR3 vPos)
 			return true;
 		}
 	}
-	return FALSE;
+	return false;
 };
 
 //------------------------------------------------------------------------
@@ -220,7 +220,7 @@ CEffectBillFireObj* CEffectBillFireProc::Start(int  nBillIdx)
 		if (!m_pObjArray[i]->GetActive())
 		{
 			m_pObjArray[i]->SetActive(true);
-			((CEffectBillFireObj*)(m_pObjArray[i]))->m_bAuto = FALSE;  // 炎の制御をＷｅａｐｏｎ等の親が行う
+			((CEffectBillFireObj*)(m_pObjArray[i]))->m_bAuto = false;  // 炎の制御をＷｅａｐｏｎ等の親が行う
 			((CEffectBillFireObj*)(m_pObjArray[i]))->m_nBillIdx = nBillIdx;
 			((CEffectBillFireObj*)(m_pObjArray[i]))->m_dwFrame = 0;
 			return ((CEffectBillFireObj*)(m_pObjArray[i]));
@@ -275,8 +275,8 @@ CEffectBillFireObj::~CEffectBillFireObj()
 //------------------------------------------------------------------------
 void CEffectBillFireObj::Init()
 {
-	m_bActive = FALSE;
-	m_bAuto = FALSE;
+	m_bActive = false;
+	m_bAuto = false;
 }
 
 //------------------------------------------------------------------------
@@ -300,12 +300,12 @@ BILLBOARDBASE* CEffectBillFireObj::GetBillArrayPtr()
 //
 //	戻り値 bool
 //		true      表示継続
-//		FALSE     表示終了
+//		false     表示終了
 //
 //------------------------------------------------------------------------
 bool CEffectBillFireObj::Start(int nBillIdx, VECTOR3 vPos)
 {
-	if (m_bActive) return FALSE;  // すでに開始中
+	if (m_bActive) return false;  // すでに開始中
 
 	m_bActive = true;
 	m_nBillIdx = nBillIdx;   // ビルボード構造体配列の要素番号
@@ -335,7 +335,7 @@ void CEffectBillFireObj::Update()
 	if (dwIdx >= GetBillArrayPtr()->m_dwNumX * GetBillArrayPtr()->m_dwNumY)	// パターンの最後に達したとき
 	{
 		if (m_bAuto) {  // 自動モードのときは終了
-			m_bActive = FALSE;
+			m_bActive = false;
 			return;
 		}
 		else {
@@ -346,10 +346,6 @@ void CEffectBillFireObj::Update()
 	// アニメーションのためのテクスチャオフセットを設定する
 	m_vUVOffset.x = (float)(dwIdx % GetBillArrayPtr()->m_dwNumX * GetBillArrayPtr()->m_dwSrcWidth);   // Ｘ方向の変位
 	m_vUVOffset.y = (float)(dwIdx / GetBillArrayPtr()->m_dwNumX * GetBillArrayPtr()->m_dwSrcHeight);  // Ｙ方向の変位
-
-
-	Render(); // レンダリング
-
 }
 //------------------------------------------------------------------------
 //
@@ -357,13 +353,13 @@ void CEffectBillFireObj::Update()
 //
 //	戻り値 bool
 //		true      表示継続
-//		FALSE     表示終了
+//		false     表示終了
 //
 //------------------------------------------------------------------------
-bool CEffectBillFireObj::Render()
+void CEffectBillFireObj::Draw()
 {
 
-	if (!m_bActive) return FALSE;
+	if (!m_bActive) return;
 
 	//ビルボードの、視点を向くワールドトランスフォームを求める
 	MATRIX4X4 mWorld = GetLookatMatrix(m_vPos, GameDevice()->m_vEyePt);
@@ -426,8 +422,6 @@ bool CEffectBillFireObj::Render()
 		// 通常のブレンディングに戻す
 		m_pD3D->m_pDeviceContext->OMSetBlendState(m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 	}
-
-	return true;
 }
 
 

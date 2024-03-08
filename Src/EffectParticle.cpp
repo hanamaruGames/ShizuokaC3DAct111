@@ -168,7 +168,7 @@ HRESULT CEffectParticleProc::SetSrc(PARTICLEBASE* pPartBase)
 //
 //	戻り値 bool
 //		true	= 正常
-//		FALSE	= 異常
+//		false	= 異常
 //
 //------------------------------------------------------------------------
 bool CEffectParticleProc::Start(VECTOR3 vEmitPos, VECTOR3 vNormal)
@@ -187,7 +187,7 @@ bool CEffectParticleProc::Start(VECTOR3 vEmitPos, VECTOR3 vNormal)
 //
 //	戻り値 bool
 //		true	= 正常
-//		FALSE	= 異常
+//		false	= 異常
 //
 //------------------------------------------------------------------------
 bool CEffectParticleProc::Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal)
@@ -201,7 +201,7 @@ bool CEffectParticleProc::Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal)
 			return true;
 		}
 	}
-	return FALSE;
+	return false;
 };
 
 
@@ -256,7 +256,7 @@ CEffectParticleObj::~CEffectParticleObj()
 //------------------------------------------------------------------------
 void CEffectParticleObj::Init()
 {
-	m_bActive = FALSE;
+	m_bActive = false;
 	m_MaxParticle = EFFECT_NUM_MAX;           // 初期値としてパーティクル配列要素数を入れて置く
 	m_pPtArray = new PART[EFFECT_NUM_MAX];    // 一つのオブジェクトの中のパーティクル配列の生成
 }
@@ -285,7 +285,7 @@ PARTICLEBASE* CEffectParticleObj::GetPartArrayPtr()
 //
 //	戻り値 bool
 //		true	= 正常
-//		FALSE	= 異常
+//		false	= 異常
 //
 //------------------------------------------------------------------------
 bool CEffectParticleObj::Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal)
@@ -293,7 +293,7 @@ bool CEffectParticleObj::Start(int nPartIdx, VECTOR3 vEmitPos, VECTOR3 vNormal)
 	if (m_bActive)
 	{
 		// すでに表示中のとき
-		return FALSE;
+		return false;
 
 	}
 	else {
@@ -389,12 +389,9 @@ void CEffectParticleObj::Update()
 			}
 		}
 
-		// レンダリング
-		Render();
-
 		if (m_Frame >= GetPartArrayPtr()->m_FrameEnd) // 表示時間終了か
 		{
-			m_bActive = FALSE;
+			m_bActive = false;
 		}
 
 	}
@@ -408,7 +405,7 @@ void CEffectParticleObj::Update()
 //	戻り値 なし
 //
 //------------------------------------------------------------------------
-void CEffectParticleObj::Render()
+void CEffectParticleObj::Draw()
 {
 	// 表示状態でないとき
 	if (!m_bActive)  return;

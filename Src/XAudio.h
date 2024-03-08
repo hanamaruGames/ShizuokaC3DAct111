@@ -13,11 +13,6 @@
 #include <xaudio2.h>
 #include <tchar.h>
 
-//マクロ定義
-#define SAFE_RELEASE(x) if(x){x->Release(); x=0;}
-#define SAFE_DELETE(x) if(x){delete x; x=0;}
-#define SAFE_DELETE_ARRAY(p){ if(p){ delete[] (p);   (p)=nullptr;}}
-
 #define AUDIO_LOOP         1          // ループ再生
 #define AUDIO_SOURCE_MAX  10          // 同時に再生する同一オーディオソースの最大数
 
@@ -27,28 +22,29 @@
 // 
 class CXAudio
 {
-public:
+private:
 	// メンバ変数
 	HWND                    m_hWnd;
 	IXAudio2*               m_pXAudio2;
 	IXAudio2MasteringVoice* m_pMasteringVoice;
 
+public:
 	// メソッド
 	HRESULT     InitAudio(HWND);
-
 	CXAudio();
 	~CXAudio();
-
+	IXAudio2* XAudio2() { return m_pXAudio2; }
 };
+
 // 
 //  XAudio ソースボイスクラス	
 //  一つのサウンド（ＷＡＶ）に一つ必要
 // 
 class CXAudioSource
 {
-public:
+private:
 	CXAudio*				m_pXAudio;			// XAudio マスタークラスアドレス	
-	bool					m_bWav;				// ソースがＷａｖｅファイルか　true:XAudio(WAV)　FALSE:MCI(MP3やMID) 
+	bool					m_bWav;				// ソースがＷａｖｅファイルか　true:XAudio(WAV)　false:MCI(MP3やMID) 
 	TCHAR                   m_szAliasName[256]; // Mciの別名が入る
 
 	DWORD                   m_dwSourceIndex;					//	オーディオソースインデックス
@@ -56,7 +52,7 @@ public:
 	IXAudio2SourceVoice*    m_pSourceVoice[AUDIO_SOURCE_MAX];  // オーディオソース
 	BYTE*                   m_pWavBuffer[AUDIO_SOURCE_MAX];    // 波形データ（フォーマット等を含まない、純粋に波形データのみ）
 	DWORD                   m_dwWavSize[AUDIO_SOURCE_MAX];     // 波形データのサイズ
-
+public:
 	HRESULT      Load(TCHAR* szFileName, DWORD dwNum=1);
 	HRESULT      LoadAudio(TCHAR* szFileName, DWORD dwNum);
 	HRESULT      LoadAudioSub(TCHAR* szFileName, DWORD dwIndex);
@@ -71,6 +67,8 @@ public:
 	void         VolumeAudio(float fVol);
 	void         VolumeMci(int nVol);
 	
+	CXAudioSource();
+	CXAudioSource(TCHAR* szFileName, DWORD dwNum = 1);
 	CXAudioSource(CXAudio*	pXAudio);
 	CXAudioSource(CXAudio*	pXAudio, TCHAR* szFileName, DWORD dwNum=1);
 	~CXAudioSource();

@@ -46,13 +46,6 @@ CGameMain::CGameMain(CMain*	pMain)
 	m_mProj = XMMatrixIdentity();	// プロジェクションマトリックス
 	m_vLightDir = VECTOR3(0,0,0);	// ディレクショナルライトの方向
 
-	// サウンド
-	m_pSeLazer = nullptr;
-	m_pSeNitro = nullptr;
-	m_pSeDead = nullptr;
-	m_pSeFire = nullptr;
-	m_pBgm1 = nullptr;
-
 	SceneManager::Start();
 	ObjectManager::Start();
 }
@@ -67,12 +60,6 @@ CGameMain::~CGameMain()
 	SceneManager::Release();
 
 	MyImgui::ImguiQuit();          // -- 2020.11.15    // MyImguiの終了処理
-
-	SAFE_DELETE(m_pSeLazer);
-	SAFE_DELETE(m_pSeFire);
-	SAFE_DELETE(m_pSeDead);
-	SAFE_DELETE(m_pSeNitro);
-	SAFE_DELETE(m_pBgm1);
 
 	SAFE_DELETE(m_pFbxMeshCtrl);    // -- 2021.2.4
 	SAFE_DELETE(m_pShader);
@@ -154,14 +141,6 @@ HRESULT CGameMain::Init()
 	m_vLookatPt = VECTOR3(0.0f, 1.0f, 1.0f);
 	m_mView = XMMatrixLookAtLH(m_vEyePt, m_vLookatPt, vUpVec);
 
-	// サウンド
-	m_pSeLazer = new CXAudioSource( m_pXAudio, _T("Data/Sound/Lazer.wav"), 10);
-	m_pSeNitro = new CXAudioSource( m_pXAudio, _T("Data/Sound/Nitro2.WAV"), 10);
-	m_pSeDead = new CXAudioSource( m_pXAudio, _T("Data/Sound/Dead.wav"), 10);
-	m_pSeFire = new CXAudioSource( m_pXAudio, _T("Data/Sound/M_FIRE4.WAV"), 10);
-	m_pBgm1 = new CXAudioSource( m_pXAudio, _T("Data/Sound/DO_HT204.WAV"));
-	//m_pBgm1 = new CXAudioSource( m_pXAudio, _T("Data/Sound/B003B.MID"));
-
 	return S_OK;
 }
 
@@ -179,13 +158,8 @@ void CGameMain::Update()
 
 	m_pDI->GetInput();			// 入力情報の取得
 	m_pFont->Refresh();         // フォント情報のリフレッシュ
-	MyImgui::ImguiNewFrame();   // MyImgui描画前処理    // -- 2020.11.15
 
 	if (m_pDI->CheckKey(KD_TRG, DIK_F4))  ChangeScreenMode();   // フルスクリーンの切り替え       // -- 2018.12.14
-
-	//画面クリア（実際は単色で画面を塗りつぶす処理）
-	float ClearColor[4] = { 0,0,0,1 };// クリア色作成　RGBAの順
-	m_pD3D->ClearRenderTarget(ClearColor); // 画面クリア
 
 	switch (m_dwGameStatus)
 	{
@@ -196,15 +170,6 @@ void CGameMain::Update()
 	}
 	SceneManager::Update();
 	ObjectManager::Update();
-	ObjectManager::Draw();
-	SceneManager::Draw();
-
-	MyImgui::ImguiRender();      // MyImgui実描画処理    // -- 2020.11.15
-
-	//画面更新（バックバッファをフロントバッファに）
-	//m_pD3D->m_pSwapChain->Present(1, 0);                   // 60fps Vsync
-	m_pD3D->m_pSwapChain->Present(0, 0);                   // Vsyncなし
-
 }
 
 //------------------------------------------------------------------------
@@ -222,8 +187,20 @@ void CGameMain::GameMain()
 
 void CGameMain::Draw()
 {
-//	ObjectManager::Draw();
-//	SceneManager::Draw();
+	MyImgui::ImguiNewFrame();   // MyImgui描画前処理    // -- 2020.11.15
+
+	//画面クリア（実際は単色で画面を塗りつぶす処理）
+	float ClearColor[4] = { 0,0,0,1 };// クリア色作成　RGBAの順
+	m_pD3D->ClearRenderTarget(ClearColor); // 画面クリア
+
+	ObjectManager::Draw();
+	SceneManager::Draw();
+
+	MyImgui::ImguiRender();      // MyImgui実描画処理    // -- 2020.11.15
+
+	//画面更新（バックバッファをフロントバッファに）
+	//m_pD3D->m_pSwapChain->Present(1, 0);                   // 60fps Vsync
+	m_pD3D->m_pSwapChain->Present(0, 0);                   // Vsyncなし
 }
 
 //------------------------------------------------------------------------

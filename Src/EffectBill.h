@@ -39,6 +39,8 @@ public:
 
 	bool Start(int BillIdx, VECTOR3 vPos);
 	void Update() override;
+	void Draw() override;
+private:
 	bool Render();
 	void RenderMesh();
 
