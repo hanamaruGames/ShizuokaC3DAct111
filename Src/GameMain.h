@@ -67,7 +67,6 @@ public:
 
 	void    GameMain();
 	HRESULT ChangeScreenMode(int nMode=-1);    // -- 2020.1.15
-
 };
 
 CGameMain* GameDevice();

@@ -1,66 +1,45 @@
+#pragma once
 //=============================================================================
 //		３Ｄゲームプログラム
-//		Ｃ３ＤＡｃｔ１１１                             ver 3.2        2023.1.31
+//		Ｃ３ＤＡｃｔ１１１                             ver 4.0        2023.3.10
 //
 //		カメラ制御
-//
 //		(視点変更処理・障害物回避処理が入っている)
 //
-//																Camera.h
+//																N.Hanai
 //=============================================================================
-#pragma once
-#include "GameMain.h"
 #include "Object3D.h"
+#include "Leap.h"
 
-//======================================================================
-// カメラ　オブジェクトクラス
-//======================================================================
-class CCameraObj : public CBaseObj
+/// <summary>
+/// カメラを制御するクラス
+/// 三人称 → 一人称 → 俯瞰 を切り替えることができる
+/// 三人称の場合は、カメラの移動と、障害物の手前に来るようにしている。
+/// </summary>
+class CCamera : public Object3D
 {
 protected:
-	int     m_nCtrl;                       // カメラ制御（0:ＴＰＳ視点  1:ＦＰＳ視点  2:固定視点）
-	VECTOR3 m_vBaseLocalLookat;            // 基準ローカル注視点ベクトル
-	VECTOR3 m_vBaseLocalEye;               // 基準ローカル視点ベクトル
-	float   m_fBaseRotUp;                  // 角度増分
-	float   m_fBaseDistUp;                 // 移動増分
-
-	MATRIX4X4 m_mBaseWorld;                // 注視点・視点の基点となる基点ワールドマトリックス
-	VECTOR3 m_vLocalLookat;                // ローカル注視点ベクトル
-	VECTOR3 m_vLocalEye;                   // ローカル視点ベクトル
-
-	VECTOR3			m_vPosUp;			// 移動増分
-	VECTOR3			m_vRotUp;			// 回転増分
-
 public:
+	CCamera();
+	~CCamera();
 	void Update() override;
-	void InitCam(int ctrl, VECTOR3 lookat, VECTOR3 eye, float rot, float dist);
-	void EvasiveObstacle();
-	void ManualOperation();
-	void SetLocalEyeTPS(float fRotY, float fRotX, float fDist);
-	void SetCamBase();
-	int  GetCtrl() { return m_nCtrl; }
+	void Draw() override;
+private:
+	enum EyeMode {
+		eThirdPerson,
+		eFirstPerson,
+		eBirdView,
+	};
+	EyeMode mode; // 視点モード
 
-	CCameraObj(CBaseProc* pProc);	// コンストラクタ
-	virtual	~CCameraObj();
-};
+	VECTOR3 eyePosition; // 視点の相対位置
+	VECTOR3 lookPosition; // 注視点の相対位置
+	VECTOR3 rotation; // 三人称のカメラ回転
 
+	Leap<VECTOR3>* eyeLeap; // 視点変更をなめらかにする
+	Leap<VECTOR3>* lookLeap; // 注視点変更をなめらかにする
 
-//======================================================================
-// カメラ　プロシージャクラス
-//======================================================================
-class CCameraProc : public Object3D
-{
-protected:
-	int  m_nCamObjNo;                         // カメラオブジェクトの要素番号
-
-public:
-	void Update() override;
-	int GetCtrl() { return ((CCameraObj*)GetObjArrayPtr()[m_nCamObjNo])->GetCtrl(); }
-	int GetCamObjNo() { return m_nCamObjNo; }
-	void SetCamObjNo(int no) { m_nCamObjNo = no; }
-	void InitCam(int no, int ctrl, VECTOR3 lookat, VECTOR3 eye, float rot, float dist);
-
-	CCameraProc();	// コンストラクタ
-	virtual	~CCameraProc() { ; }
+	VECTOR3 eye; // 最終視点
+	VECTOR3 look; // 最終注視点
 };
 

@@ -244,6 +244,16 @@ MATRIX4X4 CPcObj::GetLocalMatrix()
 	return mRotY;
 }
 
+VECTOR3 CPcObj::Position()
+{
+	return GetPositionVector(m_mWorld);
+}
+
+VECTOR3 CPcObj::Rotation()
+{
+	return VECTOR3(0, m_fLocalRotY, 0);
+}
+
 
 //-----------------------------------------------------------------------------
 // ＰＣオブジェクトの更新

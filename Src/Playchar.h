@@ -32,6 +32,9 @@ private:
 public:
 	MATRIX4X4  GetLocalMatrix();			// ローカル軸マトリックスを得る
 	void SetLocalRotY(float fRotY) { m_fLocalRotY = fRotY; }   // ローカル軸(Y軸)をセットする
+	VECTOR3 Position();
+	VECTOR3 Rotation();
+
 	int Remain() { return m_remain;	}
 	int HpMax() { return hp.max; }
 	int HpNow() { return hp.current; }
@@ -77,4 +80,6 @@ public:
 	CPcProc();
 	virtual	~CPcProc();
 	CPcObj* Obj() { return dynamic_cast<CPcObj*>(GetObj()); }
+	VECTOR3 Position() { return Obj()->Position(); }
+	VECTOR3 Rotation() { return Obj()->Rotation(); }
 };

@@ -320,6 +320,9 @@
     <ClInclude Include="Src\Macro.h">
       <Filter>ソースファイル\01_ゲームメイン</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Leap.h">
+      <Filter>ソースファイル\02_ゲームライブラリ</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Main.cpp">

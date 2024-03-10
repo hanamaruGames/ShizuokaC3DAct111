@@ -11,7 +11,7 @@ PlayScene::PlayScene()
 	// 各プロシージャの初期化
 	CMapProc* pMap = Instantiate<CMapProc>();
 	Instantiate<CPcProc>();
-	Instantiate<CCameraProc>();
+	Instantiate<CCamera>();
 	Instantiate<CEffectProc>();
 	Instantiate<CWeaponProc>();
 	Instantiate<CBackForeProc>();

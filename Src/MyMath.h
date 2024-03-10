@@ -162,6 +162,8 @@ struct VECTOR3 : public XMFLOAT3
 		return XMFLOAT3(this->x, this->y, this->z);
 	}
 
+	float LengthSquare() { return this->x * this->x + this->y * this->y + this->z * this->z; }
+	float Length() { return sqrtf(LengthSquare()); }
 };
 
 //
@@ -366,6 +368,15 @@ struct MATRIX4X4 : public XMFLOAT4X4
 
 };
 
+inline const VECTOR3 operator *(const VECTOR3& vec, const MATRIX4X4& mat) {
+	return XMVector3Transform(vec, mat);
+}
+
+inline const VECTOR3 operator *=(VECTOR3& vec, MATRIX4X4& mat) {
+	vec = XMVector3Transform(vec, mat);
+	return vec;
+}
+
 // -----------------------------------------------------------------------------
 // îƒópÇÃÇRÇcéZèpÉâÉCÉuÉâÉä
 // -----------------------------------------------------------------------------
@@ -401,3 +412,4 @@ FLOAT AddAngle(const VECTOR3& p1, const VECTOR3& p2, const VECTOR3& p3);
 FLOAT AddAngle(const VECTOR3& p1, const VECTOR3& p2, const VECTOR3& p3, const VECTOR3& p4);
 
 int Random(int min1, int max1);
+
