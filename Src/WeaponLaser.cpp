@@ -200,7 +200,6 @@ void CWeaponLaserObj::Draw()
 {
 	if (m_bActive)
 	{
-
 		// 加算合成色のブレンディングを設定
 		UINT mask = 0xffffffff;
 		GameDevice()->m_pD3D->m_pDeviceContext->OMSetBlendState(GameDevice()->m_pD3D->m_pBlendStateAdd, nullptr, mask);
@@ -210,4 +209,9 @@ void CWeaponLaserObj::Draw()
 		GameDevice()->m_pD3D->m_pDeviceContext->OMSetBlendState(GameDevice()->m_pD3D->m_pBlendStateTrapen, nullptr, mask);
 	}
 	m_bActive = false;	// １回ですぐ消す
+}
+
+bool CWeaponLaserObj::Start(MATRIX4X4 mGun, DWORD dwOwner)
+{
+	return Start(mGun, (OwnerID)dwOwner);
 }

@@ -38,6 +38,7 @@ public:
 	bool Start(MATRIX4X4, OwnerID dwOwner);
 	void Update() override;
 	void Draw() override;
+	bool	Start(MATRIX4X4 mGun, DWORD dwOwner) override;
 
 	// アクセス関数
 	CWeaponLaserObj(CBaseProc* pProc);	// コンストラクタ        // -- 2022.2.16
